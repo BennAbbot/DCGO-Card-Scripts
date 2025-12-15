@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MemoryPredictionLine : MonoBehaviour
+public class MemoryPredictionLine 
 {
     [SerializeField] float p_y = 11f;
     [SerializeField] int vertexCount = 100;
@@ -13,8 +13,8 @@ public class MemoryPredictionLine : MonoBehaviour
 
     public void Init()
     {
-        lineRenderer = GetComponent<LineRenderer>();
-        this.gameObject.SetActive(false);
+        //lineRenderer = GetComponent<LineRenderer>();
+        //this.gameObject.SetActive(false);
     }
 
     public void SetMemoryPredictionLine(MemoryTab currentMemoryTab, MemoryTab nextMemoryTab)
@@ -26,7 +26,7 @@ public class MemoryPredictionLine : MonoBehaviour
 
         if(currentMemoryTab == nextMemoryTab)
         {
-            this.gameObject.SetActive(false);
+            //this.gameObject.SetActive(false);
             return;
         }
 
@@ -40,7 +40,7 @@ public class MemoryPredictionLine : MonoBehaviour
             return;
         }
 
-        this.gameObject.SetActive(true);
+        //this.gameObject.SetActive(true);
 
         lineRenderer.positionCount = vertexCount;
 

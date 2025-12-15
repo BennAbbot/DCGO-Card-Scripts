@@ -233,18 +233,18 @@ public class SelectPermanentEffect : MonoBehaviour
                 {
                     if (_cardEffect.EffectSourceCard.Owner.TrashCards.Contains(_cardEffect.EffectSourceCard) || _cardEffect.EffectSourceCard.Owner.LostCards.Contains(_cardEffect.EffectSourceCard))
                     {
-                        if (_cardEffect.EffectSourceCard.Owner.TrashHandCard != null)
-                        {
-                            if (!_cardEffect.EffectSourceCard.Owner.TrashHandCard.gameObject.activeSelf)
-                            {
-                                _cardEffect.EffectSourceCard.Owner.TrashHandCard.gameObject.SetActive(true);
-                                _cardEffect.EffectSourceCard.Owner.TrashHandCard.SetUpHandCard(_cardEffect.EffectSourceCard);
-                                _cardEffect.EffectSourceCard.Owner.TrashHandCard.SetUpHandCardImage();
-                                _cardEffect.EffectSourceCard.Owner.TrashHandCard.OnOutline();
-                                _cardEffect.EffectSourceCard.Owner.TrashHandCard.SetBlueOutline();
-                                _cardEffect.EffectSourceCard.Owner.TrashHandCard.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
-                            }
-                        }
+                        //if (_cardEffect.EffectSourceCard.Owner.TrashHandCard != null)
+                        //{
+                        //    if (!_cardEffect.EffectSourceCard.Owner.TrashHandCard.gameObject.activeSelf)
+                        //    {
+                        //        _cardEffect.EffectSourceCard.Owner.TrashHandCard.gameObject.SetActive(true);
+                        //        _cardEffect.EffectSourceCard.Owner.TrashHandCard.SetUpHandCard(_cardEffect.EffectSourceCard);
+                        //        _cardEffect.EffectSourceCard.Owner.TrashHandCard.SetUpHandCardImage();
+                        //        _cardEffect.EffectSourceCard.Owner.TrashHandCard.OnOutline();
+                        //        _cardEffect.EffectSourceCard.Owner.TrashHandCard.SetBlueOutline();
+                        //        _cardEffect.EffectSourceCard.Owner.TrashHandCard.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
+                        //    }
+                        //}
                     }
                 }
             }
@@ -698,7 +698,7 @@ public class SelectPermanentEffect : MonoBehaviour
                                     {
                                         if (_cardEffect.EffectSourceCard.Owner.isYou)
                                         {
-                                            //yield return GManager.instance.OnTargetArrow(
+                                            //yield return GManager.instance.OnTargetArrow (TODO)(
                                             //new Vector3(-840, -100, 0),
                                             //fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
                                             //null,
@@ -707,7 +707,7 @@ public class SelectPermanentEffect : MonoBehaviour
 
                                         else
                                         {
-                                            //yield return GManager.instance.OnTargetArrow(
+                                            //yield return GManager.instance.OnTargetArrow (TODO)(
                                             //new Vector3(810, 240, 0),
                                             //fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
                                             //null,
@@ -721,7 +721,7 @@ public class SelectPermanentEffect : MonoBehaviour
                                     {
                                         if (_cardEffect.EffectSourceCard.Owner.isYou)
                                         {
-                                            //yield return GManager.instance.OnTargetArrow(
+                                            //yield return GManager.instance.OnTargetArrow (TODO)(
                                             //new Vector3(725, -220, 0),
                                             //fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
                                             //null,
@@ -730,7 +730,7 @@ public class SelectPermanentEffect : MonoBehaviour
 
                                         else
                                         {
-                                            //yield return GManager.instance.OnTargetArrow(
+                                            //yield return GManager.instance.OnTargetArrow (TODO)(
                                             //new Vector3(-684, 287, 0),
                                             //fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
                                             //null,
@@ -745,7 +745,7 @@ public class SelectPermanentEffect : MonoBehaviour
 
                                         if (_cardEffect.EffectSourceCard.Owner.isYou)
                                         {
-                                            //yield return GManager.instance.OnTargetArrow(
+                                            //yield return GManager.instance.OnTargetArrow (TODO)(
                                             //new Vector3(0, -380, 0),
                                             //fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
                                             //null,
@@ -754,7 +754,7 @@ public class SelectPermanentEffect : MonoBehaviour
 
                                         else
                                         {
-                                            //yield return GManager.instance.OnTargetArrow(
+                                            //yield return GManager.instance.OnTargetArrow (TODO)(
                                             //new Vector3(0, 480, 0),
                                             //fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
                                             //null,
@@ -777,7 +777,7 @@ public class SelectPermanentEffect : MonoBehaviour
                                     #region character card in place
                                     if (_cardEffect.EffectSourceCard.PermanentOfThisCard().ShowingPermanentCard != null)
                                     {
-                                        //yield return GManager.instance.OnTargetArrow(
+                                        //yield return GManager.instance.OnTargetArrow (TODO)(
                                         //    _cardEffect.EffectSourceCard.PermanentOfThisCard().ShowingPermanentCard.GetLocalCanvasPosition() + _cardEffect.EffectSourceCard.Owner.playerUIObjectParent.localPosition,
                                         //    fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
                                         //    _cardEffect.EffectSourceCard.PermanentOfThisCard().ShowingPermanentCard,

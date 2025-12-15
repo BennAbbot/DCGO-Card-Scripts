@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 
-public class BrainStormObject : MonoBehaviour
+public class BrainStormObject
 {
     [Header("ÉvÉåÉCÉÑÅ[")]
     public Player player;
@@ -15,52 +15,53 @@ public class BrainStormObject : MonoBehaviour
 
     public IEnumerator Init()
     {
-        this.gameObject.SetActive(true);
+        yield break;
+        //this.gameObject.SetActive(true);
 
-        foreach (HandCard handCard in BrainStormHandCards)
-        {
-            handCard.gameObject.SetActive(true);
-            handCard.transform.parent.gameObject.SetActive(true);
-        }
+        //foreach (HandCard handCard in BrainStormHandCards)
+        //{
+        //    handCard.gameObject.SetActive(true);
+        //    handCard.transform.parent.gameObject.SetActive(true);
+        //}
 
-        yield return new WaitForSeconds(Time.deltaTime);
+        //yield return new WaitForSeconds(Time.deltaTime);
 
-        foreach (HandCard handCard in BrainStormHandCards)
-        {
-            handCard.gameObject.SetActive(false);
-            handCard.gameObject.name = $"BrainStormObject_{player.PlayerName}";
-        }
+        //foreach (HandCard handCard in BrainStormHandCards)
+        //{
+        //    handCard.gameObject.SetActive(false);
+        //    handCard.gameObject.name = $"BrainStormObject_{player.PlayerName}";
+        //}
     }
 
     public IEnumerator BrainStormCoroutine(CardSource cardSource)
     {
-        int count = -1;
+        //int count = -1;
 
-        foreach (HandCard handCard in BrainStormHandCards)
-        {
-            if (handCard.gameObject.activeSelf)
-            {
-                count = BrainStormHandCards.IndexOf(handCard);
+        //foreach (HandCard handCard in BrainStormHandCards)
+        //{
+        //    if (handCard.gameObject.activeSelf)
+        //    {
+        //        count = BrainStormHandCards.IndexOf(handCard);
 
-                if (handCard.cardSource == cardSource)
-                {
-                    yield break;
-                }
-            }
-        }
+        //        if (handCard.cardSource == cardSource)
+        //        {
+        //            yield break;
+        //        }
+        //    }
+        //}
 
-        if (-1 <= count && count <= BrainStormHandCards.Count - 2)
-        {
-            HandCard handCard = BrainStormHandCards[count + 1];
+        //if (-1 <= count && count <= BrainStormHandCards.Count - 2)
+        //{
+        //    HandCard handCard = BrainStormHandCards[count + 1];
 
-            handCard.gameObject.SetActive(true);
-            handCard.SetUpHandCard(cardSource);
-            handCard.SetUpHandCardImage();
-            handCard.Outline_Select.gameObject.SetActive(true);
-            handCard.SetOrangeOutline();
-            handCard.SkillNameText.transform.parent.gameObject.SetActive(false);
-            handCard.IsExecuting = false;
-        }
+        //    handCard.gameObject.SetActive(true);
+        //    handCard.SetUpHandCard(cardSource);
+        //    handCard.SetUpHandCardImage();
+        //    handCard.Outline_Select.gameObject.SetActive(true);
+        //    handCard.SetOrangeOutline();
+        //    handCard.SkillNameText.transform.parent.gameObject.SetActive(false);
+        //    handCard.IsExecuting = false;
+        //}
 
         yield return null;
     }
@@ -86,45 +87,4 @@ public class BrainStormObject : MonoBehaviour
         yield return null;
     }
 
-    int _timerCount = 0;
-    int _updateFrame = 20;
-    private void Update()
-    {
-        #region Update only once every few frames
-        _timerCount++;
-
-        if (_timerCount < _updateFrame)
-        {
-            return;
-        }
-
-        else
-        {
-            _timerCount = 0;
-        }
-        #endregion
-
-        RotationCards();
-    }
-
-    void RotationCards()
-    {
-        if (!player.isYou)
-        {
-            if (ContinuousController.instance != null)
-            {
-                Quaternion localRotation = Quaternion.Euler(0, 0, 0);
-
-                if (ContinuousController.instance.reverseOpponentsCards)
-                {
-                    localRotation = Quaternion.Euler(0, 0, 180);
-                }
-
-                foreach (HandCard handCard in BrainStormHandCards)
-                {
-                    handCard.transform.localRotation = localRotation;
-                }
-            }
-        }
-    }
 }

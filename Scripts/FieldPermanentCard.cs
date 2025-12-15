@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class FieldPermanentCard : MonoBehaviour
+public class FieldPermanentCard
 {
     [Header("選択状態アウトライン")]
     public Image Outline_Select;
@@ -211,7 +211,7 @@ public class FieldPermanentCard : MonoBehaviour
     }
     void RotateSkillNameText()
     {
-        SkillNameText.transform.parent.localRotation = Quaternion.Euler(0, 0, -1 * this.transform.localRotation.eulerAngles.z);
+        //SkillNameText.transform.parent.localRotation = Quaternion.Euler(0, 0, -1 * this.transform.localRotation.eulerAngles.z);
     }
 
     public void OnSkillName(ICardEffect cardEffect)
@@ -431,6 +431,11 @@ public class FieldPermanentCard : MonoBehaviour
 
     public void ShowPermanentData(bool updateIsTapped)
     {
+        if (true)
+        {
+            return;
+        }
+
         if (ThisPermanent == null)
         {
             return;
@@ -634,7 +639,7 @@ public class FieldPermanentCard : MonoBehaviour
         {
             if (!destroyed && !skipDestroy)
             {
-                StartCoroutine(DestroyCoroutine());
+                //StartCoroutine(DestroyCoroutine());
                 return;
             }
         }
@@ -658,7 +663,7 @@ public class FieldPermanentCard : MonoBehaviour
                 DirectStrikeText.transform.parent.parent.transform.localPosition = new Vector2(DirectStrikeText.transform.parent.parent.transform.localPosition.x, 78);
             }
 
-            DirectStrikeText.transform.parent.parent.localRotation = Quaternion.Euler(0, 0, -1 * this.transform.localRotation.eulerAngles.z);
+            //DirectStrikeText.transform.parent.parent.localRotation = Quaternion.Euler(0, 0, -1 * this.transform.localRotation.eulerAngles.z);
         }
 
         if (ThisPermanent.TopCard.Owner.GetFieldPermanents().Count >= ThisPermanent.TopCard.Owner.fieldCardFrames.Count * 0.7f)
@@ -737,7 +742,7 @@ public class FieldPermanentCard : MonoBehaviour
     {
         yield return null;
         destroyed = true;
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
     }
     #endregion
 
@@ -754,10 +759,10 @@ public class FieldPermanentCard : MonoBehaviour
 
         Outline_Select.gameObject.SetActive(true);
 
-        if (this.gameObject.activeSelf)
-        {
-            StartCoroutine(ExpandCoroutine(expand));
-        }
+       // if (this.gameObject.activeSelf)
+        //{
+         //   StartCoroutine(ExpandCoroutine(expand));
+        //}
 
         isExpand = true;
 
@@ -786,26 +791,26 @@ public class FieldPermanentCard : MonoBehaviour
 
         float targetScale = StartScale.x * expand;
 
-        float expandSpeed = (targetScale - transform.localScale.x) / ExpandTime;
+       // float expandSpeed = (targetScale - transform.localScale.x) / ExpandTime;
 
-        while (transform.localScale.x < targetScale)
-        {
-            transform.localScale += new Vector3(expandSpeed * Time.deltaTime, expandSpeed * Time.deltaTime, 0);
+        //while (transform.localScale.x < targetScale)
+        //{
+        //    transform.localScale += new Vector3(expandSpeed * Time.deltaTime, expandSpeed * Time.deltaTime, 0);
 
-            yield return new WaitForSeconds(Time.deltaTime);
+        //    yield return new WaitForSeconds(Time.deltaTime);
 
-            if (!isExpand)
-            {
-                transform.localScale = StartScale;
-                yield break;
-            }
-        }
+        //    if (!isExpand)
+        //    {
+        //        transform.localScale = StartScale;
+        //        yield break;
+        //    }
+        //}
 
-        transform.localScale = new Vector3(targetScale, targetScale, 1);
+        //transform.localScale = new Vector3(targetScale, targetScale, 1);
 
         if (!isExpand)
         {
-            transform.localScale = StartScale;
+            //transform.localScale = StartScale;
             yield break;
         }
     }
@@ -821,7 +826,7 @@ public class FieldPermanentCard : MonoBehaviour
             return;
         }
 
-        transform.localScale = StartScale;
+        //transform.localScale = StartScale;
 
         isExpand = false;
     }
@@ -829,10 +834,7 @@ public class FieldPermanentCard : MonoBehaviour
     #endregion
 
     #region キャンバス座標への変換
-    public Vector3 GetLocalCanvasPosition()
-    {
-        return this.transform.localPosition + this.transform.parent.localPosition;
-    }
+    
     #endregion
 
     #region コマンドパネルを閉じる

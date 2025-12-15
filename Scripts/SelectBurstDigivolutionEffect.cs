@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-public class SelectBurstDigivolutionEffect : MonoBehaviour
+public class SelectBurstDigivolutionEffect 
 {
     public void SetUp_SelectWheterToBurst
         (CardSource card,
@@ -55,7 +55,7 @@ public class SelectBurstDigivolutionEffect : MonoBehaviour
         {
             if (_evoRoot != null)
             {
-                yield return StartCoroutine(GManager.instance.selectCardPanel.OpenSelectCardPanel(
+                yield return GManager.instance.StartCoroutine(GManager.instance.selectCardPanel.OpenSelectCardPanel(
                             Message: "With which method would you like to Digivolve?",
                             RootCardSources: new List<CardSource>() { _card, _card },
                             _CanTargetCondition: (cardSource) => true,

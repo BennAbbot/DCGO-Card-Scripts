@@ -107,11 +107,6 @@ public class BT6_078 : CEntity_Effect
 
                             if (selectedPermanent != null)
                             {
-                                if (card.Owner.TrashHandCard.gameObject.activeSelf)
-                                {
-                                    card.Owner.TrashHandCard.gameObject.SetActive(false);
-                                }
-
                                 yield return ContinuousController.instance.StartCoroutine(selectedPermanent.AddDigivolutionCardsBottom(new List<CardSource>() { card }, activateClass));
                             }
                         }

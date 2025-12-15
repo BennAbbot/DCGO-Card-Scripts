@@ -42,7 +42,7 @@ public class SelectCommand : MonoBehaviour
 
     public void OnClick()
     {
-        GManager.instance.PlayDecisionSE();
+        //GManager.instance.PlayDecisionSE();
         OnClickEvent?.Invoke();
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-public class AttackProcess : MonoBehaviour
+public class AttackProcess
 {
     public Permanent AttackingPermanent { get; private set; } = null;
     public Permanent DefendingPermanent { get; private set; } = null;
@@ -144,7 +144,7 @@ public class AttackProcess : MonoBehaviour
             // target arrow
             if (DefendingPermanent == null)
             {
-                //yield return GManager.instance.OnTargetArrow(
+                //yield return GManager.instance.OnTargetArrow (TODO)(
                 //        AttackingPermanent.PermanentFrame.GetLocalCanvasPosition() + AttackingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
                 //        GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.SecurityAttackLocalCanvasPosition + GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.playerUIObjectParent.localPosition,
                 //        null,
@@ -154,7 +154,7 @@ public class AttackProcess : MonoBehaviour
             {
                 if (CardEffectCommons.IsPermanentExistsOnBattleAreaDigimon(DefendingPermanent))
                 {
-                    //yield return GManager.instance.OnTargetArrow(
+                    //yield return GManager.instance.OnTargetArrow (TODO)(
                     //    AttackingPermanent.PermanentFrame.GetLocalCanvasPosition() + AttackingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
                     //    DefendingPermanent.PermanentFrame.GetLocalCanvasPosition() + DefendingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
                     //    null,
@@ -570,7 +570,7 @@ public class AttackProcess : MonoBehaviour
                 DefendingPermanent.ShowingPermanentCard.SetOrangeOutline();
                 DefendingPermanent.ShowingPermanentCard.Outline_Select.gameObject.SetActive(true);
 
-                //yield return GManager.instance.OnTargetArrow(
+                //yield return GManager.instance.OnTargetArrow (TODO)(
                 //    AttackingPermanent.PermanentFrame.GetLocalCanvasPosition() + AttackingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
                 //    DefendingPermanent.PermanentFrame.GetLocalCanvasPosition() + DefendingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
                 //    null,
@@ -579,7 +579,7 @@ public class AttackProcess : MonoBehaviour
 
             else
             {
-                //yield return GManager.instance.OnTargetArrow(
+                //yield return GManager.instance.OnTargetArrow (TODO)(
                 //                    AttackingPermanent.PermanentFrame.GetLocalCanvasPosition() + AttackingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
                 //                    GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.SecurityAttackLocalCanvasPosition + GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.playerUIObjectParent.localPosition,
                 //                    null,

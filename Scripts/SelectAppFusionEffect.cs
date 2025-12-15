@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-public class SelectAppFusionEffect : MonoBehaviour
+public class SelectAppFusionEffect 
 {
     public void SetUp_SelectWheterToAppFusion
         (CardSource card,
@@ -57,7 +57,7 @@ public class SelectAppFusionEffect : MonoBehaviour
         {
             if (EvoRoot != null)
             {
-                yield return StartCoroutine(GManager.instance.selectCardPanel.OpenSelectCardPanel(
+                yield return GManager.instance.StartCoroutine(GManager.instance.selectCardPanel.OpenSelectCardPanel(
                             Message: "With which method would you like to Digivolve?",
                             RootCardSources: new List<CardSource>() { _card, _card },
                             _CanTargetCondition: (cardSource) => true,

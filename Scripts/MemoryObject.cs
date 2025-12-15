@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-public class MemoryObject : MonoBehaviour
+public class MemoryObject
 {
     [SerializeField] GameObject CurrentMemoryObject;
 
     public List<MemoryTab> memoryTabs = new List<MemoryTab>();
 
-    [SerializeField] MemoryPredictionLine memoryPredictionLine;
+    [SerializeField] MemoryPredictionLine memoryPredictionLine = new MemoryPredictionLine();
 
     int oldMemory = 0;
     public void Init()
@@ -185,7 +185,7 @@ public class MemoryObject : MonoBehaviour
 
     public void OffMemoryPredictionLine()
     {
-        memoryPredictionLine.gameObject.SetActive(false);
+       // memoryPredictionLine.gameObject.SetActive(false);
     }
 }
 

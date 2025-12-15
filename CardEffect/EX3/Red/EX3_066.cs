@@ -187,7 +187,7 @@ namespace DCGO.CardEffects.EX3
                             endSelect = false;
 
                             GManager.instance.commandText.CloseCommandText();
-                            yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+                            //yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
 
                             List<CardSource> selectedCards = new List<CardSource>();
 

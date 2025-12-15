@@ -7,8 +7,10 @@ using UnityEngine.EventSystems;
 using TMPro;
 using System.Linq;
 using System.Threading.Tasks;
-public class HandCard : MonoBehaviour
+public class HandCard
 {
+    public GameObject gameObject = new GameObject();
+
     [Header("カード画像")]
     public Image CardImage;
 
@@ -464,44 +466,22 @@ public class HandCard : MonoBehaviour
 
     public void SetUpReverseCard()
     {
-        CardImage.sprite = ContinuousController.instance.ReverseCard;
+        //CardImage.sprite = ContinuousController.instance.ReverseCard;
 
-        OffShowFaceCard();
+        //OffShowFaceCard();
 
-        if (SkillNameText != null)
-        {
-            SkillNameText.transform.parent.gameObject.SetActive(false);
-        }
+        //if (SkillNameText != null)
+        //{
+        //    SkillNameText.transform.parent.gameObject.SetActive(false);
+        //}
 
-        if (cardPositionText != null)
-        {
-            cardPositionText.transform.parent.gameObject.SetActive(false);
-        }
+        //if (cardPositionText != null)
+        //{
+        //    cardPositionText.transform.parent.gameObject.SetActive(false);
+        //}
     }
 
     public bool ShowOpponent { get; set; } = false;
-    bool onYourHand()
-    {
-        if (GManager.instance != null)
-        {
-            if (GManager.instance.You.HandCardObjects.Contains(this))
-            {
-                return true;
-            }
-
-            if (ShowOpponent)
-            {
-                return true;
-            }
-
-            if (!GManager.instance.turnStateMachine.DoneStartGame && cardSource.Owner.isYou)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     int _frameCount = 145;
     int _updateFrame = 150;
@@ -563,10 +543,7 @@ public class HandCard : MonoBehaviour
         }
         #endregion
 
-        if (onYourHand())
-        {
-            SetUpHandCardImage();
-        }
+   
     }
 
     public void SetPlayText(string message, Color color)
@@ -693,29 +670,29 @@ public class HandCard : MonoBehaviour
 
     public async void SetUpHandCardImage()
     {
-        if (SkillNameText != null)
-        {
-            if (!IsExecuting)
-            {
-                SkillNameText.transform.parent.gameObject.SetActive(false);
-            }
-        }
+        //if (SkillNameText != null)
+        //{
+        //    if (!IsExecuting)
+        //    {
+        //        SkillNameText.transform.parent.gameObject.SetActive(false);
+        //    }
+        //}
 
-        if (cardPositionText != null)
-        {
-            cardPositionText.transform.parent.gameObject.SetActive(false);
-        }
+        //if (cardPositionText != null)
+        //{
+        //    cardPositionText.transform.parent.gameObject.SetActive(false);
+        //}
 
-        if (GManager.instance != null)
-        {
-            if (GManager.instance.You.HandCardObjects.Contains(this) || !GManager.instance.turnStateMachine.DoneStartGame)
-            {
-                ShowPlayCost();
-            }
-        }
+        //if (GManager.instance != null)
+        //{
+        //    //if (GManager.instance.You.HandCardObjects.Contains(this) || !GManager.instance.turnStateMachine.DoneStartGame)
+        //    //{
+        //    //    ShowPlayCost();
+        //    //}
+        //}
 
-        //カード画像
-        CardImage.sprite = await cardSource.GetCardSprite();
+        ////カード画像
+        //CardImage.sprite = await cardSource.GetCardSprite();
     }
 
     void ShowPlayCost()

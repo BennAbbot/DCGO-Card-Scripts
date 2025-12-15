@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using TMPro;
 
-public class SelectCardPanel : MonoBehaviour
+public class SelectCardPanel 
 {
     [Header("Message Text")]
     public TextMeshProUGUI MessageText;
@@ -86,7 +86,7 @@ public class SelectCardPanel : MonoBehaviour
     public IEnumerator OpenSelectCardPanel(string Message, string NotSelectButtonMessage, string EndSelectButtonMessage, UnityAction _OnClickNotSelectButtonAction, UnityAction _OnClickEndSelectButtonAction, List<CardSource> RootCardSources, Func<CardSource, bool> _CanTargetCondition, Func<List<CardSource>, CardSource, bool> _CanTargetCondition_ByPreSelecetedList, Func<List<CardSource>, bool> _CanEndSelectCondition, int _MaxCount, bool _CanEndNotMax, Func<bool> _CanNoSelect, bool CanLookReverseCard, List<SkillInfo> skillInfos, SelectCardEffect.Root root, bool isCenter = false, CardSource[][] evoRootsArray = null, List<string> titleStrings = null)
     {
         #region Initialization
-        this.gameObject.SetActive(true);
+       // this.gameObject.SetActive(true);
 
         _onClickNotSelectButtonAction = _OnClickNotSelectButtonAction;
         _onClickEndSelectButtonAction = _OnClickEndSelectButtonAction;
@@ -159,9 +159,9 @@ public class SelectCardPanel : MonoBehaviour
         }
         #endregion
 
-        yield return StartCoroutine(OpenSelectCardPanelAnimation(root));
+       // yield return StartCoroutine(OpenSelectCardPanelAnimation(root));
 
-        yield return StartCoroutine(OpenSelectCardPanelCoroutine(RootCardSources, CanLookReverseCard, skillInfos, isCenter: isCenter, evoRootsArray: evoRootsArray, titleStrings: titleStrings));
+        //yield return StartCoroutine(OpenSelectCardPanelCoroutine(RootCardSources, CanLookReverseCard, skillInfos, isCenter: isCenter, evoRootsArray: evoRootsArray, titleStrings: titleStrings));
 
         CheckSelection();
 
@@ -241,7 +241,7 @@ public class SelectCardPanel : MonoBehaviour
                 {
                     if (scrollRect.content.GetChild(i).gameObject != null)
                     {
-                        Destroy(scrollRect.content.GetChild(i).gameObject);
+                        //Destroy(scrollRect.content.GetChild(i).gameObject);
                         yield return null;
                     }
                 }
@@ -254,7 +254,7 @@ public class SelectCardPanel : MonoBehaviour
         #region card generation
         foreach (CardSource cardSource in root)
         {
-            HandCard handCard = Instantiate(GManager.instance.handCardPrefab, scrollRect.content);
+            HandCard handCard = new HandCard();
             handCard.gameObject.name = $"selectCardPanel_{cardSource.Owner.PlayerName}";
 
            // handCard.GetComponent<Draggable_HandCard>().startScale = new Vector3(2.7f, 2.7f, 1);
@@ -283,7 +283,7 @@ public class SelectCardPanel : MonoBehaviour
                             {
                                 //GManager.instance.cardDetail.OpenCardDetail(cardSource1, true);
 
-                                GManager.instance.PlayDecisionSE();
+                                //GManager.instance.PlayDecisionSE();
                             }
                         }
 
@@ -292,7 +292,7 @@ public class SelectCardPanel : MonoBehaviour
                         {
                             //GManager.instance.cardDetail.OpenCardDetail(cardSource1, true);
 
-                            GManager.instance.PlayDecisionSE();
+                            //GManager.instance.PlayDecisionSE();
                         }
                     }
                 }
@@ -389,17 +389,17 @@ public class SelectCardPanel : MonoBehaviour
 
                         if (handCard.cardSource.PermanentOfThisCard() != null)
                         {
-                            foreach (FieldPermanentCard fieldPermanentCard in handCard.cardSource.Owner.FieldPermanentObjects)
-                            {
-                                if (fieldPermanentCard.ThisPermanent != null)
-                                {
-                                    if (fieldPermanentCard.ThisPermanent.cardSources.Contains(handCard.cardSource))
-                                    {
-                                        fieldPermanentCard.SetPermanentIndexText(permanents);
-                                        break;
-                                    }
-                                }
-                            }
+                            //foreach (FieldPermanentCard fieldPermanentCard in handCard.cardSource.Owner.FieldPermanentObjects)
+                            //{
+                            //    if (fieldPermanentCard.ThisPermanent != null)
+                            //    {
+                            //        if (fieldPermanentCard.ThisPermanent.cardSources.Contains(handCard.cardSource))
+                            //        {
+                            //            fieldPermanentCard.SetPermanentIndexText(permanents);
+                            //            break;
+                            //        }
+                            //    }
+                            //}
                         }
                     }
                 }
@@ -604,16 +604,16 @@ public class SelectCardPanel : MonoBehaviour
     #region Exit card selection
     public void CloseSelectCardPanel()
     {
-        this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(false);
 
-        ReturnToSelectCardButton.gameObject.SetActive(false);
+        //ReturnToSelectCardButton.gameObject.SetActive(false);
     }
     #endregion
 
     #region Processing when a button is pressed that does not select anything
     public void OnClickNotSelectButton()
     {
-        GManager.instance.PlayDecisionSE();
+        //GManager.instance.PlayDecisionSE();
 
         SelectedList = new List<CardSource>();
         CloseSelectCardPanel();
@@ -629,7 +629,7 @@ public class SelectCardPanel : MonoBehaviour
     {
         if (CanEndSelection())
         {
-            GManager.instance.PlayDecisionSE();
+            //GManager.instance.PlayDecisionSE();
 
             List<CardSource> _PreSelectedList = new List<CardSource>();
 
@@ -647,10 +647,10 @@ public class SelectCardPanel : MonoBehaviour
 
             foreach (Player player in GManager.instance.turnStateMachine.gameContext.Players_ForTurnPlayer)
             {
-                foreach (FieldPermanentCard fieldPermanentCard in player.FieldPermanentObjects)
-                {
-                    fieldPermanentCard.OffPermanentIndexText();
-                }
+                //foreach (FieldPermanentCard fieldPermanentCard in player.FieldPermanentObjects)
+                //{
+                //    fieldPermanentCard.OffPermanentIndexText();
+                //}
             }
 
             CloseSelectCardPanel();
@@ -673,13 +673,13 @@ public class SelectCardPanel : MonoBehaviour
     #region Temporarily display/hide panel
     public void OnClickReturnToSelectCardButton()
     {
-        this.gameObject.SetActive(true);
+        //this.gameObject.SetActive(true);
         ReturnToSelectCardButton.gameObject.SetActive(false);
     }
 
     public void OnClickCheckFieldButton()
     {
-        this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(false);
         ReturnToSelectCardButton.gameObject.SetActive(true);
         ReturnToSelectCardButton.onClick.RemoveAllListeners();
         ReturnToSelectCardButton.onClick.AddListener(() => OnClickReturnToSelectCardButton());

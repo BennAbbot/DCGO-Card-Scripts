@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using System.Linq;
 
-public class UserSelectionManager : MonoBehaviour
+public class UserSelectionManager 
 {
     bool _endSelect = false;
     int _selectedIntValue = 0;

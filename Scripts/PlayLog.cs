@@ -5,26 +5,14 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class PlayLog : MonoBehaviour
+public class PlayLog
 {
-    [SerializeField]
-    TMP_Text _logText;
-
-    [SerializeField]
-    ScrollRect _scroll;
-
     #region Events
     public static Action<string> OnAddLog;
     public static Action<string> OnLinkPressed;
     #endregion
 
-    private void OnDestroy()
-    {
-        OnAddLog -= AddLogString;
-        OnLinkPressed -= ShowCard;
-    }
-
-    string GetLogString()
+    public string GetLogString()
     {
         string logString = "";
 
@@ -41,52 +29,15 @@ public class PlayLog : MonoBehaviour
     //16250, 13000
     int _maxLogCharacterLength = 11000;
 
-    public void OnClickLiogButton()
-    {
-        if (gameObject.activeSelf)
-        {
-            OffPlayLog();
-        }
-        else
-        {
-            SetUpPlayLog();
-        }
-    }
-
-    public void SetUpPlayLog()
-    {
-        ContinuousController.instance.StartCoroutine(SetUpPlayLogCoroutine());
-    }
-
-    IEnumerator SetUpPlayLogCoroutine()
-    {
-        this.gameObject.SetActive(true);
-
-        _logText.text = GetLogString();
-
-        _scroll.content.GetComponent<ContentSizeFitter>().SetLayoutVertical();
-
-        yield return new WaitForSeconds(Time.deltaTime);
-
-        _scroll.verticalNormalizedPosition = 0;
-    }
 
     bool _first = false;
 
-    public void OffPlayLog()
+    public PlayLog()
     {
-         _first = true;
-
-        gameObject.SetActive(false);
-    }
-
-    public void Init()
-    {
-        OffPlayLog();
-
-        _logText.text = "";
-
         _logList = new List<string>();
+
+        OnAddLog = null;
+        OnLinkPressed = null;
 
         OnAddLog += AddLogString;
         OnLinkPressed += ShowCard;
@@ -99,6 +50,8 @@ public class PlayLog : MonoBehaviour
 
     void AddLogStringCoroutine(string log)
     {
+        Debug.Log($"{log}");
+
         _logList.Add(AddLink(log));
 
         while (GetLogString().Length >= _maxLogCharacterLength)
@@ -108,8 +61,6 @@ public class PlayLog : MonoBehaviour
                 _logList.RemoveAt(0);
             }
         }
-
-        _logText.text = GetLogString();
     }
 
     string AddLink(string log)

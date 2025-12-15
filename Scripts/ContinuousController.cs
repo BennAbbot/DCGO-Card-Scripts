@@ -78,17 +78,12 @@ public class ContinuousController : MonoBehaviour
     #region Call up a scene for data storage
     public static IEnumerator LoadCoroutine()
     {
-        if (instance == null)
+        while (instance == null)
         {
-            SceneManager.LoadSceneAsync("ContinuousControllerScene", LoadSceneMode.Additive);
-
-            while (instance == null)
-            {
-                yield return null;
-            }
-
-            instance.Init();
+            yield return null;
         }
+        instance.Init();
+        
     }
     #endregion
 

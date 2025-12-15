@@ -235,16 +235,16 @@ public class SelectHandEffect : MonoBehaviour
 
                 List<CardSource> PreSelectedHandCards = new List<CardSource>();
 
-                foreach (HandCard handCard in _selectPlayer.HandCardObjects)
-                {
-                    if (handCard != null)
-                    {
-                        if (_canTargetCondition(handCard.cardSource))
-                        {
-                            handCard.AddClickTarget(OnClickHandCard);
-                        }
-                    }
-                }
+                //foreach (HandCard handCard in _selectPlayer.HandCardObjects)
+                //{
+                //    if (handCard != null)
+                //    {
+                //        if (_canTargetCondition(handCard.cardSource))
+                //        {
+                //            handCard.AddClickTarget(OnClickHandCard);
+                //        }
+                //    }
+                //}
 
                 CheckEndSelect();
 
@@ -316,14 +316,14 @@ public class SelectHandEffect : MonoBehaviour
                             permanent.ShowingPermanentCard.RemoveClickTarget();
                         }
 
-                        foreach (HandCard handCard in player.HandCardObjects)
-                        {
-                            if (handCard != null)
-                            {
-                                handCard.RemoveClickTarget();
-                                handCard.RemoveSelectEffect();
-                            }
-                        }
+                        //foreach (HandCard handCard in player.HandCardObjects)
+                        //{
+                        //    if (handCard != null)
+                        //    {
+                        //        handCard.RemoveClickTarget();
+                        //        handCard.RemoveSelectEffect();
+                        //    }
+                        //}
                     }
 
                     List<int> CardIDs = new List<int>();
@@ -594,15 +594,15 @@ public class SelectHandEffect : MonoBehaviour
                     chara.ShowingPermanentCard.RemoveSelectEffect();
                 }
 
-                foreach (HandCard handCard in player.HandCardObjects)
-                {
-                    if (handCard != null)
-                    {
-                        handCard.RemoveClickTarget();
-                        handCard.RemoveSelectEffect();
-                        handCard.OffSelectedIndexText();
-                    }
-                }
+                //foreach (HandCard handCard in player.HandCardObjects)
+                //{
+                //    if (handCard != null)
+                //    {
+                //        handCard.RemoveClickTarget();
+                //        handCard.RemoveSelectEffect();
+                //        handCard.OffSelectedIndexText();
+                //    }
+                //}
             }
 
             //GManager.instance.commandText.CloseCommandText();

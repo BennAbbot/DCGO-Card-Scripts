@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-//using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static UnityEngine.ParticleSystem;
@@ -33,11 +32,7 @@ public class TurnStateMachine : MonoBehaviour
 
     public IEnumerator Init()
     {
-        //yield return StartCoroutine(GManager.instance.LoadingObject.StartLoading("Now Loading"));
-
-        yield return StartCoroutine(ContinuousController.LoadCoroutine());
-
-        //ContinuousController.instance.PlaySE(GManager.instance.StartBattleSE);
+        yield return GManager.instance.StartCoroutine(ContinuousController.LoadCoroutine());
 
         #region initialize parameter
         _canPlayTargetFrames = new bool[GManager.instance.You.fieldCardFrames.Count];
@@ -112,8 +107,8 @@ public class TurnStateMachine : MonoBehaviour
         #endregion
 
         #region Save each player name
-        //SetPlayerName(0, PlayerName(MasterPlayer));
-        //SetPlayerName(1, PlayerName(nonMasterPlayer));
+        SetPlayerName(0, "Player 1");
+        SetPlayerName(1, "Player 2");
         #endregion
 
         #region Player name for that Photon client
@@ -176,7 +171,7 @@ public class TurnStateMachine : MonoBehaviour
         //    }
         #endregion
 
-           #region Determine if that Photon client has custom properties for player names
+        #region Determine if that Photon client has custom properties for player names
         //    bool HasPlayerName(Photon.Realtime.Player _player)
         //    {
         //        ExitGames.Client.Photon.Hashtable _hashtable = _player.CustomProperties;
@@ -196,24 +191,24 @@ public class TurnStateMachine : MonoBehaviour
 
         //        return false;
         //    }
-            #endregion
+        #endregion
         //}
 
         #region Store player names in Player class and display UI
-        //void SetPlayerName(int _PlayerID, string _PlayerName)
-        //{
-        //    Player player = gameContext.PlayerFromID(_PlayerID);
-        //    player.PlayerName = _PlayerName;
+        void SetPlayerName(int _PlayerID, string _PlayerName)
+        {
+            Player player = gameContext.PlayerFromID(_PlayerID);
+            player.PlayerName = _PlayerName;
 
-        //    if (player.PlayerNameText != null)
-        //    {
-        //        player.PlayerNameText.transform.parent.gameObject.SetActive(true);
-        //        player.PlayerNameText.gameObject.SetActive(true);
+            //if (player.PlayerNameText != null)
+            //{
+            //    player.PlayerNameText.transform.parent.gameObject.SetActive(true);
+            //    player.PlayerNameText.gameObject.SetActive(true);
 
-        //        if(player.isYou || GManager.instance.IsAI)
-        //            player.PlayerNameText.text = player.PlayerName;
-        //    }
-        //}
+            //    if (player.isYou || GManager.instance.IsAI)
+            //        player.PlayerNameText.text = player.PlayerName;
+            //}
+        }
         #endregion
 
         #region 乱数列初期化
@@ -229,7 +224,7 @@ public class TurnStateMachine : MonoBehaviour
         ////yield return GManager.instance.photonWaitController.StartWait("EndSetRandom");
 
         #region デッキカード生成
-        yield return StartCoroutine(CardObjectController.CreatePlayerDecks(GManager.instance.CardPrefab, gameContext));
+        yield return StartCoroutine(CardObjectController.CreatePlayerDecks(gameContext));
         yield return new WaitForSeconds(0.2f);
         #endregion
 
@@ -241,7 +236,7 @@ public class TurnStateMachine : MonoBehaviour
         #endregion*/
 
         #region メモリーを初期化
-        //GManager.instance.memoryObject.Init();
+        GManager.instance.memoryObject.Init();
         #endregion
 
 
@@ -288,12 +283,7 @@ public class TurnStateMachine : MonoBehaviour
         //yield return StartCoroutine(GManager.instance.LoadingObject.EndLoading());
 
         StartCoroutine(GameStateMachine());
-
-        if (GManager.instance.bgms.Count >= 1)
-        {
-            //GManager.instance.BattleBGM.StartPlayBGM(GManager.instance.bgms[UnityEngine.Random.Range(0, GManager.instance.bgms.Count)]);
-        }
-    }
+     }
 
     #region Manage turn progress
     public IEnumerator GameStateMachine()
@@ -356,7 +346,6 @@ public class TurnStateMachine : MonoBehaviour
         }
 
         gameContext.FirstPlayer = gameContext.NonTurnPlayer;
-        gameContext.NonTurnPlayer.FirstObject.SetActive(true);
 
         //yield return new WaitForSeconds(0.6f);
 
@@ -385,6 +374,7 @@ public class TurnStateMachine : MonoBehaviour
 
             if (!player.isYou)
             {
+                SetRedraw(false);
                 ////GManager.instance.commandText.OpenCommandText("The opponent is selecting mulligan.");
             }
 
@@ -397,6 +387,7 @@ public class TurnStateMachine : MonoBehaviour
 
                 else
                 {
+                    SetRedraw(false);
                     string message = "Will you mulligan your hand?";
 
                     if (player == gameContext.NonTurnPlayer)
@@ -409,28 +400,28 @@ public class TurnStateMachine : MonoBehaviour
                         message += "\n(You are <color=#FF633E>SECOND</color>)";
                     }
 
-                    yield return StartCoroutine(GManager.instance.selectCardPanel.OpenSelectCardPanel(
-                        Message: message,
-                        NotSelectButtonMessage: "Keep Hand",
-                        EndSelectButtonMessage: "Mulligan",
-                        _OnClickNotSelectButtonAction: () => SetRedraw_RPC(false),
-                        _OnClickEndSelectButtonAction: () => SetRedraw_RPC(true),
-                        RootCardSources: player.HandCards,
-                        _CanTargetCondition: (cardSource) => false,
-                        _CanTargetCondition_ByPreSelecetedList: null,
-                        _CanEndSelectCondition: null,
-                        _MaxCount: 6,
-                        _CanEndNotMax: true,
-                        _CanNoSelect: () => true,
-                        CanLookReverseCard: true,
-                        skillInfos: null,
-                        root: SelectCardEffect.Root.None));
+                    //yield return StartCoroutine(GManager.instance.selectCardPanel.OpenSelectCardPanel(
+                    //    Message: message,
+                    //    NotSelectButtonMessage: "Keep Hand",
+                    //    EndSelectButtonMessage: "Mulligan",
+                    //    _OnClickNotSelectButtonAction: () => SetRedraw_RPC(false),
+                    //    _OnClickEndSelectButtonAction: () => SetRedraw_RPC(true),
+                    //    RootCardSources: player.HandCards,
+                    //    _CanTargetCondition: (cardSource) => false,
+                    //    _CanTargetCondition_ByPreSelecetedList: null,
+                    //    _CanEndSelectCondition: null,
+                    //    _MaxCount: 6,
+                    //    _CanEndNotMax: true,
+                    //    _CanNoSelect: () => true,
+                    //    CanLookReverseCard: true,
+                    //    skillInfos: null,
+                    //    root: SelectCardEffect.Root.None));
 
-                    void SetRedraw_RPC(bool _isDraw)
-                    {
-                        //TODO
-                        //SetRedraw( _isDraw);
-                    }
+                    //void SetRedraw_RPC(bool _isDraw)
+                    //{
+                    //    //TODO
+                    //    //SetRedraw( _isDraw);
+                    //}
                 }
             }
 
@@ -466,10 +457,10 @@ public class TurnStateMachine : MonoBehaviour
                 #region 手札のカードを削除
                 List<HandCard> HandCardObjects = new List<HandCard>();
 
-                foreach (HandCard handCard in player.HandCardObjects)
-                {
-                    HandCardObjects.Add(handCard);
-                }
+                //foreach (HandCard handCard in player.HandCardObjects)
+                //{
+                //    HandCardObjects.Add(handCard);
+                //}
 
                 for (int i = 0; i < HandCardObjects.Count; i++)
                 {
@@ -536,11 +527,6 @@ public class TurnStateMachine : MonoBehaviour
         }
 
         //ContinuousController.instance.PlaySE(GManager.instance.StartBattleSE);
-
-        foreach (Player player in gameContext.Players_ForTurnPlayer)
-        {
-            player.FirstObject.SetActive(false);
-        }
 
         #region ログ追加
         PlayLog.OnAddLog?.Invoke($"\n---------------------------------\nActive Phase:\n{gameContext.TurnPlayer.PlayerName}\n");
@@ -709,7 +695,10 @@ public class TurnStateMachine : MonoBehaviour
                     //GManager.instance.hideCannotSelectObject.SetUpHideCannotSelectObject(new List<FieldPermanentCard>() { null }, true);
 
                     ////GManager.instance.commandText.OpenCommandText("BreedingPhase : Will you hatch Digiegg?");
-
+                    if (true)
+                    {
+                        SetBreedingPhase(true);
+                    }
                     if (ContinuousController.instance.autoHatch)
                     {
                         OnClickHatchObject();
@@ -724,6 +713,11 @@ public class TurnStateMachine : MonoBehaviour
                 #region If you can move
                 else if (!gameContext.TurnPlayer.CanHatch || gameContext.TurnPlayer.CanMove)
                 {
+                    if (true)
+                    {
+                        SetBreedingPhase(true);
+                    }
+
                     ////GManager.instance.commandText.OpenCommandText("BreedingPhase : Will you move your Digimon to Battle Area?");
 
                     FieldPermanentCard fieldPermanentCard = gameContext.TurnPlayer.GetBreedingAreaPermanents()[0].ShowingPermanentCard;
@@ -767,7 +761,7 @@ public class TurnStateMachine : MonoBehaviour
             yield return new WaitWhile(() => !endSelect_BreedingPhase && gameContext.TurnPhase == GameContext.phase.Breeding);
             //GManager.instance.hideCannotSelectObject.Close();
             endSelect_BreedingPhase = false;
-            gameContext.TurnPlayer.OffHatchObject();
+            //gameContext.TurnPlayer.OffHatchObject();
             OffFieldCardTarget(gameContext.TurnPlayer);
             IsSelecting = true;
 
@@ -806,7 +800,7 @@ public class TurnStateMachine : MonoBehaviour
 
     void OnClickHatchObject()
     {
-        gameContext.TurnPlayer.OffHatchObject();
+        //gameContext.TurnPlayer.OffHatchObject();
         //TODO
         //SetBreedingPhase( true);
     }
@@ -1280,28 +1274,28 @@ public class TurnStateMachine : MonoBehaviour
             {
                 foreach (FieldCardFrame fieldCardFrame in player.fieldCardFrames)
                 {
-                    fieldCardFrame.OffFrame_Select();
+                   // fieldCardFrame.OffFrame_Select();
                 }
 
-                player.playMatCardFrame.OffFrame_Select();
+               // player.playMatCardFrame.OffFrame_Select();
 
-                foreach (FieldPermanentCard fieldCharaCard in player.FieldPermanentObjects)
-                {
-                    fieldCharaCard.RemoveSelectEffect();
-                    fieldCharaCard.RemoveClickTarget();
-                    fieldCharaCard.RemoveDragTarget();
-                    fieldCharaCard.CloseCommandPanel();
-                }
+                //foreach (FieldPermanentCard fieldCharaCard in player.FieldPermanentObjects)
+                //{
+                //    fieldCharaCard.RemoveSelectEffect();
+                //    fieldCharaCard.RemoveClickTarget();
+                //    fieldCharaCard.RemoveDragTarget();
+                //    fieldCharaCard.CloseCommandPanel();
+                //}
 
-                foreach (HandCard handCard in player.HandCardObjects)
-                {
-                    handCard.RemoveSelectEffect();
-                    handCard.RemoveClickTarget();
-                    //handCard.RemoveDragTarget();
-                }
+                //foreach (HandCard handCard in player.HandCardObjects)
+                //{
+                //    handCard.RemoveSelectEffect();
+                //    handCard.RemoveClickTarget();
+                //    //handCard.RemoveDragTarget();
+                //}
 
                 //player.securityObject.securityBreakGlass.gameObject.SetActive(false);
-                player.securityObject.OffShowSecurityAttackObject();
+                //player.securityObject.OffShowSecurityAttackObject();
             }
             #endregion
 
@@ -1309,10 +1303,10 @@ public class TurnStateMachine : MonoBehaviour
             OffHandCardTarget(gameContext.TurnPlayer);
             OffFieldCardTarget(gameContext.TurnPlayer);
 
-            foreach (HandCard handCard in gameContext.TurnPlayer.HandCardObjects)
-            {
-                //handCard.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = true;
-            }
+            //foreach (HandCard handCard in gameContext.TurnPlayer.HandCardObjects)
+            //{
+            //    //handCard.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = true;
+            //}
             #endregion
 
             IsSelecting = false;
@@ -1352,53 +1346,53 @@ public class TurnStateMachine : MonoBehaviour
         OffHandCardTarget(gameContext.TurnPlayer);
 
         #region rearrange cards in hand
-        GManager.instance.You.HandTransform.GetComponent<GridLayoutGroup>().enabled = false;
+       // GManager.instance.You.HandTransform.GetComponent<GridLayoutGroup>().enabled = false;
 
         foreach (HandCard handCard in GManager.instance.You.HandCards.Map(cardSource => cardSource.ShowingHandCard).Filter(handCard => handCard != null)
         .Clone())
         {
             if (handCard != null)
             {
-                handCard.transform.SetParent(GManager.instance.You.HandTransform);
+                //handCard.transform.SetParent(GManager.instance.You.HandTransform);
                 //handCard.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = true;
             }
         }
 
-        GManager.instance.You.HandTransform.GetComponent<GridLayoutGroup>().enabled = true;
+        //GManager.instance.You.HandTransform.GetComponent<GridLayoutGroup>().enabled = true;
         #endregion
 
         foreach (Player player in gameContext.Players)
         {
             #region Reset permanents in play
-            foreach (FieldPermanentCard fieldPermanentCard in player.FieldPermanentObjects)
-            {
-                fieldPermanentCard.RemoveSelectEffect();
-                fieldPermanentCard.RemoveDragTarget();
-                fieldPermanentCard.RemoveClickTarget();
-                //fieldPermanentCard.fieldUnitCommandPanel.CloseCommandPanel();
-            }
+            //foreach (FieldPermanentCard fieldPermanentCard in player.FieldPermanentObjects)
+            //{
+            //    fieldPermanentCard.RemoveSelectEffect();
+            //    fieldPermanentCard.RemoveDragTarget();
+            //    fieldPermanentCard.RemoveClickTarget();
+            //    //fieldPermanentCard.fieldUnitCommandPanel.CloseCommandPanel();
+            //}
             #endregion
 
             #region Reset cards in hand
-            foreach (HandCard handCard in player.HandCardObjects)
-            {
-                handCard.RemoveSelectEffect();
-               // handCard.RemoveDragTarget();
-                handCard.RemoveClickTarget();
-            }
+            //foreach (HandCard handCard in player.HandCardObjects)
+            //{
+            //    handCard.RemoveSelectEffect();
+            //   // handCard.RemoveDragTarget();
+            //    handCard.RemoveClickTarget();
+            //}
             #endregion
 
-            player.securityObject.RemoveClickTarget();
+            //player.securityObject.RemoveClickTarget();
 
             //player.securityObject.securityBreakGlass.gameObject.SetActive(false);
 
-            player.securityObject.OffShowSecurityAttackObject();
+            //player.securityObject.OffShowSecurityAttackObject();
         }
 
        // GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
         //GManager.instance.BackButton.CloseSelectCommandButton();
 
-        GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(false);
+        //GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(false);
 
         //GManager.instance.memoryObject.OffMemoryPredictionLine();
 
@@ -3024,29 +3018,29 @@ public class TurnStateMachine : MonoBehaviour
 
             player.securityObject.RemoveClickTarget();
 
-            foreach (HandCard handCard in player.HandCardObjects)
-            {
-                handCard.RemoveSelectEffect();
-                handCard.RemoveClickTarget();
-                //handCard.RemoveDragTarget();
-                handCard.Outline_Select.gameObject.SetActive(false);
-                handCard.transform.GetChild(0).gameObject.SetActive(true);
-            }
+            //foreach (HandCard handCard in player.HandCardObjects)
+            //{
+            //    handCard.RemoveSelectEffect();
+            //    handCard.RemoveClickTarget();
+            //    //handCard.RemoveDragTarget();
+            //    handCard.Outline_Select.gameObject.SetActive(false);
+            //    handCard.transform.GetChild(0).gameObject.SetActive(true);
+            //}
 
-            foreach (FieldPermanentCard fieldPermanentCard in player.FieldPermanentObjects)
-            {
-                fieldPermanentCard.RemoveSelectEffect();
-                fieldPermanentCard.RemoveClickTarget();
-                fieldPermanentCard.RemoveDragTarget();
-                fieldPermanentCard.CloseCommandPanel();
-            }
+            //foreach (FieldPermanentCard fieldPermanentCard in player.FieldPermanentObjects)
+            //{
+            //    fieldPermanentCard.RemoveSelectEffect();
+            //    fieldPermanentCard.RemoveClickTarget();
+            //    fieldPermanentCard.RemoveDragTarget();
+            //    fieldPermanentCard.CloseCommandPanel();
+            //}
 
-            foreach (FieldCardFrame fieldCardFrame in player.fieldCardFrames)
-            {
-                fieldCardFrame.OffFrame_Select();
-            }
+            //foreach (FieldCardFrame fieldCardFrame in player.fieldCardFrames)
+            //{
+            //    fieldCardFrame.OffFrame_Select();
+            //}
 
-            player.playMatCardFrame.OffFrame_Select();
+            //player.playMatCardFrame.OffFrame_Select();
 
             //player.securityObject.securityBreakGlass.gameObject.SetActive(false);
 
@@ -3055,7 +3049,7 @@ public class TurnStateMachine : MonoBehaviour
 
         //GManager.instance.memoryObject.OffMemoryPredictionLine();
 
-        GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(false);
+        //GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(false);
 
        // GManager.instance.BackButton.CloseSelectCommandButton();
 
@@ -3214,29 +3208,29 @@ public class TurnStateMachine : MonoBehaviour
     #region Release waiting status of cards in hand for selection
     public void OffHandCardTarget(Player player)
     {
-        foreach (HandCard _handCard in player.HandCardObjects)
-        {
-            if (_handCard != null)
-            {
-                //_handCard.RemoveDragTarget();
-                _handCard.RemoveClickTarget();
-                _handCard.RemoveSelectEffect();
-                //_handCard.handCardCommandPanel.CloseCommandPanel();
-                _handCard.OffPlayText();
-            }
-        }
+        //foreach (HandCard _handCard in player.HandCardObjects)
+        //{
+        //    if (_handCard != null)
+        //    {
+        //        //_handCard.RemoveDragTarget();
+        //        _handCard.RemoveClickTarget();
+        //        _handCard.RemoveSelectEffect();
+        //        //_handCard.handCardCommandPanel.CloseCommandPanel();
+        //        _handCard.OffPlayText();
+        //    }
+        //}
     }
     #endregion
 
     #region Release waiting status of cards in the field for selection
     public void OffFieldCardTarget(Player player)
     {
-        foreach (FieldPermanentCard fieldPermanentCard in player.FieldPermanentObjects)
-        {
-            fieldPermanentCard.RemoveClickTarget();
-            fieldPermanentCard.CloseCommandPanel();
-            fieldPermanentCard.Outline_Select.gameObject.SetActive(false);
-        }
+        //foreach (FieldPermanentCard fieldPermanentCard in player.FieldPermanentObjects)
+        //{
+        //    fieldPermanentCard.RemoveClickTarget();
+        //    fieldPermanentCard.CloseCommandPanel();
+        //    fieldPermanentCard.Outline_Select.gameObject.SetActive(false);
+        //}
     }
     #endregion
     #endregion
@@ -3303,14 +3297,6 @@ public class TurnStateMachine : MonoBehaviour
 
     public void EndGame(Player Winner, bool Surrendered, string effectName = "")
     {
-        foreach (GameObject gb in GManager.instance.CloseWhenEndingGameObjects)
-        {
-            if (gb != null)
-            {
-                gb.SetActive(false);
-            }
-        }
-
         ContinuousController.instance.CanSetRandom = false;
 
         //GManager.instance.photonWaitController.ResetKeys();

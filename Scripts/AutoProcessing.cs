@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 
-public class AutoProcessing : MonoBehaviour
+public class AutoProcessing
 {
     //Skill list before triggering and entering resolution timing
     public List<SkillInfo> StackedSkillInfos { get; set; } = new List<SkillInfo>();
@@ -704,7 +704,7 @@ public class AutoProcessing : MonoBehaviour
 
                 if (GManager.instance.turnStateMachine.gameContext.TurnPhase == GameContext.phase.Main)
                 {
-                    StartCoroutine(GManager.instance.turnStateMachine.SetMainPhase());
+                    GManager.instance.StartCoroutine(GManager.instance.turnStateMachine.SetMainPhase());
                 }
             }
         }

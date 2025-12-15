@@ -925,17 +925,6 @@ public class PlayCardClass
                     }
                 }
 
-                foreach (Player player in GManager.instance.turnStateMachine.gameContext.Players_ForTurnPlayer)
-                {
-                    foreach (FieldPermanentCard fieldPermanentCard in player.FieldPermanentObjects)
-                    {
-                        if (fieldPermanentCard != null)
-                        {
-                            fieldPermanentCard.OffPermanentIndexText();
-                        }
-                    }
-                }
-
                 if (playFailed)
                 {
                     foreach (Player player in GManager.instance.turnStateMachine.gameContext.Players_ForTurnPlayer)
@@ -1537,40 +1526,40 @@ public class PlayPermanentClass
                             {
                                 bool move = false;
 
-                                if (permanent.IsDigimon)
-                                {
-                                    if (permanent.TopCard.Owner.isYou)
-                                    {
-                                        if (permanent.TopCard.PreferredFrame().Frame.transform.parent.localPosition.y > permanent.PermanentFrame.Frame.transform.parent.localPosition.y + 5)
-                                        {
-                                            move = true;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (permanent.TopCard.PreferredFrame().Frame.transform.parent.localPosition.y < permanent.PermanentFrame.Frame.transform.parent.localPosition.y - 5)
-                                        {
-                                            move = true;
-                                        }
-                                    }
-                                }
-                                else if (permanent.IsTamer || permanent.TopCard.IsOption)
-                                {
-                                    if (permanent.TopCard.Owner.isYou)
-                                    {
-                                        if (permanent.TopCard.PreferredFrame().Frame.transform.parent.localPosition.y < permanent.PermanentFrame.Frame.transform.parent.localPosition.y - 5)
-                                        {
-                                            move = true;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (permanent.TopCard.PreferredFrame().Frame.transform.parent.localPosition.y > permanent.PermanentFrame.Frame.transform.parent.localPosition.y + 5)
-                                        {
-                                            move = true;
-                                        }
-                                    }
-                                }
+                                //if (permanent.IsDigimon)
+                                //{
+                                //    if (permanent.TopCard.Owner.isYou)
+                                //    {
+                                //        if (permanent.TopCard.PreferredFrame().Frame.transform.parent.localPosition.y > permanent.PermanentFrame.Frame.transform.parent.localPosition.y + 5)
+                                //        {
+                                //            move = true;
+                                //        }
+                                //    }
+                                //    else
+                                //    {
+                                //        if (permanent.TopCard.PreferredFrame().Frame.transform.parent.localPosition.y < permanent.PermanentFrame.Frame.transform.parent.localPosition.y - 5)
+                                //        {
+                                //            move = true;
+                                //        }
+                                //    }
+                                //}
+                                //else if (permanent.IsTamer || permanent.TopCard.IsOption)
+                                //{
+                                //    if (permanent.TopCard.Owner.isYou)
+                                //    {
+                                //        if (permanent.TopCard.PreferredFrame().Frame.transform.parent.localPosition.y < permanent.PermanentFrame.Frame.transform.parent.localPosition.y - 5)
+                                //        {
+                                //            move = true;
+                                //        }
+                                //    }
+                                //    else
+                                //    {
+                                //        if (permanent.TopCard.PreferredFrame().Frame.transform.parent.localPosition.y > permanent.PermanentFrame.Frame.transform.parent.localPosition.y + 5)
+                                //        {
+                                //            move = true;
+                                //        }
+                                //    }
+                                //}
 
                                 if (move)
                                 {

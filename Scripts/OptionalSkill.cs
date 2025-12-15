@@ -26,18 +26,18 @@ public class OptionalSkill : MonoBehaviour
             {
                 if (cardEffect.EffectSourceCard.Owner.TrashCards.Contains(cardEffect.EffectSourceCard) || cardEffect.EffectSourceCard.Owner.LostCards.Contains(cardEffect.EffectSourceCard))
                 {
-                    if (cardEffect.EffectSourceCard.Owner.TrashHandCard != null)
-                    {
-                        if (!cardEffect.EffectSourceCard.Owner.TrashHandCard.gameObject.activeSelf)
-                        {
-                            cardEffect.EffectSourceCard.Owner.TrashHandCard.gameObject.SetActive(true);
-                            cardEffect.EffectSourceCard.Owner.TrashHandCard.SetUpHandCard(cardEffect.EffectSourceCard);
-                            cardEffect.EffectSourceCard.Owner.TrashHandCard.SetUpHandCardImage();
-                            cardEffect.EffectSourceCard.Owner.TrashHandCard.OnOutline();
-                            cardEffect.EffectSourceCard.Owner.TrashHandCard.SetBlueOutline();
-                            cardEffect.EffectSourceCard.Owner.TrashHandCard.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
-                        }
-                    }
+                    //if (cardEffect.EffectSourceCard.Owner.TrashHandCard != null)
+                    //{
+                    //    if (!cardEffect.EffectSourceCard.Owner.TrashHandCard.gameObject.activeSelf)
+                    //    {
+                    //        cardEffect.EffectSourceCard.Owner.TrashHandCard.gameObject.SetActive(true);
+                    //        cardEffect.EffectSourceCard.Owner.TrashHandCard.SetUpHandCard(cardEffect.EffectSourceCard);
+                    //        cardEffect.EffectSourceCard.Owner.TrashHandCard.SetUpHandCardImage();
+                    //        cardEffect.EffectSourceCard.Owner.TrashHandCard.OnOutline();
+                    //        cardEffect.EffectSourceCard.Owner.TrashHandCard.SetBlueOutline();
+                    //        cardEffect.EffectSourceCard.Owner.TrashHandCard.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
+                    //    }
+                    //}
                 }
             }
         }
@@ -97,7 +97,7 @@ public class OptionalSkill : MonoBehaviour
 
         cardEffect.SetUseOptional(_useOptional);
 
-        cardEffect.EffectSourceCard.Owner.TrashHandCard.gameObject.SetActive(false);
+        //cardEffect.EffectSourceCard.Owner.TrashHandCard.gameObject.SetActive(false);
     }
 
     ////[PunRPC]

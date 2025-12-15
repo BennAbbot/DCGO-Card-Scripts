@@ -3,90 +3,92 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SelectCommandPanel : MonoBehaviour
+public class SelectCommandPanel
 {
     [Header("Command Selection Button Prefab")]
     public SelectCommand selectCommandPrefab;
 
     private void Start()
     {
-        oldCommandTextPos = GManager.instance.commandText.transform.localPosition;
+        
     }
 
     #region Open command selection panel
     public Coroutine SetUpCommandButton(List<Command_SelectCommand> commands)
     {
-        if (this.gameObject.activeSelf)
-        {
-            return null;
-        }
+        return null;
 
-        this.transform.parent.gameObject.SetActive(true);
-        this.gameObject.SetActive(true);
+        //if (this.gameObject.activeSelf)
+        //{
+        //    return null;
+        //}
 
-        GetComponent<Animator>().SetInteger("Close", 0);
+        //this.transform.parent.gameObject.SetActive(true);
+        //this.gameObject.SetActive(true);
 
-        return StartCoroutine(SetUpCommandButtonCoroutine(commands));
+        //GetComponent<Animator>().SetInteger("Close", 0);
+
+        //return StartCoroutine(SetUpCommandButtonCoroutine(commands));
     }
 
     Vector3 oldCommandTextPos = Vector3.zero;
 
     IEnumerator SetUpCommandButtonCoroutine(List<Command_SelectCommand> commands)
     {
-        oldCommandTextPos = GManager.instance.commandText.transform.localPosition;
+        yield break;
 
-        if (commands.Count >= 2)
-        {
-            //GManager.instance.commandText.transform.localPosition += new Vector3(0, 86 * (commands.Count - 1));
-            GManager.instance.commandText.transform.localPosition += new Vector3(0, 90 * (commands.Count - 1));
-        }
+        //if (commands.Count >= 2)
+        //{
+        //    //GManager.instance.commandText.transform.localPosition += new Vector3(0, 86 * (commands.Count - 1));
+        //   // GManager.instance.commandText.transform.localPosition += new Vector3(0, 90 * (commands.Count - 1));
+        //}
 
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            Destroy(transform.GetChild(i).gameObject);
-        }
+        //for (int i = 0; i < transform.childCount; i++)
+        //{
+        //    Destroy(transform.GetChild(i).gameObject);
+        //}
 
-        yield return new WaitWhile(() => transform.childCount > 0);
+        //yield return new WaitWhile(() => transform.childCount > 0);
 
-        if (commands != null)
-        {
-           // GManager.instance.sideBar.SetUpSideBar();
+        //if (commands != null)
+        //{
+        //   // GManager.instance.sideBar.SetUpSideBar();
 
-            commands.Reverse();
+        //    commands.Reverse();
 
-            foreach (Command_SelectCommand command in commands)
-            {
-                SelectCommand _selectCommandButton = Instantiate(selectCommandPrefab, transform);
+        //    foreach (Command_SelectCommand command in commands)
+        //    {
+        //        SelectCommand _selectCommandButton = Instantiate(selectCommandPrefab, transform);
 
-                _selectCommandButton.OpenSelectCommandButton(command.CommandName, command.Command, command.SpriteIndex);
+        //        _selectCommandButton.OpenSelectCommandButton(command.CommandName, command.Command, command.SpriteIndex);
 
-                _selectCommandButton.OnClickEvent.AddListener(() => { for (int i = 0; i < this.transform.childCount; i++) { this.transform.GetChild(i).gameObject.SetActive(false); } });
+        //        _selectCommandButton.OnClickEvent.AddListener(() => { for (int i = 0; i < this.transform.childCount; i++) { this.transform.GetChild(i).gameObject.SetActive(false); } });
 
-                _selectCommandButton.OnClickEvent.AddListener(CloseSelectCommandPanel);
-            }
+        //        _selectCommandButton.OnClickEvent.AddListener(CloseSelectCommandPanel);
+        //    }
 
-            if (commands.Count == 0)
-            {
-                Off();
-            }
-        }
+        //    if (commands.Count == 0)
+        //    {
+        //        Off();
+        //    }
+        //}
 
-        else
-        {
-            Off();
-        }
+        //else
+        //{
+        //    Off();
+        //}
     }
     #endregion
 
     #region Close command selection panel
     public void CloseSelectCommandPanel()
     {
-        if (!this.gameObject.activeSelf)
-        {
-            return;
-        }
+        //if (!this.gameObject.activeSelf)
+        //{
+        //    return;
+        //}
 
-        GetComponent<Animator>().SetInteger("Close", 1);
+        //GetComponent<Animator>().SetInteger("Close", 1);
     }
 
     bool first = false;
@@ -98,13 +100,13 @@ public class SelectCommandPanel : MonoBehaviour
 
     public void Off(bool returnDefaultPos)
     {
-        this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(false);
 
        // GManager.instance.sideBar.OffSideBar(returnDefaultPos);
 
         if (first)
         {
-            GManager.instance.commandText.transform.localPosition = oldCommandTextPos;
+           // GManager.instance.commandText.transform.localPosition = oldCommandTextPos;
         }
 
         first = true;

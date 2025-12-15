@@ -1113,8 +1113,8 @@ public static class ActivateICardEffectExtensionClass
 
         foreach (Player player in GManager.instance.turnStateMachine.gameContext.Players)
         {
-            player.TrashHandCard.gameObject.SetActive(false);
-            player.TrashHandCard.IsExecuting = false;
+            //player.TrashHandCard.gameObject.SetActive(false);
+            //player.TrashHandCard.IsExecuting = false;
         }
 
         yield return new WaitForSeconds(Time.deltaTime * 2);
@@ -1124,12 +1124,6 @@ public static class ActivateICardEffectExtensionClass
             fieldPermanentCard.OffUsingSkillEffect();
             fieldPermanentCard.OffSkillName();
             fieldPermanentCard.RemoveSelectEffect();
-        }
-
-        foreach (FieldPermanentCard fieldPokemonCard in card.Owner.FieldPermanentObjects)
-        {
-            fieldPokemonCard.OffUsingSkillEffect();
-            fieldPokemonCard.OffSkillName();
         }
 
         if (handCard != null)

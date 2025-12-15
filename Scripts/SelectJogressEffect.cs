@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-public class SelectJogressEffect : MonoBehaviour
+public class SelectJogressEffect 
 {
     public void SetUp_SelectWheterToJogress
         (CardSource card,
@@ -88,7 +88,7 @@ public class SelectJogressEffect : MonoBehaviour
                     anotherEvoRootCard = anotherEvoRootPermanentCandidates[0].TopCard;
                 }
 
-                yield return StartCoroutine(GManager.instance.selectCardPanel.OpenSelectCardPanel(
+                yield return GManager.instance.StartCoroutine(GManager.instance.selectCardPanel.OpenSelectCardPanel(
                             Message: "With which method would you like to Digivolve?",
                             RootCardSources: new List<CardSource>() { _card, _card },
                             _CanTargetCondition: (cardSource) => true,

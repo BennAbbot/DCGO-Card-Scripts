@@ -191,12 +191,12 @@ namespace DCGO.CardEffects.EX2
                     if (Condition())
                     {
                         foreach(Permanent permanent in card.Owner.GetBattleAreaPermanents().Filter(PermanentCondition))
-                            permanent.AddBoost(new Permanent.DPBoost($"EX2_046_{card.GetInstanceID()}", 1000, Condition));
+                            permanent.AddBoost(new Permanent.DPBoost($"EX2_046", 1000, Condition));
                     }
                     else
                     {
                         foreach (Permanent permanent in card.Owner.GetBattleAreaPermanents().Filter(PermanentCondition))
-                            permanent.RemoveBoost($"EX2_046_{card.GetInstanceID()}");
+                            permanent.RemoveBoost($"EX2_046");
                     }
                 }
 

@@ -1,12 +1,18 @@
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
+using UnityEngine;
 
-public class CardSource : MonoBehaviour
+public class CardSource
 {
+    public static implicit operator bool(CardSource obj)
+    {
+        return obj != null;
+    }
+
     #region card base entity
 
     CEntity_Base _cEntity_Base = null;
@@ -25,6 +31,9 @@ public class CardSource : MonoBehaviour
 
     #endregion
 
+    public string name;
+    string InstanceID;
+
     #region card index
 
     public int CardIndex { get; private set; } = 0;
@@ -37,9 +46,13 @@ public class CardSource : MonoBehaviour
     {
         _cEntity_Base = cEntity_Base;
         Owner = owner;
-        gameObject.name = _cEntity_Base.CardName_ENG;
+
+        name = _cEntity_Base.CardName_ENG;
 
         SetFace();
+
+        GameObject CardSource = new GameObject(name);
+        cEntity_EffectController = CardSource.AddComponent<CEntity_EffectController>();
     }
 
     #endregion
@@ -2079,19 +2092,19 @@ public class CardSource : MonoBehaviour
             {
                 if (Owner.isYou)
                 {
-                    fieldCardFrames = fieldCardFrames
-                        .OrderByDescending(value => value.Frame.transform.parent.localPosition.y)
-                        .ThenBy(value => Mathf.Abs(value.Frame.transform.parent.localPosition.x))
-                        .ThenBy(value => value.Frame.transform.parent.localPosition.x)
-                        .ToList();
+                    //fieldCardFrames = fieldCardFrames
+                    //    .OrderByDescending(value => value.Frame.transform.parent.localPosition.y)
+                    //    .ThenBy(value => Mathf.Abs(value.Frame.transform.parent.localPosition.x))
+                    //    .ThenBy(value => value.Frame.transform.parent.localPosition.x)
+                    //    .ToList();
                 }
                 else
                 {
-                    fieldCardFrames = fieldCardFrames
-                        .OrderBy(value => value.Frame.transform.parent.localPosition.y)
-                        .ThenBy(value => Mathf.Abs(value.Frame.transform.parent.localPosition.x))
-                        .ThenByDescending(value => value.Frame.transform.parent.localPosition.x)
-                        .ToList();
+                    //fieldCardFrames = fieldCardFrames
+                    //    .OrderBy(value => value.Frame.transform.parent.localPosition.y)
+                    //    .ThenBy(value => Mathf.Abs(value.Frame.transform.parent.localPosition.x))
+                    //    .ThenByDescending(value => value.Frame.transform.parent.localPosition.x)
+                    //    .ToList();
 
                     int[] correctOrder = new int[] { 4, 3, 5, 2, 6, 1, 7, 0, 8, 11, 10, 12, 9, 13, 14, 15, };
 
@@ -2115,19 +2128,19 @@ public class CardSource : MonoBehaviour
             {
                 if (Owner.isYou)
                 {
-                    fieldCardFrames = fieldCardFrames
-                        .OrderBy(value => value.Frame.transform.parent.localPosition.y)
-                        .ThenBy(value => Mathf.Abs(value.Frame.transform.parent.localPosition.x))
-                        .ThenBy(value => value.Frame.transform.parent.localPosition.x)
-                        .ToList();
+                    //fieldCardFrames = fieldCardFrames
+                    //    .OrderBy(value => value.Frame.transform.parent.localPosition.y)
+                    //    .ThenBy(value => Mathf.Abs(value.Frame.transform.parent.localPosition.x))
+                    //    .ThenBy(value => value.Frame.transform.parent.localPosition.x)
+                    //    .ToList();
                 }
                 else
                 {
-                    fieldCardFrames = fieldCardFrames
-                        .OrderByDescending(value => value.Frame.transform.parent.localPosition.y)
-                        .ThenBy(value => Mathf.Abs(value.Frame.transform.parent.localPosition.x))
-                        .ThenByDescending(value => value.Frame.transform.parent.localPosition.x)
-                        .ToList();
+                    //fieldCardFrames = fieldCardFrames
+                    //    .OrderByDescending(value => value.Frame.transform.parent.localPosition.y)
+                    //    .ThenBy(value => Mathf.Abs(value.Frame.transform.parent.localPosition.x))
+                    //    .ThenByDescending(value => value.Frame.transform.parent.localPosition.x)
+                    //    .ToList();
                 }
             }
 

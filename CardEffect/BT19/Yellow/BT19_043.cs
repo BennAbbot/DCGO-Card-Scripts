@@ -191,7 +191,6 @@ namespace DCGO.CardEffects.BT19
                         endSelect = false;
 
                         GManager.instance.commandText.CloseCommandText();
-                        yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
                     }
                     else
                     {
