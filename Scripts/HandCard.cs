@@ -24,8 +24,8 @@ public class HandCard : MonoBehaviour
     [Header("カード場所Text")]
     public Text cardPositionText;
 
-    [Header("コマンドパネル")]
-    public CommandPanel handCardCommandPanel;
+    //[Header("コマンドパネル")]
+    //public CommandPanel handCardCommandPanel;
 
     [Header("コストアイコン")]
     public List<Image> CostIcons;
@@ -94,8 +94,8 @@ public class HandCard : MonoBehaviour
     public UnityAction<HandCard> OnClickAction;
 
     public UnityAction<HandCard> BeginDragAction;
-    public UnityAction<List<DropArea>> OnDragAction;
-    public UnityAction<List<DropArea>> EndDragAction;
+    //public UnityAction<List<DropArea>> OnDragAction;
+   // public UnityAction<List<DropArea>> EndDragAction;
     public bool CanDrag;
 
     public List<Image> Outline_SelectImages { get; set; } = new List<Image>();
@@ -117,10 +117,10 @@ public class HandCard : MonoBehaviour
             }
         }
 
-        if (handCardCommandPanel != null)
-        {
-            handCardCommandPanel.CloseCommandPanel();
-        }
+        //if (handCardCommandPanel != null)
+        //{
+        //    handCardCommandPanel.CloseCommandPanel();
+        //}
 
 
         if (CostText != null)
@@ -746,7 +746,7 @@ public class HandCard : MonoBehaviour
 
             CostText.transform.parent.gameObject.SetActive(true);
 
-            CostText.text = $"{cardSource.PayingCost(SelectCardEffect.Root.Hand, null, checkAvailability: false)}";
+            //CostText.text = $"{cardSource.PayingCost(SelectCardEffect.Root.Hand, null, checkAvailability: false)}";
         }
     }
 
@@ -909,27 +909,27 @@ public class HandCard : MonoBehaviour
         RemoveSelectEffect();
     }
 
-    public void AddDragTarget(UnityAction<HandCard> _BeginDragAction, UnityAction<List<DropArea>> _OnDropAction, UnityAction<List<DropArea>> _OnDragAction)
-    {
-        BeginDragAction = _BeginDragAction;
-        EndDragAction = _OnDropAction;
-        OnDragAction = _OnDragAction;
+    //public void AddDragTarget(UnityAction<HandCard> _BeginDragAction, UnityAction<List<DropArea>> _OnDropAction, UnityAction<List<DropArea>> _OnDragAction)
+    //{
+    //    BeginDragAction = _BeginDragAction;
+    //    EndDragAction = _OnDropAction;
+    //    OnDragAction = _OnDragAction;
 
-        CanDrag = true;
+    //    CanDrag = true;
 
-        OnSelect();
-    }
+    //    OnSelect();
+    //}
 
-    public void RemoveDragTarget()
-    {
-        BeginDragAction = null;
-        EndDragAction = null;
-        OnDragAction = null;
+    //public void RemoveDragTarget()
+    //{
+    //    BeginDragAction = null;
+    //    EndDragAction = null;
+    //    OnDragAction = null;
 
-        CanDrag = false;
+    //    CanDrag = false;
 
-        RemoveSelectEffect();
-    }
+    //    RemoveSelectEffect();
+    //}
 
     public void PointerClick(BaseEventData eventData)
     {
@@ -952,53 +952,53 @@ public class HandCard : MonoBehaviour
 
     void OnRightClicked()
     {
-        if (transform.parent.GetComponent<HandContoller>() != null)
-        {
-            if (transform.parent.GetComponent<HandContoller>().isDragging)
-            {
-                return;
-            }
-        }
+        //if (transform.parent.GetComponent<HandContoller>() != null)
+        //{
+        //    if (transform.parent.GetComponent<HandContoller>().isDragging)
+        //    {
+        //        return;
+        //    }
+        //}
 
-        if (cardSource != null)
-        {
-            bool CanLook = false;
+        //if (cardSource != null)
+        //{
+        //    bool CanLook = false;
 
-            if (!GManager.instance.Opponent.HandCardObjects.Contains(this))
-            {
-                if (!cardSource.IsFlipped)
-                {
-                    CanLook = true;
-                }
+        //    if (!GManager.instance.Opponent.HandCardObjects.Contains(this))
+        //    {
+        //        if (!cardSource.IsFlipped)
+        //        {
+        //            CanLook = true;
+        //        }
 
-                else
-                {
-                    if (cardSource.Owner.isYou)
-                    {
-                        if (cardSource.Owner.LostCards.Contains(cardSource))
-                        {
-                            CanLook = true;
-                        }
-                    }
-                }
-            }
+        //        else
+        //        {
+        //            if (cardSource.Owner.isYou)
+        //            {
+        //                if (cardSource.Owner.LostCards.Contains(cardSource))
+        //                {
+        //                    CanLook = true;
+        //                }
+        //            }
+        //        }
+        //    }
 
-            if (ShowOpponent)
-            {
-                CanLook = true;
-            }
+        //    if (ShowOpponent)
+        //    {
+        //        CanLook = true;
+        //    }
 
-            if (CanLook)
-            {
-                //Debug.Log($"OnClickHandCard_{cardSource.BaseCardNameFromEntity}, parent:{transform.parent.gameObject.name}, gameObject:{this.gameObject.name}");
-                GManager.instance.cardDetail.OpenCardDetail(cardSource, true);
+        //    if (CanLook)
+        //    {
+        //        //Debug.Log($"OnClickHandCard_{cardSource.BaseCardNameFromEntity}, parent:{transform.parent.gameObject.name}, gameObject:{this.gameObject.name}");
+        //        GManager.instance.cardDetail.OpenCardDetail(cardSource, true);
 
-                if (GManager.instance != null)
-                {
-                    GManager.instance.PlayDecisionSE();
-                }
-            }
-        }
+        //        if (GManager.instance != null)
+        //        {
+        //            GManager.instance.PlayDecisionSE();
+        //        }
+        //    }
+        //}
     }
     #endregion
 

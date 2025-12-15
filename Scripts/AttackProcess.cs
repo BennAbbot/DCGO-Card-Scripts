@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 using System;
 using System.Linq;
-using UnityEngine.UI;
 
-public class AttackProcess : MonoBehaviourPunCallbacks
+public class AttackProcess : MonoBehaviour
 {
     public Permanent AttackingPermanent { get; private set; } = null;
     public Permanent DefendingPermanent { get; private set; } = null;
@@ -82,7 +80,7 @@ public class AttackProcess : MonoBehaviourPunCallbacks
                 {
                     DefendingPermanent.ShowingPermanentCard.SetOrangeOutline();
                     DefendingPermanent.ShowingPermanentCard.Outline_Select.gameObject.SetActive(true);
-                    GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.securityObject.securityBreakGlass.gameObject.SetActive(false);
+                   // GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.securityObject.securityBreakGlass.gameObject.SetActive(false);
                 }
             }
 
@@ -90,7 +88,7 @@ public class AttackProcess : MonoBehaviourPunCallbacks
             {
                 if (GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.SecurityCards.Count >= 1)
                 {
-                    GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.securityObject.securityBreakGlass.ShowBlueMatarial();
+                   // GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.securityObject.securityBreakGlass.ShowBlueMatarial();
                 }
             }
 
@@ -146,21 +144,21 @@ public class AttackProcess : MonoBehaviourPunCallbacks
             // target arrow
             if (DefendingPermanent == null)
             {
-                yield return GManager.instance.OnTargetArrow(
-                        AttackingPermanent.PermanentFrame.GetLocalCanvasPosition() + AttackingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
-                        GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.SecurityAttackLocalCanvasPosition + GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.playerUIObjectParent.localPosition,
-                        null,
-                        null);
+                //yield return GManager.instance.OnTargetArrow(
+                //        AttackingPermanent.PermanentFrame.GetLocalCanvasPosition() + AttackingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
+                //        GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.SecurityAttackLocalCanvasPosition + GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.playerUIObjectParent.localPosition,
+                //        null,
+                //        null);
             }
             else
             {
                 if (CardEffectCommons.IsPermanentExistsOnBattleAreaDigimon(DefendingPermanent))
                 {
-                    yield return GManager.instance.OnTargetArrow(
-                        AttackingPermanent.PermanentFrame.GetLocalCanvasPosition() + AttackingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
-                        DefendingPermanent.PermanentFrame.GetLocalCanvasPosition() + DefendingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
-                        null,
-                        null);
+                    //yield return GManager.instance.OnTargetArrow(
+                    //    AttackingPermanent.PermanentFrame.GetLocalCanvasPosition() + AttackingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
+                    //    DefendingPermanent.PermanentFrame.GetLocalCanvasPosition() + DefendingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
+                    //    null,
+                    //    null);
                 }
             }
 
@@ -401,7 +399,7 @@ public class AttackProcess : MonoBehaviourPunCallbacks
                     goto EndAttack;
                 }
 
-                DefendingPermanent.TopCard.Owner.securityObject.securityBreakGlass.gameObject.SetActive(false);
+                //DefendingPermanent.TopCard.Owner.securityObject.securityBreakGlass.gameObject.SetActive(false);
 
                 DefendingPermanent.ShowingPermanentCard.SetOrangeOutline();
                 DefendingPermanent.ShowingPermanentCard.Outline_Select.gameObject.SetActive(true);
@@ -562,7 +560,7 @@ public class AttackProcess : MonoBehaviourPunCallbacks
             // target arrow
             for (int i = 0; i < 3; i++)
             {
-                GManager.instance.OffTargetArrow();
+                //GManager.instance.OffTargetArrow();
 
                 yield return null;
             }
@@ -572,20 +570,20 @@ public class AttackProcess : MonoBehaviourPunCallbacks
                 DefendingPermanent.ShowingPermanentCard.SetOrangeOutline();
                 DefendingPermanent.ShowingPermanentCard.Outline_Select.gameObject.SetActive(true);
 
-                yield return GManager.instance.OnTargetArrow(
-                    AttackingPermanent.PermanentFrame.GetLocalCanvasPosition() + AttackingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
-                    DefendingPermanent.PermanentFrame.GetLocalCanvasPosition() + DefendingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
-                    null,
-                    null);
+                //yield return GManager.instance.OnTargetArrow(
+                //    AttackingPermanent.PermanentFrame.GetLocalCanvasPosition() + AttackingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
+                //    DefendingPermanent.PermanentFrame.GetLocalCanvasPosition() + DefendingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
+                //    null,
+                //    null);
             }
 
             else
             {
-                yield return GManager.instance.OnTargetArrow(
-                                    AttackingPermanent.PermanentFrame.GetLocalCanvasPosition() + AttackingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
-                                    GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.SecurityAttackLocalCanvasPosition + GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.playerUIObjectParent.localPosition,
-                                    null,
-                                    null);
+                //yield return GManager.instance.OnTargetArrow(
+                //                    AttackingPermanent.PermanentFrame.GetLocalCanvasPosition() + AttackingPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
+                //                    GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.SecurityAttackLocalCanvasPosition + GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.playerUIObjectParent.localPosition,
+                //                    null,
+                //                    null);
             }
 
             AttackingPermanent.ShowingPermanentCard.SetOrangeOutline();

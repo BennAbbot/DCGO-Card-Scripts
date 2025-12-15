@@ -1,7 +1,4 @@
-﻿using Photon.Pun;
-using Photon.Pun.Demo.PunBasics;
-using Photon.Realtime;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static UnityEngine.ParticleSystem;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
-public class TurnStateMachine : MonoBehaviourPunCallbacks
+public class TurnStateMachine : MonoBehaviour
 {
     //Class to manage battle status
     public GameContext gameContext;
@@ -36,11 +33,11 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
 
     public IEnumerator Init()
     {
-        yield return StartCoroutine(GManager.instance.LoadingObject.StartLoading("Now Loading"));
+        //yield return StartCoroutine(GManager.instance.LoadingObject.StartLoading("Now Loading"));
 
         yield return StartCoroutine(ContinuousController.LoadCoroutine());
 
-        ContinuousController.instance.PlaySE(GManager.instance.StartBattleSE);
+        //ContinuousController.instance.PlaySE(GManager.instance.StartBattleSE);
 
         #region initialize parameter
         _canPlayTargetFrames = new bool[GManager.instance.You.fieldCardFrames.Count];
@@ -52,42 +49,42 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
         #endregion
 
         #region AIモード
-        if (GManager.instance.IsAI)
-        {
-            ContinuousController.instance.isRandomMatch = true;
+        //if (GManager.instance.IsAI)
+        //{
+        //    ContinuousController.instance.isRandomMatch = true;
 
-            if (!PhotonNetwork.IsConnected)
-            {
-                yield return ContinuousController.instance.StartCoroutine(PhotonUtility.ConnectToMasterServerCoroutine());
-            }
+        //    //if (!PhotonNetwork.IsConnected)
+        //    //{
+        //     //   yield return ContinuousController.instance.StartCoroutine(PhotonUtility.ConnectToMasterServerCoroutine());
+        //    //}
 
-            yield return new WaitWhile(() => !PhotonNetwork.IsConnectedAndReady);
+        //    yield return new WaitWhile(() => !PhotonNetwork.IsConnectedAndReady);
 
-            if (!PhotonNetwork.InLobby)
-            {
-                PhotonNetwork.JoinLobby();
-            }
+        //    if (!PhotonNetwork.InLobby)
+        //    {
+        //        PhotonNetwork.JoinLobby();
+        //    }
 
-            yield return new WaitWhile(() => !PhotonNetwork.InLobby);
+        //    yield return new WaitWhile(() => !PhotonNetwork.InLobby);
 
-            if (!PhotonNetwork.InRoom)
-            {
-                //Setting up the room to be created
-                RoomOptions roomOptions = new RoomOptions();
-                roomOptions.IsVisible = false;   //Make the room invisible in the lobby.
-                roomOptions.IsOpen = false;      //Not Allow other players to enter the room
-                roomOptions.PublishUserId = true;
+        //    if (!PhotonNetwork.InRoom)
+        //    {
+        //        //Setting up the room to be created
+        //        RoomOptions roomOptions = new RoomOptions();
+        //        roomOptions.IsVisible = false;   //Make the room invisible in the lobby.
+        //        roomOptions.IsOpen = false;      //Not Allow other players to enter the room
+        //        roomOptions.PublishUserId = true;
 
-                roomOptions.MaxPlayers = 1;
+        //        roomOptions.MaxPlayers = 1;
 
-                string RoomName = StringUtils.GeneratePassword_AlpahabetNum(50);
+        //        string RoomName = StringUtils.GeneratePassword_AlpahabetNum(50);
 
-                //Create Room
-                PhotonNetwork.CreateRoom(RoomName, roomOptions, null);
-            }
+        //        //Create Room
+        //        PhotonNetwork.CreateRoom(RoomName, roomOptions, null);
+        //    }
 
-            yield return new WaitWhile(() => !PhotonNetwork.InRoom);
-        }
+        //    yield return new WaitWhile(() => !PhotonNetwork.InRoom);
+        //}
         #endregion
 
         #region gameContextの設定
@@ -97,141 +94,139 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
         #region プレイヤー名設定
 
         #region Extract master and non-master clients among Photon clients
-        Photon.Realtime.Player MasterPlayer = null;
-        Photon.Realtime.Player nonMasterPlayer = null;
+        //Photon.Realtime.Player MasterPlayer = null;
+        //Photon.Realtime.Player nonMasterPlayer = null;
 
-        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
-        {
-            if (player.ActorNumber != PhotonNetwork.CurrentRoom.MasterClientId)
-            {
-                nonMasterPlayer = player;
-            }
+        //foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
+        //{
+        //    if (player.ActorNumber != PhotonNetwork.CurrentRoom.MasterClientId)
+        //    {
+        //        nonMasterPlayer = player;
+        //    }
 
-            else
-            {
-                MasterPlayer = player;
-            }
-        }
+        //    else
+        //    {
+        //        MasterPlayer = player;
+        //    }
+        //}
         #endregion
 
         #region Save each player name
-        SetPlayerName(0, PlayerName(MasterPlayer));
-        SetPlayerName(1, PlayerName(nonMasterPlayer));
+        //SetPlayerName(0, PlayerName(MasterPlayer));
+        //SetPlayerName(1, PlayerName(nonMasterPlayer));
         #endregion
 
         #region Player name for that Photon client
-        string PlayerName(Photon.Realtime.Player player)
-        {
-            #region 対人戦
-            if (!GManager.instance.IsAI)
-            {
-                ExitGames.Client.Photon.Hashtable hashtable = player.CustomProperties;
+        //string PlayerName(Photon.Realtime.Player player)
+        //{
+        //    #region 対人戦
+        //    if (!GManager.instance.IsAI)
+        //    {
+        //        ExitGames.Client.Photon.Hashtable hashtable = player.CustomProperties;
 
-                if (HasPlayerName(player))
-                {
-                    if (hashtable.TryGetValue(ContinuousController.PlayerNameKey, out object value))
-                    {
-                        string playerName = (string)value;
+        //        if (HasPlayerName(player))
+        //        {
+        //            if (hashtable.TryGetValue(ContinuousController.PlayerNameKey, out object value))
+        //            {
+        //                string playerName = (string)value;
 
-                        Debug.Log($"playername:{playerName}");
+        //                Debug.Log($"playername:{playerName}");
 
-                        if (!string.IsNullOrEmpty(playerName) && playerName != "Player")
-                        {
-                            return playerName;
-                        }
+        //                if (!string.IsNullOrEmpty(playerName) && playerName != "Player")
+        //                {
+        //                    return playerName;
+        //                }
 
-                        if (player == PhotonNetwork.LocalPlayer)
-                        {
-                            return "You";
-                        }
+        //                if (player == PhotonNetwork.LocalPlayer)
+        //                {
+        //                    return "You";
+        //                }
 
-                        else
-                        {
-                            return "Opponent";
-                        }
+        //                else
+        //                {
+        //                    return "Opponent";
+        //                }
 
-                        return playerName;
-                    }
-                }
+        //                return playerName;
+        //            }
+        //        }
 
-                Debug.Log($"playername:None");
-                return "";
-            }
-            #endregion
-
-            #region AI mode
-            else
-            {
-                #region Player Name
-                if (player == MasterPlayer)
-                {
-                    return ContinuousController.instance.PlayerName;
-                }
-                #endregion
-
-                #region AI Player Name
-                else
-                {
-                    return "Bot";
-                }
-                #endregion
-
-            }
-            #endregion
-
-            #region Determine if that Photon client has custom properties for player names
-            bool HasPlayerName(Photon.Realtime.Player _player)
-            {
-                ExitGames.Client.Photon.Hashtable _hashtable = _player.CustomProperties;
-
-                if (_hashtable.TryGetValue(ContinuousController.PlayerNameKey, out object value))
-                {
-                    string playerName = (string)value;
-
-                    if (!string.IsNullOrEmpty(playerName))
-                    {
-                        if (playerName.Length <= ContinuousController.instance.PlayerNameMaxLength)
-                        {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
-            }
-            #endregion
-        }
+        //        Debug.Log($"playername:None");
+        //        return "";
+        //    }
         #endregion
+
+        //    #region AI mode
+        //    else
+        //    {
+        //        #region Player Name
+        //        if (player == MasterPlayer)
+        //        {
+        //            return ContinuousController.instance.PlayerName;
+        //        }
+        #endregion
+
+        #region AI Player Name
+        //        else
+        //        {
+        //            return "Bot";
+        //        }
+        #endregion
+
+        //    }
+        #endregion
+
+           #region Determine if that Photon client has custom properties for player names
+        //    bool HasPlayerName(Photon.Realtime.Player _player)
+        //    {
+        //        ExitGames.Client.Photon.Hashtable _hashtable = _player.CustomProperties;
+
+        //        if (_hashtable.TryGetValue(ContinuousController.PlayerNameKey, out object value))
+        //        {
+        //            string playerName = (string)value;
+
+        //            if (!string.IsNullOrEmpty(playerName))
+        //            {
+        //                if (playerName.Length <= ContinuousController.instance.PlayerNameMaxLength)
+        //                {
+        //                    return true;
+        //                }
+        //            }
+        //        }
+
+        //        return false;
+        //    }
+            #endregion
+        //}
 
         #region Store player names in Player class and display UI
-        void SetPlayerName(int _PlayerID, string _PlayerName)
-        {
-            Player player = gameContext.PlayerFromID(_PlayerID);
-            player.PlayerName = _PlayerName;
+        //void SetPlayerName(int _PlayerID, string _PlayerName)
+        //{
+        //    Player player = gameContext.PlayerFromID(_PlayerID);
+        //    player.PlayerName = _PlayerName;
 
-            if (player.PlayerNameText != null)
-            {
-                player.PlayerNameText.transform.parent.gameObject.SetActive(true);
-                player.PlayerNameText.gameObject.SetActive(true);
+        //    if (player.PlayerNameText != null)
+        //    {
+        //        player.PlayerNameText.transform.parent.gameObject.SetActive(true);
+        //        player.PlayerNameText.gameObject.SetActive(true);
 
-                if(player.isYou || GManager.instance.IsAI)
-                    player.PlayerNameText.text = player.PlayerName;
-            }
-        }
-        #endregion
+        //        if(player.isYou || GManager.instance.IsAI)
+        //            player.PlayerNameText.text = player.PlayerName;
+        //    }
+        //}
         #endregion
 
         #region 乱数列初期化
-        if (PhotonNetwork.IsMasterClient)
-        {
-            ContinuousController.instance.GetComponent<PhotonView>().RPC("SetRandom", RpcTarget.All, RandomUtility.getRamdom());
-        }
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //ContinuousController.instance.GetComponent<PhotonView>().RPC("SetRandom( RandomUtility.getRamdom());
+        //}
 
         yield return new WaitWhile(() => !ContinuousController.instance.DoneSetRandom);
         ContinuousController.instance.DoneSetRandom = false;
         #endregion
 
-        yield return GManager.instance.photonWaitController.StartWait("EndSetRandom");
+        ////yield return GManager.instance.photonWaitController.StartWait("EndSetRandom");
 
         #region デッキカード生成
         yield return StartCoroutine(CardObjectController.CreatePlayerDecks(GManager.instance.CardPrefab, gameContext));
@@ -246,7 +241,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
         #endregion*/
 
         #region メモリーを初期化
-        GManager.instance.memoryObject.Init();
+        //GManager.instance.memoryObject.Init();
         #endregion
 
 
@@ -259,47 +254,46 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
         gameContext.TurnPlayer = gameContext.PlayerFromID(UnityEngine.Random.Range(0, 2));
 
         #region get first player from room custom property
-        int firstPlayerId = -1;
+        //int firstPlayerId = -1;
 
-        ExitGames.Client.Photon.Hashtable roomHash = PhotonNetwork.CurrentRoom.CustomProperties;
+        //ExitGames.Client.Photon.Hashtable roomHash = PhotonNetwork.CurrentRoom.CustomProperties;
 
-        if (roomHash != null)
-        {
-            if (roomHash.TryGetValue(DataBase.FirstPlayerKey, out object value))
-            {
-                if (value is int)
-                {
-                    firstPlayerId = (int)value;
-                }
-            }
-        }
+        //if (roomHash != null)
+        //{
+        //    if (roomHash.TryGetValue(DataBase.FirstPlayerKey, out object value))
+        //    {
+        //        if (value is int)
+        //        {
+        //            firstPlayerId = (int)value;
+        //        }
+        //    }
+        //}
 
-        if (firstPlayerId >= 0)
-        {
-            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
-            {
-                if (player.ActorNumber == firstPlayerId)
-                {
-                    int playerID = player.ActorNumber == PhotonNetwork.CurrentRoom.MasterClientId ? 0 : 1;
-                    gameContext.TurnPlayer = gameContext.PlayerFromID(playerID).Enemy;
-                }
-            }
-        }
+        //if (firstPlayerId >= 0)
+        //{
+        //    foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
+        //    {
+        //        if (player.ActorNumber == firstPlayerId)
+        //        {
+        //            int playerID = player.ActorNumber == PhotonNetwork.CurrentRoom.MasterClientId ? 0 : 1;
+        //            gameContext.TurnPlayer = gameContext.PlayerFromID(playerID).Enemy;
+        //        }
+        //    }
+        //}
         #endregion
 
         #endregion
 
 
-        yield return StartCoroutine(GManager.instance.LoadingObject.EndLoading());
+        //yield return StartCoroutine(GManager.instance.LoadingObject.EndLoading());
 
         StartCoroutine(GameStateMachine());
 
         if (GManager.instance.bgms.Count >= 1)
         {
-            GManager.instance.BattleBGM.StartPlayBGM(GManager.instance.bgms[UnityEngine.Random.Range(0, GManager.instance.bgms.Count)]);
+            //GManager.instance.BattleBGM.StartPlayBGM(GManager.instance.bgms[UnityEngine.Random.Range(0, GManager.instance.bgms.Count)]);
         }
     }
-    #endregion
 
     #region Manage turn progress
     public IEnumerator GameStateMachine()
@@ -348,17 +342,17 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
 #if UNITY_EDITOR
         //gameContext.TurnPlayer = GManager.instance.Opponent;
 #endif
-        yield return GManager.instance.photonWaitController.StartWait("StartGame");
+        ////yield return GManager.instance.photonWaitController.StartWait("StartGame");
 
         #region 先攻・後攻の決定
         if (gameContext.NonTurnPlayer.isYou)
         {
-            //GManager.instance.commandText.OpenCommandText("You are the FIRST player.");
+            ////GManager.instance.commandText.OpenCommandText("You are the FIRST player.");
         }
 
         else
         {
-            //GManager.instance.commandText.OpenCommandText("You are the SECOND player.");
+            ////GManager.instance.commandText.OpenCommandText("You are the SECOND player.");
         }
 
         gameContext.FirstPlayer = gameContext.NonTurnPlayer;
@@ -366,20 +360,20 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
 
         //yield return new WaitForSeconds(0.6f);
 
-        GManager.instance.commandText.CloseCommandText();
-        yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+        //Manager.instance.commandText.CloseCommandText();
+        ////yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
 
 
         #endregion
 
-        yield return GManager.instance.photonWaitController.StartWait("EndSelectStartPlayer");
+        ////yield return GManager.instance.photonWaitController.StartWait("EndSelectStartPlayer");
 
         foreach (Player player in gameContext.Players_ForNonTurnPlayer)
         {
             yield return StartCoroutine(new DrawClass(player, 5, null).Draw());
         }
 
-        yield return GManager.instance.photonWaitController.StartWait("EndDrawStartGame");
+        ////yield return GManager.instance.photonWaitController.StartWait("EndDrawStartGame");
 
         #region マリガン
         foreach (Player player in gameContext.Players_ForNonTurnPlayer)
@@ -387,11 +381,11 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
             _isRedraw = false;
             _endSelect = false;
 
-            yield return GManager.instance.photonWaitController.StartWait($"Mulligan");
+            ////yield return GManager.instance.photonWaitController.StartWait($"Mulligan");
 
             if (!player.isYou)
             {
-                GManager.instance.commandText.OpenCommandText("The opponent is selecting mulligan.");
+                ////GManager.instance.commandText.OpenCommandText("The opponent is selecting mulligan.");
             }
 
             if (player.isYou)
@@ -434,7 +428,8 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
 
                     void SetRedraw_RPC(bool _isDraw)
                     {
-                        photonView.RPC("SetRedraw", RpcTarget.All, _isDraw);
+                        //TODO
+                        //SetRedraw( _isDraw);
                     }
                 }
             }
@@ -461,8 +456,8 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
 
             GManager.instance.selectCardPanel.CloseSelectCardPanel();
 
-            GManager.instance.commandText.CloseCommandText();
-            yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+           // //GManager.instance.commandText.CloseCommandText();
+            ////yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
 
             if (_isRedraw)
             {
@@ -515,7 +510,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
         DoneStartGame = true;
     }
 
-    [PunRPC]
+    ////[PunRPC]
     public void SetStartPlayer(bool doChange)
     {
         if (doChange)
@@ -524,7 +519,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
         }
     }
 
-    [PunRPC]
+   // //[PunRPC]
     void SetRedraw(bool isRedraw)
     {
         _isRedraw = isRedraw;
@@ -540,7 +535,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
             permanent.UntilOwnerTurnStartEffects = new List<Func<EffectTiming, ICardEffect>>();
         }
 
-        ContinuousController.instance.PlaySE(GManager.instance.StartBattleSE);
+        //ContinuousController.instance.PlaySE(GManager.instance.StartBattleSE);
 
         foreach (Player player in gameContext.Players_ForTurnPlayer)
         {
@@ -558,14 +553,14 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
         isSync = true;
         gameContext.TurnPhase = GameContext.phase.Active;
         Debug.Log($"{gameContext.TurnPlayer}:Start Turn({TurnCount}th Turn)");
-        yield return GManager.instance.photonWaitController.StartWait("StartTrun");
+        ////yield return GManager.instance.photonWaitController.StartWait("StartTrun");
         isSync = false;
 
-        GManager.instance.showTurnPlayerObject.ShowTurnPlayer(gameContext.TurnPlayer);
+        //GManager.instance.showTurnPlayerObject.ShowTurnPlayer(gameContext.TurnPlayer);
 
-        GManager.instance.nextPhaseButton.SwitchTurnSprite();
+        //GManager.instance.nextPhaseButton.SwitchTurnSprite();
 
-        yield return new WaitWhile(() => !GManager.instance.showTurnPlayerObject.isClose);
+        //yield return new WaitWhile(() => !GManager.instance.showTurnPlayerObject.isClose);
 
         // ターン開始時の効果
         yield return ContinuousController.instance.StartCoroutine(GManager.instance.autoProcessing.StackSkillInfos(null, EffectTiming.OnStartTurn));
@@ -651,7 +646,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
 
         isSync = true;
         gameContext.TurnPhase = GameContext.phase.Draw;
-        yield return GManager.instance.photonWaitController.StartWait("DrawPhase");
+        ////yield return GManager.instance.photonWaitController.StartWait("DrawPhase");
         isSync = false;
 
         isSync = true;
@@ -696,24 +691,24 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
 
         isSync = true;
         gameContext.TurnPhase = GameContext.phase.Breeding;
-        yield return GManager.instance.photonWaitController.StartWait("BreedingPhase");
+        ////yield return GManager.instance.photonWaitController.StartWait("BreedingPhase");
         isSync = false;
         IsSelecting = false;
 
         if (gameContext.TurnPlayer.CanHatch || gameContext.TurnPlayer.CanMove)
         {
-            GManager.instance.showPhaseNotificationObject.ShowPhase(GameContext.phase.Breeding);
+            //GManager.instance.showPhaseNotificationObject.ShowPhase(GameContext.phase.Breeding);
 
-            yield return new WaitWhile(() => !GManager.instance.showPhaseNotificationObject.isClose);
+            //yield return new WaitWhile(() => !GManager.instance.showPhaseNotificationObject.isClose);
 
             if (gameContext.TurnPlayer.isYou)
             {
                 #region If hatching is possible
                 if (gameContext.TurnPlayer.CanHatch || !gameContext.TurnPlayer.CanMove)
                 {
-                    GManager.instance.hideCannotSelectObject.SetUpHideCannotSelectObject(new List<FieldPermanentCard>() { null }, true);
+                    //GManager.instance.hideCannotSelectObject.SetUpHideCannotSelectObject(new List<FieldPermanentCard>() { null }, true);
 
-                    //GManager.instance.commandText.OpenCommandText("BreedingPhase : Will you hatch Digiegg?");
+                    ////GManager.instance.commandText.OpenCommandText("BreedingPhase : Will you hatch Digiegg?");
 
                     if (ContinuousController.instance.autoHatch)
                     {
@@ -729,13 +724,13 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
                 #region If you can move
                 else if (!gameContext.TurnPlayer.CanHatch || gameContext.TurnPlayer.CanMove)
                 {
-                    //GManager.instance.commandText.OpenCommandText("BreedingPhase : Will you move your Digimon to Battle Area?");
+                    ////GManager.instance.commandText.OpenCommandText("BreedingPhase : Will you move your Digimon to Battle Area?");
 
                     FieldPermanentCard fieldPermanentCard = gameContext.TurnPlayer.GetBreedingAreaPermanents()[0].ShowingPermanentCard;
 
                     if (fieldPermanentCard != null)
                     {
-                        GManager.instance.hideCannotSelectObject.SetUpHideCannotSelectObject(new List<FieldPermanentCard>() { fieldPermanentCard }, false);
+                       // GManager.instance.hideCannotSelectObject.SetUpHideCannotSelectObject(new List<FieldPermanentCard>() { fieldPermanentCard }, false);
 
                         fieldPermanentCard.AddClickTarget((fieldPermanentCard1) => OnClickHatchObject());
                         fieldPermanentCard.Outline_Select.gameObject.SetActive(true);
@@ -752,7 +747,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
 
             else
             {
-                //GManager.instance.commandText.OpenCommandText("BreedingPhase : The opponent is selecting the action.");
+                ////GManager.instance.commandText.OpenCommandText("BreedingPhase : The opponent is selecting the action.");
 
                 #region AI
                 if (GManager.instance.IsAI)
@@ -770,7 +765,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
             }
 
             yield return new WaitWhile(() => !endSelect_BreedingPhase && gameContext.TurnPhase == GameContext.phase.Breeding);
-            GManager.instance.hideCannotSelectObject.Close();
+            //GManager.instance.hideCannotSelectObject.Close();
             endSelect_BreedingPhase = false;
             gameContext.TurnPlayer.OffHatchObject();
             OffFieldCardTarget(gameContext.TurnPlayer);
@@ -812,12 +807,13 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     void OnClickHatchObject()
     {
         gameContext.TurnPlayer.OffHatchObject();
-        photonView.RPC("SetBreedingPhase", RpcTarget.All, true);
+        //TODO
+        //SetBreedingPhase( true);
     }
 
     bool endSelect_BreedingPhase = false;
     bool doAction_BreedingPhase = false;
-    [PunRPC]
+    ////[PunRPC]
     public void SetBreedingPhase(bool doAction_BreedingPhase)
     {
         this.doAction_BreedingPhase = doAction_BreedingPhase;
@@ -865,11 +861,11 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
         isSync = true;
         gameContext.TurnPhase = GameContext.phase.Main;
         Debug.Log($"{gameContext.TurnPlayer}:Main Phase");
-        yield return GManager.instance.photonWaitController.StartWait("MainPhase");
+        ////yield return GManager.instance.photonWaitController.StartWait("MainPhase");
 
-        GManager.instance.showPhaseNotificationObject.ShowPhase(GameContext.phase.Main);
+        //GManager.instance.showPhaseNotificationObject.ShowPhase(GameContext.phase.Main);
 
-        yield return new WaitWhile(() => !GManager.instance.showPhaseNotificationObject.isClose);
+        //yield return new WaitWhile(() => !GManager.instance.showPhaseNotificationObject.isClose);
 
         // Effects at the start of main phase
         yield return ContinuousController.instance.StartCoroutine(GManager.instance.autoProcessing.StackSkillInfos(null, EffectTiming.OnStartMainPhase));
@@ -907,7 +903,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
         #region Repeat until turn player selects
         while (!endGame)
         {
-            yield return GManager.instance.photonWaitController.StartWait("SetHandCardPlayablity");
+            ////yield return GManager.instance.photonWaitController.StartWait("SetHandCardPlayablity");
 
             //自動処理チェックタイミング
             yield return ContinuousController.instance.StartCoroutine(GManager.instance.autoProcessing.AutoProcessCheck());
@@ -918,7 +914,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
             ResetMainPhaseParameter();
             #endregion
 
-            yield return GManager.instance.photonWaitController.StartWait("SetMainPhase");
+            ////yield return GManager.instance.photonWaitController.StartWait("SetMainPhase");
 
             if (gameContext.TurnPhase == GameContext.phase.Main)
             {
@@ -1135,18 +1131,19 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
                 yield return null;
                 _timer += Time.deltaTime;
 
-                if (!GManager.instance.commandText.gameObject.activeSelf)
-                {
-                    break;
-                }
+                //if (!//GManager.instance.commandText.gameObject.activeSelf)
+                //{
+                //    break;
+                //}
 
                 if (_timer >= 0.6f)
                 {
-                    GManager.instance.commandText.gameObject.SetActive(false);
+                    break;
+                    ////GManager.instance.commandText.gameObject.SetActive(false);
                 }
             }
 
-            yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+            ////yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
             #endregion
 
             #region Use activation effect
@@ -1238,8 +1235,8 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     EndMainPhase:;
 
         #region Main phase ends
-        GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
-        GManager.instance.commandText.CloseCommandText();
+        //GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
+        ////GManager.instance.commandText.CloseCommandText();
 
         _timer = 0f;
 
@@ -1248,19 +1245,20 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
             yield return null;
             _timer += Time.deltaTime;
 
-            if (!GManager.instance.commandText.gameObject.activeSelf)
-            {
-                break;
-            }
+            //if (!//GManager.instance.commandText.gameObject.activeSelf)
+            //{
+            //    break;
+            //}
 
             if (_timer >= 0.6f)
             {
-                GManager.instance.commandText.gameObject.SetActive(false);
+                break;
+                ////GManager.instance.commandText.gameObject.SetActive(false);
             }
         }
 
-        yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
-        GManager.instance.OffTargetArrow();
+        ////yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
+        //GManager.instance.OffTargetArrow();
 
         ResetMainPhaseParameter();
         #endregion
@@ -1273,9 +1271,9 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
         #region Parameter reset
         void ResetMainPhaseParameter()
         {
-            GManager.instance.OffTargetArrow();
+            //GManager.instance.OffTargetArrow();
 
-            GManager.instance.memoryObject.OffMemoryPredictionLine();
+            //GManager.instance.memoryObject.OffMemoryPredictionLine();
 
             #region Reset the display of cards in hand, cards on the field, and frames
             foreach (Player player in gameContext.Players)
@@ -1299,10 +1297,10 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
                 {
                     handCard.RemoveSelectEffect();
                     handCard.RemoveClickTarget();
-                    handCard.RemoveDragTarget();
+                    //handCard.RemoveDragTarget();
                 }
 
-                player.securityObject.securityBreakGlass.gameObject.SetActive(false);
+                //player.securityObject.securityBreakGlass.gameObject.SetActive(false);
                 player.securityObject.OffShowSecurityAttackObject();
             }
             #endregion
@@ -1313,7 +1311,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
 
             foreach (HandCard handCard in gameContext.TurnPlayer.HandCardObjects)
             {
-                handCard.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = true;
+                //handCard.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = true;
             }
             #endregion
 
@@ -1362,7 +1360,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
             if (handCard != null)
             {
                 handCard.transform.SetParent(GManager.instance.You.HandTransform);
-                handCard.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = true;
+                //handCard.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = true;
             }
         }
 
@@ -1377,7 +1375,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
                 fieldPermanentCard.RemoveSelectEffect();
                 fieldPermanentCard.RemoveDragTarget();
                 fieldPermanentCard.RemoveClickTarget();
-                fieldPermanentCard.fieldUnitCommandPanel.CloseCommandPanel();
+                //fieldPermanentCard.fieldUnitCommandPanel.CloseCommandPanel();
             }
             #endregion
 
@@ -1385,1532 +1383,1532 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
             foreach (HandCard handCard in player.HandCardObjects)
             {
                 handCard.RemoveSelectEffect();
-                handCard.RemoveDragTarget();
+               // handCard.RemoveDragTarget();
                 handCard.RemoveClickTarget();
             }
             #endregion
 
             player.securityObject.RemoveClickTarget();
 
-            player.securityObject.securityBreakGlass.gameObject.SetActive(false);
+            //player.securityObject.securityBreakGlass.gameObject.SetActive(false);
 
             player.securityObject.OffShowSecurityAttackObject();
         }
 
-        GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
-        GManager.instance.BackButton.CloseSelectCommandButton();
+       // GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
+        //GManager.instance.BackButton.CloseSelectCommandButton();
 
         GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(false);
 
-        GManager.instance.memoryObject.OffMemoryPredictionLine();
+        //GManager.instance.memoryObject.OffMemoryPredictionLine();
 
-        GManager.instance.commandText.CloseCommandText();
-        yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+        ////GManager.instance.commandText.CloseCommandText();
+        ////yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
         #endregion
 
         // added
         yield return new WaitWhile(() => isSync);
 
         #region Click/drag operation
-        if (gameContext.TurnPlayer.isYou)
-        {
-            #region permanent of the place
-            foreach (FieldPermanentCard fieldPermanentCard in gameContext.TurnPlayer.FieldPermanentObjects)
-            {
-                if (fieldPermanentCard.gameObject.activeSelf && fieldPermanentCard.ThisPermanent.CanDeclareSkill() || fieldPermanentCard.ThisPermanent.CanAttack(null))
-                {
-                    fieldPermanentCard.OnSelectEffect(1.1f);
-
-                    #region Add click operation
-                    fieldPermanentCard.AddClickTarget((_fieldUnitCard) => StartCoroutine(OnClick_Select()));
-
-                    IEnumerator OnClick_Select()
-                    {
-                        if (isSync)
-                        {
-                            yield break;
-                        }
-
-                        IsSelecting = true;
-
-                        #region Reset cards in other places
-                        foreach (FieldPermanentCard _fieldPermanentCard in gameContext.TurnPlayer.FieldPermanentObjects)
-                        {
-                            if (_fieldPermanentCard != fieldPermanentCard)
-                            {
-                                _fieldPermanentCard.RemoveSelectEffect();
-                            }
-                        }
-
-                        foreach (Player player in gameContext.Players)
-                        {
-                            OffFieldCardTarget(player);
-                        }
-                        #endregion
-
-                        #region Reset cards in hand
-                        foreach (HandCard handCard in gameContext.TurnPlayer.HandCardObjects)
-                        {
-                            handCard.RemoveSelectEffect();
-                            handCard.RemoveClickTarget();
-                            handCard.RemoveDragTarget();
-                        }
-                        #endregion
-
-                        List<CardCommand> FieldUnitCommands = new List<CardCommand>();
-
-                        #region activated effect
-                        if (fieldPermanentCard.ThisPermanent.CanDeclareSkill())
-                        {
-                            List<ICardEffect> cardEffects = new List<ICardEffect>();
-                            List<ICardEffect> cardEffects1 = new List<ICardEffect>();
-
-                            foreach (ICardEffect cardEffect in fieldPermanentCard.ThisPermanent.EffectList(EffectTiming.OnDeclaration))
-                            {
-                                cardEffects1.Add(cardEffect);
-                                cardEffects.Add(cardEffect);
-                            }
-
-                            cardEffects.Reverse();
-
-                            foreach (ICardEffect cardEffect in cardEffects)
-                            {
-                                if (cardEffect is ActivateICardEffect)
-                                {
-                                    CardCommand SkillCommand = new CardCommand(cardEffect.EffectName, OnClick_SetUseSkillPermanent_RPC, cardEffect.CanUse(null), DataBase.CommandColor_Skill);
-                                    FieldUnitCommands.Add(SkillCommand);
-
-                                    void OnClick_SetUseSkillPermanent_RPC()
-                                    {
-                                        #region Reset cards on the field
-                                        foreach (Player player in gameContext.Players)
-                                        {
-                                            foreach (FieldPermanentCard _fieldUnitCard in player.FieldPermanentObjects)
-                                            {
-                                                _fieldUnitCard.CloseCommandPanel();
-                                                _fieldUnitCard.RemoveClickTarget();
-                                                _fieldUnitCard.RemoveDragTarget();
-                                                _fieldUnitCard.RemoveSelectEffect();
-                                            }
-                                        }
-                                        #endregion
-
-                                        photonView.RPC("SetActSkill", RpcTarget.All, fieldPermanentCard.ThisPermanent.TopCard.Owner.GetFieldPermanents().IndexOf(fieldPermanentCard.ThisPermanent), cardEffects1.IndexOf(cardEffect));
-                                    }
-                                }
-                            }
-                        }
-                        #endregion
-
-                        #region attack
-                        if (fieldPermanentCard.ThisPermanent.IsDigimon)
-                        {
-                            CardCommand SkillCommand = new CardCommand("Attack", () => StartCoroutine(OnClick_SetAttack_RPC()), fieldPermanentCard.ThisPermanent.CanAttack(null), DataBase.CommandColor_Attack);
-                            FieldUnitCommands.Add(SkillCommand);
-
-                            IEnumerator OnClick_SetAttack_RPC()
-                            {
-                                if (fieldPermanentCard.ThisPermanent.CanAttack(null))
-                                {
-                                    #region Reset cards on the field
-                                    foreach (Player player in gameContext.Players)
-                                    {
-                                        foreach (FieldPermanentCard _fieldUnitCard in player.FieldPermanentObjects)
-                                        {
-                                            if (_fieldUnitCard != fieldPermanentCard)
-                                            {
-                                                _fieldUnitCard.RemoveSelectEffect();
-                                                _fieldUnitCard.RemoveDragTarget();
-                                            }
-
-                                            _fieldUnitCard.CloseCommandPanel();
-                                            _fieldUnitCard.RemoveClickTarget();
-                                        }
-                                    }
-                                    #endregion
-
-                                    #region When only direct attack is available
-                                    if (fieldPermanentCard.ThisPermanent.CanAttackTargetDigimon(null, null) && gameContext.NonTurnPlayer.GetBattleAreaDigimons().Count((permanent) => fieldPermanentCard.ThisPermanent.CanAttackTargetDigimon(permanent, null)) == 0)
-                                    {
-                                        if (fieldPermanentCard.ThisPermanent.CanAttackTargetDigimon(null, null))
-                                        {
-                                            bool doAttack = false;
-                                            bool endSelect_doAttack = false;
-
-                                            if (gameContext.NonTurnPlayer.SecurityCards.Count >= 1)
-                                            {
-                                                gameContext.NonTurnPlayer.securityObject.securityBreakGlass.ShowBlueMatarial();
-                                            }
-
-                                            gameContext.NonTurnPlayer.securityObject.SetSecurityAttackObject();
-                                            gameContext.NonTurnPlayer.securityObject.SetSecurityOutline(true);
-
-                                            gameContext.NonTurnPlayer.securityObject.AddClickTarget(() =>
-                                            {
-                                                doAttack = true;
-                                                endSelect_doAttack = true;
-                                            });
-
-                                            GManager.instance.commandText.OpenCommandText($"Will you attack with {fieldPermanentCard.ThisPermanent.TopCard.BaseENGCardNameFromEntity}?");
-
-                                            List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
-                                                    {
-                                                        new Command_SelectCommand("Attack",() =>
-                                                        {
-                                                            doAttack = true;
-
-                                                            GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
-                                                            GManager.instance.BackButton.CloseSelectCommandButton();
-
-                                                            endSelect_doAttack = true;
-                                                        },0),
-                                                    };
-
-                                            GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
-
-                                            GManager.instance.BackButton.OpenSelectCommandButton("Return", () =>
-                                            {
-                                                doAttack = false;
-
-                                                GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
-                                                GManager.instance.BackButton.CloseSelectCommandButton();
-
-                                                endSelect_doAttack = true;
-
-                                            }, 0);
-
-                                            yield return new WaitWhile(() => !endSelect_doAttack);
-                                            endSelect_doAttack = false;
-
-                                            GManager.instance.selectCommandPanel.Off();
-
-                                            GManager.instance.commandText.CloseCommandText();
-                                            yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
-
-                                            gameContext.NonTurnPlayer.securityObject.RemoveClickTarget();
-                                            GManager.instance.BackButton.CloseSelectCommandButton();
-
-                                            if (doAttack)
-                                            {
-                                                photonView.RPC("SetAttackingPermaent", RpcTarget.All, fieldPermanentCard.ThisPermanent.TopCard.Owner.GetFieldPermanents().IndexOf(fieldPermanentCard.ThisPermanent), -1);
-                                            }
-
-                                            else
-                                            {
-                                                StartCoroutine(SetMainPhase());
-                                            }
-                                        }
-
-                                    }
-                                    #endregion
-
-                                    #region When it is possible to attack characters on the field
-                                    else if (gameContext.NonTurnPlayer.GetBattleAreaDigimons().Count((permanent) => fieldPermanentCard.ThisPermanent.CanAttackTargetDigimon(permanent, null)) >= 1)
-                                    {
-                                        bool doAttack = false;
-                                        int attackTargetID = -1;
-                                        bool endSelect_doAttack = false;
-
-                                        GManager.instance.commandText.OpenCommandText($"Which target will you attack?");
-
-                                        if (fieldPermanentCard.ThisPermanent.CanAttackTargetDigimon(null, null))
-                                        {
-                                            if (gameContext.NonTurnPlayer.SecurityCards.Count >= 1)
-                                            {
-                                                gameContext.NonTurnPlayer.securityObject.securityBreakGlass.ShowBlueMatarial();
-                                            }
-
-                                            gameContext.NonTurnPlayer.securityObject.SetSecurityAttackObject();
-                                            gameContext.NonTurnPlayer.securityObject.SetSecurityOutline(true);
-
-                                            gameContext.NonTurnPlayer.securityObject.AddClickTarget(() =>
-                                            {
-                                                doAttack = true;
-                                                attackTargetID = -1;
-                                                endSelect_doAttack = true;
-                                            });
-                                        }
-
-                                        foreach (FieldPermanentCard enemyFieldPermanentCard in gameContext.NonTurnPlayer.FieldPermanentObjects)
-                                        {
-                                            if (fieldPermanentCard.ThisPermanent.CanAttackTargetDigimon(enemyFieldPermanentCard.ThisPermanent, null))
-                                            {
-                                                enemyFieldPermanentCard.AddClickTarget((_fieldUnitCard) => StartCoroutine(SelectDefender()));
-
-                                                enemyFieldPermanentCard.OnSelectEffect(1.1f);
-
-                                                IEnumerator SelectDefender()
-                                                {
-                                                    foreach (Player player in gameContext.Players_ForTurnPlayer)
-                                                    {
-                                                        foreach (FieldPermanentCard _fieldPermanentCard in gameContext.TurnPlayer.FieldPermanentObjects)
-                                                        {
-                                                            _fieldPermanentCard.RemoveSelectEffect();
-                                                            _fieldPermanentCard.RemoveDragTarget();
-                                                            _fieldPermanentCard.RemoveClickTarget();
-                                                        }
-                                                    }
-
-                                                    GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
-                                                    GManager.instance.BackButton.CloseSelectCommandButton();
-
-                                                    doAttack = true;
-                                                    attackTargetID = enemyFieldPermanentCard.ThisPermanent.TopCard.Owner.GetFieldPermanents().IndexOf(enemyFieldPermanentCard.ThisPermanent);
-                                                    endSelect_doAttack = true;
-
-                                                    yield return null;
-                                                }
-                                            }
-                                        }
-
-                                        GManager.instance.BackButton.OpenSelectCommandButton("Return", () =>
-                                        {
-                                            doAttack = false;
-
-                                            GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
-                                            GManager.instance.BackButton.CloseSelectCommandButton();
-
-                                            endSelect_doAttack = true;
-
-                                        }, 0);
-
-                                        yield return new WaitWhile(() => !endSelect_doAttack);
-                                        endSelect_doAttack = false;
-
-                                        GManager.instance.selectCommandPanel.Off();
-                                        gameContext.NonTurnPlayer.securityObject.OffShowSecurityAttackObject();
-                                        GManager.instance.commandText.CloseCommandText();
-                                        yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
-
-                                        GManager.instance.BackButton.CloseSelectCommandButton();
-
-                                        if (doAttack)
-                                        {
-                                            photonView.RPC("SetAttackingPermaent", RpcTarget.All, fieldPermanentCard.ThisPermanent.TopCard.Owner.GetFieldPermanents().IndexOf(fieldPermanentCard.ThisPermanent), attackTargetID);
-                                        }
-
-                                        else
-                                        {
-                                            StartCoroutine(SetMainPhase());
-                                        }
-                                    }
-                                    #endregion
-                                }
-                            }
-                        }
-                        #endregion
-
-                        fieldPermanentCard.fieldUnitCommandPanel.SetUpCommandPanel(FieldUnitCommands, fieldPermanentCard, null);
-
-                        fieldPermanentCard.AddClickTarget((_fieldUnitCard) => StartCoroutine(SetMainPhase()));
-
-                        fieldPermanentCard.Outline_Select.gameObject.SetActive(true);
-                        fieldPermanentCard.SetOrangeOutline();
-
-                        yield return null;
-                    }
-                    #endregion
-
-                    AddDragProcess(fieldPermanentCard);
-
-                    #region ドラッグ操作を追加
-                    void AddDragProcess(FieldPermanentCard fieldPermanentCard1)
-                    {
-                        if (fieldPermanentCard1.ThisPermanent.CanAttack(null))
-                        {
-                            fieldPermanentCard1.AddDragTarget(OnBeginDragAction, OnDragAction, OnEndDragAction);
-
-                            #region ドラッグ開始
-                            void OnBeginDragAction(FieldPermanentCard fieldPermanentCard2)
-                            {
-                                if (isSync)
-                                {
-                                    return;
-                                }
-
-                                if (gameContext.TurnPlayer.FieldPermanentObjects.Count((fieldPermanentCard3) => fieldPermanentCard3.fieldUnitCommandPanel.isActive()) == 0)
-                                {
-                                    #region 手札のカードをリセット
-                                    foreach (HandCard handCard1 in gameContext.TurnPlayer.HandCardObjects)
-                                    {
-                                        handCard1.RemoveClickTarget();
-                                        handCard1.RemoveDragTarget();
-                                        handCard1.RemoveSelectEffect();
-                                        handCard1.handCardCommandPanel.CloseCommandPanel();
-                                        handCard1.Outline_Select.gameObject.SetActive(false);
-                                    }
-
-                                    foreach (Player player in gameContext.Players)
-                                    {
-                                        foreach (HandCard handCard2 in player.HandCardObjects)
-                                        {
-                                            handCard2.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = true;
-                                        }
-                                    }
-                                    #endregion
-
-                                    IsSelecting = true;
-
-                                    GManager.instance.commandText.CloseCommandText();
-
-                                    fieldPermanentCard2.CloseCommandPanel();
-
-                                    TargetArrow targetArrow = GManager.instance.CreateTargetArrow();
-
-                                    targetArrow.SetTargetArrow(fieldPermanentCard2.ThisPermanent.PermanentFrame.GetLocalCanvasPosition() + fieldPermanentCard2.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition, Draggable.GetLocalPosition(Input.mousePosition, targetArrow.transform));
-
-                                    foreach (FieldPermanentCard fieldPermanentCard3 in gameContext.TurnPlayer.FieldPermanentObjects)
-                                    {
-                                        if (fieldPermanentCard3 != fieldPermanentCard2)
-                                        {
-                                            fieldPermanentCard3.RemoveSelectEffect();
-                                            fieldPermanentCard3.RemoveClickTarget();
-                                            fieldPermanentCard3.RemoveDragTarget();
-                                        }
-                                    }
-
-                                    foreach (FieldPermanentCard enemyFieldPermanentCard in gameContext.NonTurnPlayer.FieldPermanentObjects)
-                                    {
-                                        if (fieldPermanentCard2.ThisPermanent.CanAttackTargetDigimon(enemyFieldPermanentCard.ThisPermanent, null))
-                                        {
-                                            enemyFieldPermanentCard.OnSelectEffect(1.1f);
-                                            enemyFieldPermanentCard.SetBlueOutline();
-                                        }
-                                    }
-
-                                    if (fieldPermanentCard1.ThisPermanent.CanAttackTargetDigimon(null, null))
-                                    {
-                                        if (gameContext.NonTurnPlayer.SecurityCards.Count >= 1)
-                                        {
-                                            gameContext.NonTurnPlayer.securityObject.securityBreakGlass.ShowTransparentMatarial();
-                                        }
-
-                                        gameContext.NonTurnPlayer.securityObject.SetSecurityAttackObject();
-                                        gameContext.NonTurnPlayer.securityObject.SetSecurityOutline(false);
-                                    }
-                                }
-                            }
-                            #endregion
-
-                            #region ドラッグ中
-                            void OnDragAction(FieldPermanentCard fieldPermanentCard2, List<DropArea> dropAreas)
-                            {
-                                if (isSync)
-                                {
-                                    StartCoroutine(SetMainPhase());
-                                }
-
-                                fieldPermanentCard2.CloseCommandPanel();
-
-                                TargetArrow targetArrow = null;
-
-                                for (int i = 0; i < GManager.instance.targetArrowParent.childCount; i++)
-                                {
-                                    if (GManager.instance.targetArrowParent.GetChild(i).GetComponent<TargetArrow>() != null && GManager.instance.targetArrowParent.GetChild(i).gameObject.activeSelf)
-                                    {
-                                        targetArrow = GManager.instance.targetArrowParent.GetChild(i).GetComponent<TargetArrow>();
-                                    }
-                                }
-
-                                if (targetArrow != null)
-                                {
-                                    targetArrow.SetTargetArrow(fieldPermanentCard2.ThisPermanent.PermanentFrame.GetLocalCanvasPosition() + fieldPermanentCard2.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition, Draggable.GetLocalPosition(Input.mousePosition, targetArrow.transform));
-
-                                    foreach (FieldPermanentCard enemyFieldPermanentCard in GManager.instance.Opponent.FieldPermanentObjects)
-                                    {
-                                        if (fieldPermanentCard2.ThisPermanent.CanAttackTargetDigimon(enemyFieldPermanentCard.ThisPermanent, null))
-                                        {
-                                            bool OnSelect = false;
-
-                                            if (dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(enemyFieldPermanentCard.gameObject)) > 0)
-                                            {
-                                                if (fieldPermanentCard2.ThisPermanent.CanAttackTargetDigimon(enemyFieldPermanentCard.ThisPermanent, null))
-                                                {
-                                                    OnSelect = true;
-                                                }
-                                            }
-
-                                            if (OnSelect)
-                                            {
-                                                enemyFieldPermanentCard.OnSelectEffect(1.1f);
-                                                enemyFieldPermanentCard.SetOrangeOutline();
-                                            }
-
-                                            else
-                                            {
-                                                enemyFieldPermanentCard.OnSelectEffect(1.1f);
-                                                enemyFieldPermanentCard.SetBlueOutline();
-                                            }
-                                        }
-                                    }
-
-                                    if (fieldPermanentCard2.ThisPermanent.CanAttackTargetDigimon(null, null))
-                                    {
-                                        if (dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(gameContext.NonTurnPlayer.securityObject.securityAttackDropArea.gameObject)) > 0)
-                                        {
-                                            if (gameContext.NonTurnPlayer.SecurityCards.Count >= 1)
-                                            {
-                                                gameContext.NonTurnPlayer.securityObject.securityBreakGlass.ShowBlueMatarial();
-                                            }
-
-                                            gameContext.NonTurnPlayer.securityObject.SetSecurityAttackObject();
-                                            gameContext.NonTurnPlayer.securityObject.SetSecurityOutline(true);
-                                        }
-
-                                        else
-                                        {
-                                            if (gameContext.NonTurnPlayer.SecurityCards.Count >= 1)
-                                            {
-                                                gameContext.NonTurnPlayer.securityObject.securityBreakGlass.ShowTransparentMatarial();
-                                            }
-
-                                            gameContext.NonTurnPlayer.securityObject.SetSecurityAttackObject();
-                                            gameContext.NonTurnPlayer.securityObject.SetSecurityOutline(false);
-                                        }
-                                    }
-                                }
-                            }
-                            #endregion
-
-                            #region ドラッグ終了
-                            void OnEndDragAction(FieldPermanentCard fieldPermanentCard2, List<DropArea> dropAreas)
-                            {
-                                if (isSync)
-                                {
-                                    StartCoroutine(SetMainPhase());
-                                }
-
-                                IsSelecting = false;
-
-                                TargetArrow targetArrow = null;
-
-                                for (int i = 0; i < GManager.instance.targetArrowParent.childCount; i++)
-                                {
-                                    if (GManager.instance.targetArrowParent.GetChild(i).GetComponent<TargetArrow>() != null && GManager.instance.targetArrowParent.GetChild(i).gameObject.activeSelf)
-                                    {
-                                        targetArrow = GManager.instance.targetArrowParent.GetChild(i).GetComponent<TargetArrow>();
-                                    }
-                                }
-
-                                if (targetArrow != null)
-                                {
-                                    #region 手札のカードをリセット
-                                    foreach (HandCard handCard1 in gameContext.TurnPlayer.HandCardObjects)
-                                    {
-                                        handCard1.RemoveClickTarget();
-                                    }
-
-                                    foreach (Player player in gameContext.Players)
-                                    {
-                                        foreach (HandCard handCard2 in player.HandCardObjects)
-                                        {
-                                            handCard2.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = true;
-                                        }
-                                    }
-                                    #endregion
-
-                                    GManager.instance.You.playMatCardFrame.OffFrame_Select();
-
-                                    fieldPermanentCard2.CloseCommandPanel();
-
-                                    Destroy(targetArrow.gameObject);
-
-                                    foreach (DropArea dropArea in dropAreas)
-                                    {
-                                        foreach (FieldPermanentCard enemyFieldPermanentCard in GManager.instance.Opponent.FieldPermanentObjects)
-                                        {
-                                            if (dropArea.IsChildThisDropArea(enemyFieldPermanentCard.gameObject))
-                                            {
-                                                if (fieldPermanentCard2.ThisPermanent.CanAttackTargetDigimon(enemyFieldPermanentCard.ThisPermanent, null))
-                                                {
-                                                    #region Reset field cards
-                                                    foreach (Player player in gameContext.Players)
-                                                    {
-                                                        foreach (FieldPermanentCard fieldPermanentCard3 in player.FieldPermanentObjects)
-                                                        {
-                                                            if (fieldPermanentCard3 != fieldPermanentCard2 && fieldPermanentCard3 != enemyFieldPermanentCard)
-                                                            {
-                                                                fieldPermanentCard3.RemoveSelectEffect();
-                                                            }
-
-                                                            fieldPermanentCard3.CloseCommandPanel();
-                                                            fieldPermanentCard3.RemoveClickTarget();
-                                                            fieldPermanentCard3.RemoveDragTarget();
-                                                        }
-                                                    }
-                                                    #endregion
-
-                                                    //gameContext.NonTurnPlayer.LifeCardFrame.OffFrame_Select();
-
-                                                    photonView.RPC("SetAttackingPermaent", RpcTarget.All, gameContext.TurnPlayer.GetFieldPermanents().IndexOf(fieldPermanentCard2.ThisPermanent), gameContext.NonTurnPlayer.GetFieldPermanents().IndexOf(enemyFieldPermanentCard.ThisPermanent));
-                                                    return;
-                                                }
-                                            }
-                                        }
-
-                                        if (fieldPermanentCard2.ThisPermanent.CanAttackTargetDigimon(null, null))
-                                        {
-                                            if (dropArea.IsChildThisDropArea(gameContext.NonTurnPlayer.securityObject.securityAttackDropArea.gameObject))
-                                            {
-                                                #region Reset field cards
-                                                foreach (Player player in gameContext.Players)
-                                                {
-                                                    foreach (FieldPermanentCard fieldPermanentCard3 in player.FieldPermanentObjects)
-                                                    {
-                                                        if (fieldPermanentCard3 != fieldPermanentCard2)
-                                                        {
-                                                            fieldPermanentCard3.RemoveSelectEffect();
-                                                        }
-
-                                                        fieldPermanentCard3.CloseCommandPanel();
-                                                        fieldPermanentCard3.RemoveClickTarget();
-                                                        fieldPermanentCard3.RemoveDragTarget();
-                                                    }
-                                                }
-                                                #endregion
-
-                                                photonView.RPC("SetAttackingPermaent", RpcTarget.All, gameContext.TurnPlayer.GetFieldPermanents().IndexOf(fieldPermanentCard2.ThisPermanent), -1);
-                                                return;
-                                            }
-                                        }
-                                    }
-
-                                    StartCoroutine(SetMainPhase());
-                                }
-                            }
-                            #endregion
-                        }
-                    }
-                    #endregion
-                }
-            }
-            #endregion
-
-            #region cards in hand
-            foreach (HandCard handCard in gameContext.TurnPlayer.HandCardObjects)
-            {
-                #region drag and play
-                if (handCard.cardSource.CanPlayFromHandDuringMainPhase)
-                {
-                    handCard.SetBlueOutline();
-
-                    handCard.AddDragTarget(BeginDrag, OnDropCard, OnDragCard);
-
-                    #region At the start of drag
-                    void BeginDrag(HandCard handCard1)
-                    {
-                        if (isSync)
-                        {
-                            //return;
-                        }
-
-                        if (gameContext.TurnPlayer.FieldPermanentObjects.Count((_fieldPermanentCard1) => _fieldPermanentCard1.fieldUnitCommandPanel.isActive()) == 0)
-                        {
-                            IsSelecting = true;
-
-                            OffFieldCardTarget(gameContext.TurnPlayer);
-
-                            foreach (HandCard handCard2 in gameContext.TurnPlayer.HandCardObjects)
-                            {
-                                handCard2.RemoveOnClickAction();
-
-                                if (handCard2 != handCard1)
-                                {
-                                    handCard2.RemoveSelectEffect();
-                                }
-                            }
-
-                            foreach (FieldPermanentCard fieldPermanentCard in GManager.instance.You.FieldPermanentObjects)
-                            {
-                                fieldPermanentCard.RemoveSelectEffect();
-                                fieldPermanentCard.RemoveDragTarget();
-                                fieldPermanentCard.Outline_Select.gameObject.SetActive(false);
-                            }
-
-                            foreach (FieldCardFrame fieldCardFrame in GManager.instance.You.fieldCardFrames)
-                            {
-                                fieldCardFrame.OffFrame_Select();
-                            }
-
-                            foreach (Player player in gameContext.Players_ForTurnPlayer)
-                            {
-                                foreach (FieldCardFrame fieldCardFrame in player.fieldCardFrames)
-                                {
-                                    fieldCardFrame.AddClickTarget(null);
-                                }
-                            }
-
-                            GManager.instance.You.playMatCardFrame.AddClickTarget(null);
-                            GManager.instance.You.playMatCardFrame.OffFrame_Select();
-
-                            handCard1.SetBlueOutline();
-                            handCard1.OffPlayText();
-                            handCard1.OffJogressPlayText();
-                            handCard1.OffBurstPlayText();
-                            handCard1.OffAppFusionPlayText();
-                            handCard1.OffClickText();
-
-                            #region デジモン・テイマー
-                            if (handCard1.cardSource.IsPermanent)
-                            {
-                                bool CanPlayEmptyFrame = false;
-
-                                foreach (FieldCardFrame fieldCardFrame in GManager.instance.You.fieldCardFrames)
-                                {
-                                    if (fieldCardFrame.IsEmptyFrame())
-                                    {
-                                        if (handCard1.cardSource.CanPlayCardTargetFrame(fieldCardFrame, true, null))
-                                        {
-                                            CanPlayEmptyFrame = true;
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                if (CanPlayEmptyFrame)
-                                {
-                                    GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(true);
-                                    GManager.instance.You.playMatCardFrame.OnFrame_Select(DataBase.SelectColor_Blue);
-                                }
-
-                                foreach (FieldCardFrame fieldCardFrame in GManager.instance.You.fieldCardFrames)
-                                {
-                                    if (handCard1.cardSource.CanPlayCardTargetFrame(fieldCardFrame, true, null) || handCard1.cardSource.CanJogressFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true) || handCard1.cardSource.CanBurstDigivolutionFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true))
-                                    {
-                                        if (fieldCardFrame.GetFramePermanent() != null)
-                                        {
-                                            if (fieldCardFrame.GetFramePermanent().ShowingPermanentCard != null)
-                                            {
-                                                fieldCardFrame.GetFramePermanent().ShowingPermanentCard.Outline_Select.gameObject.SetActive(true);
-                                                fieldCardFrame.GetFramePermanent().ShowingPermanentCard.SetBlueOutline();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            #endregion
-
-                            #region オプション
-                            else if (handCard1.cardSource.IsOption)
-                            {
-                                GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(true);
-                                GManager.instance.You.playMatCardFrame.OnFrame_Select(DataBase.SelectColor_Blue);
-                            }
-                            #endregion
-
-                            // check playablity
-                            ContinuousController.instance.StartCoroutine(SetHandCardPlayablity(handCard.cardSource));
-                        }
-                    }
-                    #endregion
-
-                    #region At the end of drag
-                    void OnDropCard(List<DropArea> dropAreas)
-                    {
-                        if (isSync)
-                        {
-                            StartCoroutine(Return());
-                        }
-
-                        if (gameContext.TurnPlayer.FieldPermanentObjects.Count((_fieldPermanentCard1) => _fieldPermanentCard1.fieldUnitCommandPanel.isActive()) == 0)
-                        {
-                            foreach (FieldPermanentCard fieldPermanentCard in gameContext.TurnPlayer.FieldPermanentObjects)
-                            {
-                                fieldPermanentCard.RemoveSelectEffect();
-                                fieldPermanentCard.RemoveDragTarget();
-                                fieldPermanentCard.Outline_Select.gameObject.SetActive(false);
-                            }
-
-                            foreach (FieldCardFrame fieldCardFrame in GManager.instance.You.fieldCardFrames)
-                            {
-                                fieldCardFrame.OffFrame_Select();
-                            }
-
-                            GManager.instance.You.playMatCardFrame.OffFrame_Select();
-                            handCard.OffPlayText();
-                            handCard.OffJogressPlayText();
-                            handCard.OffBurstPlayText();
-                            handCard.OffAppFusionPlayText();
-
-                            #region play cards
-
-                            bool isOnHand = dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(GManager.instance.You.HandDropArea.gameObject)) > 0;
-                            bool selected = false;
-
-                            #region If it is not dropped in the hand area
-                            if (!isOnHand)
-                            {
-                                #region character field
-                                if (handCard.cardSource.IsPermanent)
-                                {
-                                    #region Check if it is dropped in the frame
-                                    foreach (FieldCardFrame fieldCardFrame in GManager.instance.You.fieldCardFrames)
-                                    {
-                                        if (handCard.cardSource.CanPlayCardTargetFrame(fieldCardFrame, true, null) || handCard.cardSource.CanJogressFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true) || handCard.cardSource.CanBurstDigivolutionFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true) || handCard.cardSource.CanAppFusionFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true))
-                                        {
-                                            if (dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(fieldCardFrame.Frame)) > 0)
-                                            {
-                                                if (fieldCardFrame.GetFramePermanent() != null)
-                                                {
-                                                    if (handCard.cardSource.Owner.HandTransform.GetComponent<HandContoller>() != null)
-                                                    {
-                                                        handCard.cardSource.Owner.HandTransform.GetComponent<HandContoller>().isDragging = true;
-                                                    }
-
-                                                    OffHandCardTarget(gameContext.TurnPlayer);
-
-                                                    handCard.Outline_Select.gameObject.SetActive(false);
-
-                                                    foreach (Player player in gameContext.Players_ForTurnPlayer)
-                                                    {
-                                                        foreach (FieldCardFrame fieldCardFrame1 in player.fieldCardFrames)
-                                                        {
-                                                            fieldCardFrame1.RemoveClickTarget();
-                                                        }
-                                                    }
-
-                                                    GManager.instance.You.playMatCardFrame.RemoveClickTarget();
-                                                    GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(false);
-
-                                                    selected = true;
-
-                                                    Permanent targetPermanent = fieldCardFrame.GetFramePermanent();
-
-                                                    bool canNormalDigivolution = handCard.cardSource.CanPlayCardTargetFrame(fieldCardFrame, true, null);
-                                                    bool canJogressDigivolution = handCard.cardSource.CanJogressFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true);
-                                                    bool canBurstDigivolution = handCard.cardSource.CanBurstDigivolutionFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true);
-                                                    bool canAppFusion = handCard.cardSource.CanAppFusionFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true);
-
-                                                    //Only normal evolution possible
-                                                    if (canNormalDigivolution && !canJogressDigivolution && !canBurstDigivolution && !canAppFusion)
-                                                    {
-                                                        Digivolution();
-                                                    }
-
-                                                    //Only jogless is possible
-                                                    else if (!canNormalDigivolution && canJogressDigivolution && !canBurstDigivolution && !canAppFusion)
-                                                    {
-                                                        SelectJogressDigivolutionCards(true);
-                                                    }
-
-                                                    //Only burst evolution possible
-                                                    else if (!canNormalDigivolution && !canJogressDigivolution && canBurstDigivolution && !canAppFusion)
-                                                    {
-                                                        SelectBurstDigivolutionCards(true);
-                                                    }
-
-                                                    //Only app fusion possible
-                                                    else if (!canNormalDigivolution && !canJogressDigivolution && !canBurstDigivolution && canAppFusion)
-                                                    {
-                                                        SelectAppFusionCards(true);
-                                                    }
-
-                                                    //Normal evolution and Jogress possible
-                                                    else if (canNormalDigivolution && canJogressDigivolution && !canBurstDigivolution && !canAppFusion)
-                                                    {
-                                                        Vector3 Pos = handCard.transform.position;
-
-                                                        ResetUI();
-
-                                                        handCard.transform.GetChild(0).gameObject.SetActive(false);
-
-                                                        handCard.GetComponent<Draggable_HandCard>().ReturnDefaultPosition();
-
-                                                        StartCoroutine(SelectWheterToJogress());
-
-                                                        IEnumerator SelectWheterToJogress()
-                                                        {
-                                                            isSync = true;
-
-                                                            yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().MoveToExecuteCardEffect_SetPosition(handCard.cardSource, Pos));
-                                                            handCard.transform.position = handCard.cardSource.Owner.brainStormObject.BrainStormHandCards[0].transform.position;
-
-                                                            GManager.instance.selectJogressEffect.SetUp_SelectWheterToJogress
-                                                                (card: handCard.cardSource,
-                                                                evoRoot: fieldCardFrame.GetFramePermanent().TopCard,
-                                                                canNoSelect: true,
-                                                                endSelectCoroutine_Digivolve: _Digivolution,
-                                                                endSelectCoroutine_Jogress: _SelectJogressDigivolutionCards,
-                                                                noSelectCoroutine: _NoSelectCoroutine);
-
-                                                            yield return ContinuousController.instance.StartCoroutine(GManager.instance.selectJogressEffect.SelectWheterToJogress());
-
-                                                            IEnumerator _Digivolution()
-                                                            {
-                                                                yield return null;
-                                                                Digivolution();
-                                                            }
-
-                                                            IEnumerator _SelectJogressDigivolutionCards()
-                                                            {
-                                                                yield return null;
-                                                                SelectJogressDigivolutionCards(false);
-                                                            }
-
-                                                            IEnumerator _NoSelectCoroutine()
-                                                            {
-                                                                yield return StartCoroutine(Return());
-                                                            }
-                                                        }
-                                                    }
-
-                                                    //Normal evolution and burst evolution possible
-                                                    else if (canNormalDigivolution && !canJogressDigivolution && canBurstDigivolution && !canAppFusion)
-                                                    {
-                                                        Vector3 Pos = handCard.transform.position;
-
-                                                        ResetUI();
-
-                                                        handCard.transform.GetChild(0).gameObject.SetActive(false);
-
-                                                        handCard.GetComponent<Draggable_HandCard>().ReturnDefaultPosition();
-
-                                                        StartCoroutine(SelectWheterToBurst());
-
-                                                        IEnumerator SelectWheterToBurst()
-                                                        {
-                                                            isSync = true;
-
-                                                            yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().MoveToExecuteCardEffect_SetPosition(handCard.cardSource, Pos));
-                                                            handCard.transform.position = handCard.cardSource.Owner.brainStormObject.BrainStormHandCards[0].transform.position;
-
-                                                            GManager.instance.selectBurstDigivolutionEffect.SetUp_SelectWheterToBurst
-                                                                (card: handCard.cardSource,
-                                                                evoRoot: fieldCardFrame.GetFramePermanent().TopCard,
-                                                                canNoSelect: true,
-                                                                endSelectCoroutine_Digivolve: _Digivolution,
-                                                                endSelectCoroutine_Burst: _SelectBurstPermanents,
-                                                                noSelectCoroutine: _NoSelectCoroutine);
-
-                                                            yield return ContinuousController.instance.StartCoroutine(GManager.instance.selectBurstDigivolutionEffect.SelectWheterToBurst());
-
-                                                            IEnumerator _Digivolution()
-                                                            {
-                                                                yield return null;
-                                                                Digivolution();
-                                                            }
-
-                                                            IEnumerator _SelectBurstPermanents()
-                                                            {
-                                                                yield return null;
-                                                                SelectBurstDigivolutionCards(false);
-                                                            }
-
-                                                            IEnumerator _NoSelectCoroutine()
-                                                            {
-                                                                yield return StartCoroutine(Return());
-                                                            }
-                                                        }
-                                                    }
-                                                    //Normal evolution and App Fusion possible
-                                                    else if (canNormalDigivolution && !canJogressDigivolution && !canBurstDigivolution && canAppFusion)
-                                                    {
-                                                        Vector3 Pos = handCard.transform.position;
-
-                                                        ResetUI();
-
-                                                        handCard.transform.GetChild(0).gameObject.SetActive(false);
-
-                                                        handCard.GetComponent<Draggable_HandCard>().ReturnDefaultPosition();
-
-                                                        StartCoroutine(SelectWheterToAppFusion());
-
-                                                        IEnumerator SelectWheterToAppFusion()
-                                                        {
-                                                            isSync = true;
-
-                                                            yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().MoveToExecuteCardEffect_SetPosition(handCard.cardSource, Pos));
-                                                            handCard.transform.position = handCard.cardSource.Owner.brainStormObject.BrainStormHandCards[0].transform.position;
-
-                                                            GManager.instance.selectAppFusionEffect.SetUp_SelectWheterToAppFusion
-                                                                (card: handCard.cardSource,
-                                                                evoRoot: fieldCardFrame.GetFramePermanent().TopCard,
-                                                                canNoSelect: true,
-                                                                endSelectCoroutine_Digivolve: _Digivolution,
-                                                                endSelectCoroutine_AppFusion: _SelectAppFusionPermanents,
-                                                                noSelectCoroutine: _NoSelectCoroutine);
-
-                                                            yield return ContinuousController.instance.StartCoroutine(GManager.instance.selectAppFusionEffect.SelectWheterToAppFusion());
-
-                                                            IEnumerator _Digivolution()
-                                                            {
-                                                                yield return null;
-                                                                Digivolution();
-                                                            }
-
-                                                            IEnumerator _SelectAppFusionPermanents()
-                                                            {
-                                                                yield return null;
-                                                                SelectAppFusionCards(false);
-                                                            }
-
-                                                            IEnumerator _NoSelectCoroutine()
-                                                            {
-                                                                yield return StartCoroutine(Return());
-                                                            }
-                                                        }
-                                                    }
-
-                                                    #region Select Jogress evolution source
-                                                    void SelectJogressDigivolutionCards(bool move)
-                                                    {
-                                                        Vector3 Pos = handCard.transform.position;
-
-                                                        ResetUI();
-
-                                                        handCard.transform.GetChild(0).gameObject.SetActive(false);
-
-                                                        StartCoroutine(SelectJogressTarget());
-
-                                                        IEnumerator SelectJogressTarget()
-                                                        {
-                                                            isSync = true;
-
-                                                            if (move)
-                                                            {
-                                                                yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().MoveToExecuteCardEffect_SetPosition(handCard.cardSource, Pos));
-                                                                handCard.transform.position = handCard.cardSource.Owner.brainStormObject.BrainStormHandCards[0].transform.position;
-                                                            }
-
-                                                            yield return ContinuousController.instance.StartCoroutine(handCard.cardSource.Owner.brainStormObject.BrainStormCoroutine(handCard.cardSource));
-
-                                                            GManager.instance.selectJogressEffect.SetUp_SelectDigivolutionRoots
-                                                                (card: handCard.cardSource,
-                                                                isLocal: true,
-                                                                isPayCost: true,
-                                                                canNoSelect: true,
-                                                                endSelectCoroutine_SelectDigivolutionRoots: _EndSelectCoroutine_SelectDigivolutionRoots,
-                                                                noSelectCoroutine: _NoSelectCoroutine);
-
-                                                            yield return ContinuousController.instance.StartCoroutine(GManager.instance.selectJogressEffect.SelectDigivolutionRoots());
-
-                                                            IEnumerator _EndSelectCoroutine_SelectDigivolutionRoots(List<Permanent> permanents)
-                                                            {
-                                                                yield return null;
-                                                                photonView.RPC("SetPlayCard", RpcTarget.All, handCard.cardSource.CardIndex, fieldCardFrame.FrameID, new int[] { permanents[0].PermanentFrame.FrameID, permanents[1].PermanentFrame.FrameID }, -1, new int[0]);
-                                                            }
-
-                                                            IEnumerator _NoSelectCoroutine()
-                                                            {
-                                                                yield return null;
-                                                                yield return StartCoroutine(Return());
-                                                            }
-
-                                                            isSync = false;
-                                                        }
-                                                    }
-                                                    #endregion
-
-                                                    #region Select the burst evolution source and tamer
-                                                    void SelectBurstDigivolutionCards(bool move)
-                                                    {
-                                                        Vector3 Pos = handCard.transform.position;
-
-                                                        ResetUI();
-
-                                                        handCard.transform.GetChild(0).gameObject.SetActive(false);
-
-                                                        StartCoroutine(SelectJogressTarget());
-
-                                                        IEnumerator SelectJogressTarget()
-                                                        {
-                                                            isSync = true;
-
-                                                            if (move)
-                                                            {
-                                                                yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().MoveToExecuteCardEffect_SetPosition(handCard.cardSource, Pos));
-                                                                handCard.transform.position = handCard.cardSource.Owner.brainStormObject.BrainStormHandCards[0].transform.position;
-                                                            }
-
-                                                            yield return ContinuousController.instance.StartCoroutine(handCard.cardSource.Owner.brainStormObject.BrainStormCoroutine(handCard.cardSource));
-
-                                                            GManager.instance.selectBurstDigivolutionEffect.SetUp_SelectTamer
-                                                                (card: handCard.cardSource,
-                                                                isLocal: true,
-                                                                isPayCost: true,
-                                                                canNoSelect: true,
-                                                                endSelectCoroutine_SelectTamer: EndSelectCoroutine_SelectTamer,
-                                                                noSelectCoroutine: _NoSelectCoroutine);
-
-
-                                                            yield return ContinuousController.instance.StartCoroutine(GManager.instance.selectBurstDigivolutionEffect.SelectTamer());
-
-                                                            IEnumerator EndSelectCoroutine_SelectTamer(Permanent permanent)
-                                                            {
-                                                                yield return null;
-                                                                photonView.RPC("SetPlayCard", RpcTarget.All, handCard.cardSource.CardIndex, fieldCardFrame.FrameID, new int[0], permanent.PermanentFrame.FrameID, new int[0]);
-                                                            }
-
-                                                            IEnumerator _NoSelectCoroutine()
-                                                            {
-                                                                yield return null;
-                                                                yield return StartCoroutine(Return());
-                                                            }
-
-                                                            isSync = false;
-                                                        }
-                                                    }
-                                                    #endregion
-
-                                                    #region Select the app fusion source and link card
-                                                    void SelectAppFusionCards(bool move)
-                                                    {
-                                                        Vector3 Pos = handCard.transform.position;
-
-                                                        ResetUI();
-
-                                                        handCard.transform.GetChild(0).gameObject.SetActive(false);
-
-                                                        StartCoroutine(SelectAppFusionTarget());
-
-                                                        IEnumerator SelectAppFusionTarget()
-                                                        {
-                                                            isSync = true;
-
-                                                            if (move)
-                                                            {
-                                                                yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().MoveToExecuteCardEffect_SetPosition(handCard.cardSource, Pos));
-                                                                handCard.transform.position = handCard.cardSource.Owner.brainStormObject.BrainStormHandCards[0].transform.position;
-                                                            }
-
-                                                            yield return ContinuousController.instance.StartCoroutine(handCard.cardSource.Owner.brainStormObject.BrainStormCoroutine(handCard.cardSource));
+        //if (gameContext.TurnPlayer.isYou)
+        //{
+        //    #region permanent of the place
+        //    foreach (FieldPermanentCard fieldPermanentCard in gameContext.TurnPlayer.FieldPermanentObjects)
+        //    {
+        //        if (fieldPermanentCard.gameObject.activeSelf && fieldPermanentCard.ThisPermanent.CanDeclareSkill() || fieldPermanentCard.ThisPermanent.CanAttack(null))
+        //        {
+        //            fieldPermanentCard.OnSelectEffect(1.1f);
+
+        //            #region Add click operation
+        //            fieldPermanentCard.AddClickTarget((_fieldUnitCard) => StartCoroutine(OnClick_Select()));
+
+        //            IEnumerator OnClick_Select()
+        //            {
+        //                if (isSync)
+        //                {
+        //                    yield break;
+        //                }
+
+        //                IsSelecting = true;
+
+        //                #region Reset cards in other places
+        //                foreach (FieldPermanentCard _fieldPermanentCard in gameContext.TurnPlayer.FieldPermanentObjects)
+        //                {
+        //                    if (_fieldPermanentCard != fieldPermanentCard)
+        //                    {
+        //                        _fieldPermanentCard.RemoveSelectEffect();
+        //                    }
+        //                }
+
+        //                foreach (Player player in gameContext.Players)
+        //                {
+        //                    OffFieldCardTarget(player);
+        //                }
+        //                #endregion
+
+        //                #region Reset cards in hand
+        //                foreach (HandCard handCard in gameContext.TurnPlayer.HandCardObjects)
+        //                {
+        //                    handCard.RemoveSelectEffect();
+        //                    handCard.RemoveClickTarget();
+        //                   // handCard.RemoveDragTarget();
+        //                }
+        //                #endregion
+
+        //                List<CardCommand> FieldUnitCommands = new List<CardCommand>();
+
+        //                #region activated effect
+        //                if (fieldPermanentCard.ThisPermanent.CanDeclareSkill())
+        //                {
+        //                    List<ICardEffect> cardEffects = new List<ICardEffect>();
+        //                    List<ICardEffect> cardEffects1 = new List<ICardEffect>();
+
+        //                    foreach (ICardEffect cardEffect in fieldPermanentCard.ThisPermanent.EffectList(EffectTiming.OnDeclaration))
+        //                    {
+        //                        cardEffects1.Add(cardEffect);
+        //                        cardEffects.Add(cardEffect);
+        //                    }
+
+        //                    cardEffects.Reverse();
+
+        //                    foreach (ICardEffect cardEffect in cardEffects)
+        //                    {
+        //                        if (cardEffect is ActivateICardEffect)
+        //                        {
+        //                            CardCommand SkillCommand = new CardCommand(cardEffect.EffectName, OnClick_SetUseSkillPermanent_RPC, cardEffect.CanUse(null), DataBase.CommandColor_Skill);
+        //                            FieldUnitCommands.Add(SkillCommand);
+
+        //                            void OnClick_SetUseSkillPermanent_RPC()
+        //                            {
+        //                                #region Reset cards on the field
+        //                                foreach (Player player in gameContext.Players)
+        //                                {
+        //                                    foreach (FieldPermanentCard _fieldUnitCard in player.FieldPermanentObjects)
+        //                                    {
+        //                                        _fieldUnitCard.CloseCommandPanel();
+        //                                        _fieldUnitCard.RemoveClickTarget();
+        //                                        _fieldUnitCard.RemoveDragTarget();
+        //                                        _fieldUnitCard.RemoveSelectEffect();
+        //                                    }
+        //                                }
+        //                                #endregion
+
+        //                                SetActSkill( fieldPermanentCard.ThisPermanent.TopCard.Owner.GetFieldPermanents().IndexOf(fieldPermanentCard.ThisPermanent), cardEffects1.IndexOf(cardEffect));
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //                #endregion
+
+        //                #region attack
+        //                if (fieldPermanentCard.ThisPermanent.IsDigimon)
+        //                {
+        //                    CardCommand SkillCommand = new CardCommand("Attack", () => StartCoroutine(OnClick_SetAttack_RPC()), fieldPermanentCard.ThisPermanent.CanAttack(null), DataBase.CommandColor_Attack);
+        //                    FieldUnitCommands.Add(SkillCommand);
+
+        //                    IEnumerator OnClick_SetAttack_RPC()
+        //                    {
+        //                        if (fieldPermanentCard.ThisPermanent.CanAttack(null))
+        //                        {
+        //                            #region Reset cards on the field
+        //                            foreach (Player player in gameContext.Players)
+        //                            {
+        //                                foreach (FieldPermanentCard _fieldUnitCard in player.FieldPermanentObjects)
+        //                                {
+        //                                    if (_fieldUnitCard != fieldPermanentCard)
+        //                                    {
+        //                                        _fieldUnitCard.RemoveSelectEffect();
+        //                                        _fieldUnitCard.RemoveDragTarget();
+        //                                    }
+
+        //                                    _fieldUnitCard.CloseCommandPanel();
+        //                                    _fieldUnitCard.RemoveClickTarget();
+        //                                }
+        //                            }
+        //                            #endregion
+
+        //                            #region When only direct attack is available
+        //                            if (fieldPermanentCard.ThisPermanent.CanAttackTargetDigimon(null, null) && gameContext.NonTurnPlayer.GetBattleAreaDigimons().Count((permanent) => fieldPermanentCard.ThisPermanent.CanAttackTargetDigimon(permanent, null)) == 0)
+        //                            {
+        //                                if (fieldPermanentCard.ThisPermanent.CanAttackTargetDigimon(null, null))
+        //                                {
+        //                                    bool doAttack = false;
+        //                                    bool endSelect_doAttack = false;
+
+        //                                    if (gameContext.NonTurnPlayer.SecurityCards.Count >= 1)
+        //                                    {
+        //                                        gameContext.NonTurnPlayer.securityObject.securityBreakGlass.ShowBlueMatarial();
+        //                                    }
+
+        //                                    gameContext.NonTurnPlayer.securityObject.SetSecurityAttackObject();
+        //                                    gameContext.NonTurnPlayer.securityObject.SetSecurityOutline(true);
+
+        //                                    gameContext.NonTurnPlayer.securityObject.AddClickTarget(() =>
+        //                                    {
+        //                                        doAttack = true;
+        //                                        endSelect_doAttack = true;
+        //                                    });
+
+        //                                    //GManager.instance.commandText.OpenCommandText($"Will you attack with {fieldPermanentCard.ThisPermanent.TopCard.BaseENGCardNameFromEntity}?");
+
+        //                                    List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
+        //                                            {
+        //                                                new Command_SelectCommand("Attack",() =>
+        //                                                {
+        //                                                    doAttack = true;
+
+        //                                                    GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
+        //                                                    GManager.instance.BackButton.CloseSelectCommandButton();
+
+        //                                                    endSelect_doAttack = true;
+        //                                                },0),
+        //                                            };
+
+        //                                    GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
+
+        //                                    GManager.instance.BackButton.OpenSelectCommandButton("Return", () =>
+        //                                    {
+        //                                        doAttack = false;
+
+        //                                        GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
+        //                                        GManager.instance.BackButton.CloseSelectCommandButton();
+
+        //                                        endSelect_doAttack = true;
+
+        //                                    }, 0);
+
+        //                                    yield return new WaitWhile(() => !endSelect_doAttack);
+        //                                    endSelect_doAttack = false;
+
+        //                                    GManager.instance.selectCommandPanel.Off();
+
+        //                                    //GManager.instance.commandText.CloseCommandText();
+        //                                    //yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
+
+        //                                    gameContext.NonTurnPlayer.securityObject.RemoveClickTarget();
+        //                                    GManager.instance.BackButton.CloseSelectCommandButton();
+
+        //                                    if (doAttack)
+        //                                    {
+        //                                        SetAttackingPermaent( fieldPermanentCard.ThisPermanent.TopCard.Owner.GetFieldPermanents().IndexOf(fieldPermanentCard.ThisPermanent), -1);
+        //                                    }
+
+        //                                    else
+        //                                    {
+        //                                        StartCoroutine(SetMainPhase());
+        //                                    }
+        //                                }
+
+        //                            }
+        //                            #endregion
+
+        //                            #region When it is possible to attack characters on the field
+        //                            else if (gameContext.NonTurnPlayer.GetBattleAreaDigimons().Count((permanent) => fieldPermanentCard.ThisPermanent.CanAttackTargetDigimon(permanent, null)) >= 1)
+        //                            {
+        //                                bool doAttack = false;
+        //                                int attackTargetID = -1;
+        //                                bool endSelect_doAttack = false;
+
+        //                                //GManager.instance.commandText.OpenCommandText($"Which target will you attack?");
+
+        //                                if (fieldPermanentCard.ThisPermanent.CanAttackTargetDigimon(null, null))
+        //                                {
+        //                                    if (gameContext.NonTurnPlayer.SecurityCards.Count >= 1)
+        //                                    {
+        //                                        gameContext.NonTurnPlayer.securityObject.securityBreakGlass.ShowBlueMatarial();
+        //                                    }
+
+        //                                    gameContext.NonTurnPlayer.securityObject.SetSecurityAttackObject();
+        //                                    gameContext.NonTurnPlayer.securityObject.SetSecurityOutline(true);
+
+        //                                    gameContext.NonTurnPlayer.securityObject.AddClickTarget(() =>
+        //                                    {
+        //                                        doAttack = true;
+        //                                        attackTargetID = -1;
+        //                                        endSelect_doAttack = true;
+        //                                    });
+        //                                }
+
+        //                                foreach (FieldPermanentCard enemyFieldPermanentCard in gameContext.NonTurnPlayer.FieldPermanentObjects)
+        //                                {
+        //                                    if (fieldPermanentCard.ThisPermanent.CanAttackTargetDigimon(enemyFieldPermanentCard.ThisPermanent, null))
+        //                                    {
+        //                                        enemyFieldPermanentCard.AddClickTarget((_fieldUnitCard) => StartCoroutine(SelectDefender()));
+
+        //                                        enemyFieldPermanentCard.OnSelectEffect(1.1f);
+
+        //                                        IEnumerator SelectDefender()
+        //                                        {
+        //                                            foreach (Player player in gameContext.Players_ForTurnPlayer)
+        //                                            {
+        //                                                foreach (FieldPermanentCard _fieldPermanentCard in gameContext.TurnPlayer.FieldPermanentObjects)
+        //                                                {
+        //                                                    _fieldPermanentCard.RemoveSelectEffect();
+        //                                                    _fieldPermanentCard.RemoveDragTarget();
+        //                                                    _fieldPermanentCard.RemoveClickTarget();
+        //                                                }
+        //                                            }
+
+        //                                            GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
+        //                                            GManager.instance.BackButton.CloseSelectCommandButton();
+
+        //                                            doAttack = true;
+        //                                            attackTargetID = enemyFieldPermanentCard.ThisPermanent.TopCard.Owner.GetFieldPermanents().IndexOf(enemyFieldPermanentCard.ThisPermanent);
+        //                                            endSelect_doAttack = true;
+
+        //                                            yield return null;
+        //                                        }
+        //                                    }
+        //                                }
+
+        //                                GManager.instance.BackButton.OpenSelectCommandButton("Return", () =>
+        //                                {
+        //                                    doAttack = false;
+
+        //                                    GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
+        //                                    GManager.instance.BackButton.CloseSelectCommandButton();
+
+        //                                    endSelect_doAttack = true;
+
+        //                                }, 0);
+
+        //                                yield return new WaitWhile(() => !endSelect_doAttack);
+        //                                endSelect_doAttack = false;
+
+        //                                GManager.instance.selectCommandPanel.Off();
+        //                                gameContext.NonTurnPlayer.securityObject.OffShowSecurityAttackObject();
+        //                                //GManager.instance.commandText.CloseCommandText();
+        //                                //yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
+
+        //                                GManager.instance.BackButton.CloseSelectCommandButton();
+
+        //                                if (doAttack)
+        //                                {
+        //                                    SetAttackingPermaent( fieldPermanentCard.ThisPermanent.TopCard.Owner.GetFieldPermanents().IndexOf(fieldPermanentCard.ThisPermanent), attackTargetID);
+        //                                }
+
+        //                                else
+        //                                {
+        //                                    StartCoroutine(SetMainPhase());
+        //                                }
+        //                            }
+        //                            #endregion
+        //                        }
+        //                    }
+        //                }
+        //                #endregion
+
+        //                fieldPermanentCard.fieldUnitCommandPanel.SetUpCommandPanel(FieldUnitCommands, fieldPermanentCard, null);
+
+        //                fieldPermanentCard.AddClickTarget((_fieldUnitCard) => StartCoroutine(SetMainPhase()));
+
+        //                fieldPermanentCard.Outline_Select.gameObject.SetActive(true);
+        //                fieldPermanentCard.SetOrangeOutline();
+
+        //                yield return null;
+        //            }
+        //            #endregion
+
+        //            AddDragProcess(fieldPermanentCard);
+
+        //            #region ドラッグ操作を追加
+        //            void AddDragProcess(FieldPermanentCard fieldPermanentCard1)
+        //            {
+        //                if (fieldPermanentCard1.ThisPermanent.CanAttack(null))
+        //                {
+        //                    fieldPermanentCard1.AddDragTarget(OnBeginDragAction, OnDragAction, OnEndDragAction);
+
+        //                    #region ドラッグ開始
+        //                    void OnBeginDragAction(FieldPermanentCard fieldPermanentCard2)
+        //                    {
+        //                        if (isSync)
+        //                        {
+        //                            return;
+        //                        }
+
+        //                        if (gameContext.TurnPlayer.FieldPermanentObjects.Count((fieldPermanentCard3) => fieldPermanentCard3.fieldUnitCommandPanel.isActive()) == 0)
+        //                        {
+        //                            #region 手札のカードをリセット
+        //                            foreach (HandCard handCard1 in gameContext.TurnPlayer.HandCardObjects)
+        //                            {
+        //                                handCard1.RemoveClickTarget();
+        //                                handCard1.RemoveDragTarget();
+        //                                handCard1.RemoveSelectEffect();
+        //                                handCard1.handCardCommandPanel.CloseCommandPanel();
+        //                                handCard1.Outline_Select.gameObject.SetActive(false);
+        //                            }
+
+        //                            foreach (Player player in gameContext.Players)
+        //                            {
+        //                                foreach (HandCard handCard2 in player.HandCardObjects)
+        //                                {
+        //                                    handCard2.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = true;
+        //                                }
+        //                            }
+        //                            #endregion
+
+        //                            IsSelecting = true;
+
+        //                            //GManager.instance.commandText.CloseCommandText();
+
+        //                            fieldPermanentCard2.CloseCommandPanel();
+
+        //                            TargetArrow targetArrow = GManager.instance.CreateTargetArrow();
+
+        //                            targetArrow.SetTargetArrow(fieldPermanentCard2.ThisPermanent.PermanentFrame.GetLocalCanvasPosition() + fieldPermanentCard2.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition, Draggable.GetLocalPosition(Input.mousePosition, targetArrow.transform));
+
+        //                            foreach (FieldPermanentCard fieldPermanentCard3 in gameContext.TurnPlayer.FieldPermanentObjects)
+        //                            {
+        //                                if (fieldPermanentCard3 != fieldPermanentCard2)
+        //                                {
+        //                                    fieldPermanentCard3.RemoveSelectEffect();
+        //                                    fieldPermanentCard3.RemoveClickTarget();
+        //                                    fieldPermanentCard3.RemoveDragTarget();
+        //                                }
+        //                            }
+
+        //                            foreach (FieldPermanentCard enemyFieldPermanentCard in gameContext.NonTurnPlayer.FieldPermanentObjects)
+        //                            {
+        //                                if (fieldPermanentCard2.ThisPermanent.CanAttackTargetDigimon(enemyFieldPermanentCard.ThisPermanent, null))
+        //                                {
+        //                                    enemyFieldPermanentCard.OnSelectEffect(1.1f);
+        //                                    enemyFieldPermanentCard.SetBlueOutline();
+        //                                }
+        //                            }
+
+        //                            if (fieldPermanentCard1.ThisPermanent.CanAttackTargetDigimon(null, null))
+        //                            {
+        //                                if (gameContext.NonTurnPlayer.SecurityCards.Count >= 1)
+        //                                {
+        //                                    gameContext.NonTurnPlayer.securityObject.securityBreakGlass.ShowTransparentMatarial();
+        //                                }
+
+        //                                gameContext.NonTurnPlayer.securityObject.SetSecurityAttackObject();
+        //                                gameContext.NonTurnPlayer.securityObject.SetSecurityOutline(false);
+        //                            }
+        //                        }
+        //                    }
+        //                    #endregion
+
+        //                    #region ドラッグ中
+        //                    void OnDragAction(FieldPermanentCard fieldPermanentCard2, List<DropArea> dropAreas)
+        //                    {
+        //                        if (isSync)
+        //                        {
+        //                            StartCoroutine(SetMainPhase());
+        //                        }
+
+        //                        fieldPermanentCard2.CloseCommandPanel();
+
+        //                        TargetArrow targetArrow = null;
+
+        //                        for (int i = 0; i < GManager.instance.targetArrowParent.childCount; i++)
+        //                        {
+        //                            if (GManager.instance.targetArrowParent.GetChild(i).GetComponent<TargetArrow>() != null && GManager.instance.targetArrowParent.GetChild(i).gameObject.activeSelf)
+        //                            {
+        //                                targetArrow = GManager.instance.targetArrowParent.GetChild(i).GetComponent<TargetArrow>();
+        //                            }
+        //                        }
+
+        //                        if (targetArrow != null)
+        //                        {
+        //                            targetArrow.SetTargetArrow(fieldPermanentCard2.ThisPermanent.PermanentFrame.GetLocalCanvasPosition() + fieldPermanentCard2.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition, Draggable.GetLocalPosition(Input.mousePosition, targetArrow.transform));
+
+        //                            foreach (FieldPermanentCard enemyFieldPermanentCard in GManager.instance.Opponent.FieldPermanentObjects)
+        //                            {
+        //                                if (fieldPermanentCard2.ThisPermanent.CanAttackTargetDigimon(enemyFieldPermanentCard.ThisPermanent, null))
+        //                                {
+        //                                    bool OnSelect = false;
+
+        //                                    if (dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(enemyFieldPermanentCard.gameObject)) > 0)
+        //                                    {
+        //                                        if (fieldPermanentCard2.ThisPermanent.CanAttackTargetDigimon(enemyFieldPermanentCard.ThisPermanent, null))
+        //                                        {
+        //                                            OnSelect = true;
+        //                                        }
+        //                                    }
+
+        //                                    if (OnSelect)
+        //                                    {
+        //                                        enemyFieldPermanentCard.OnSelectEffect(1.1f);
+        //                                        enemyFieldPermanentCard.SetOrangeOutline();
+        //                                    }
+
+        //                                    else
+        //                                    {
+        //                                        enemyFieldPermanentCard.OnSelectEffect(1.1f);
+        //                                        enemyFieldPermanentCard.SetBlueOutline();
+        //                                    }
+        //                                }
+        //                            }
+
+        //                            if (fieldPermanentCard2.ThisPermanent.CanAttackTargetDigimon(null, null))
+        //                            {
+        //                                if (dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(gameContext.NonTurnPlayer.securityObject.securityAttackDropArea.gameObject)) > 0)
+        //                                {
+        //                                    if (gameContext.NonTurnPlayer.SecurityCards.Count >= 1)
+        //                                    {
+        //                                        gameContext.NonTurnPlayer.securityObject.securityBreakGlass.ShowBlueMatarial();
+        //                                    }
+
+        //                                    gameContext.NonTurnPlayer.securityObject.SetSecurityAttackObject();
+        //                                    gameContext.NonTurnPlayer.securityObject.SetSecurityOutline(true);
+        //                                }
+
+        //                                else
+        //                                {
+        //                                    if (gameContext.NonTurnPlayer.SecurityCards.Count >= 1)
+        //                                    {
+        //                                        gameContext.NonTurnPlayer.securityObject.securityBreakGlass.ShowTransparentMatarial();
+        //                                    }
+
+        //                                    gameContext.NonTurnPlayer.securityObject.SetSecurityAttackObject();
+        //                                    gameContext.NonTurnPlayer.securityObject.SetSecurityOutline(false);
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                    #endregion
+
+        //                    #region ドラッグ終了
+        //                    void OnEndDragAction(FieldPermanentCard fieldPermanentCard2, List<DropArea> dropAreas)
+        //                    {
+        //                        if (isSync)
+        //                        {
+        //                            StartCoroutine(SetMainPhase());
+        //                        }
+
+        //                        IsSelecting = false;
+
+        //                        TargetArrow targetArrow = null;
+
+        //                        for (int i = 0; i < GManager.instance.targetArrowParent.childCount; i++)
+        //                        {
+        //                            if (GManager.instance.targetArrowParent.GetChild(i).GetComponent<TargetArrow>() != null && GManager.instance.targetArrowParent.GetChild(i).gameObject.activeSelf)
+        //                            {
+        //                                targetArrow = GManager.instance.targetArrowParent.GetChild(i).GetComponent<TargetArrow>();
+        //                            }
+        //                        }
+
+        //                        if (targetArrow != null)
+        //                        {
+        //                            #region 手札のカードをリセット
+        //                            foreach (HandCard handCard1 in gameContext.TurnPlayer.HandCardObjects)
+        //                            {
+        //                                handCard1.RemoveClickTarget();
+        //                            }
+
+        //                            foreach (Player player in gameContext.Players)
+        //                            {
+        //                                foreach (HandCard handCard2 in player.HandCardObjects)
+        //                                {
+        //                                    handCard2.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = true;
+        //                                }
+        //                            }
+        //                            #endregion
+
+        //                            GManager.instance.You.playMatCardFrame.OffFrame_Select();
+
+        //                            fieldPermanentCard2.CloseCommandPanel();
+
+        //                            Destroy(targetArrow.gameObject);
+
+        //                            foreach (DropArea dropArea in dropAreas)
+        //                            {
+        //                                foreach (FieldPermanentCard enemyFieldPermanentCard in GManager.instance.Opponent.FieldPermanentObjects)
+        //                                {
+        //                                    if (dropArea.IsChildThisDropArea(enemyFieldPermanentCard.gameObject))
+        //                                    {
+        //                                        if (fieldPermanentCard2.ThisPermanent.CanAttackTargetDigimon(enemyFieldPermanentCard.ThisPermanent, null))
+        //                                        {
+        //                                            #region Reset field cards
+        //                                            foreach (Player player in gameContext.Players)
+        //                                            {
+        //                                                foreach (FieldPermanentCard fieldPermanentCard3 in player.FieldPermanentObjects)
+        //                                                {
+        //                                                    if (fieldPermanentCard3 != fieldPermanentCard2 && fieldPermanentCard3 != enemyFieldPermanentCard)
+        //                                                    {
+        //                                                        fieldPermanentCard3.RemoveSelectEffect();
+        //                                                    }
+
+        //                                                    fieldPermanentCard3.CloseCommandPanel();
+        //                                                    fieldPermanentCard3.RemoveClickTarget();
+        //                                                    fieldPermanentCard3.RemoveDragTarget();
+        //                                                }
+        //                                            }
+        //                                            #endregion
+
+        //                                            //gameContext.NonTurnPlayer.LifeCardFrame.OffFrame_Select();
+
+        //                                            SetAttackingPermaent( gameContext.TurnPlayer.GetFieldPermanents().IndexOf(fieldPermanentCard2.ThisPermanent), gameContext.NonTurnPlayer.GetFieldPermanents().IndexOf(enemyFieldPermanentCard.ThisPermanent));
+        //                                            return;
+        //                                        }
+        //                                    }
+        //                                }
+
+        //                                if (fieldPermanentCard2.ThisPermanent.CanAttackTargetDigimon(null, null))
+        //                                {
+        //                                    if (dropArea.IsChildThisDropArea(gameContext.NonTurnPlayer.securityObject.securityAttackDropArea.gameObject))
+        //                                    {
+        //                                        #region Reset field cards
+        //                                        foreach (Player player in gameContext.Players)
+        //                                        {
+        //                                            foreach (FieldPermanentCard fieldPermanentCard3 in player.FieldPermanentObjects)
+        //                                            {
+        //                                                if (fieldPermanentCard3 != fieldPermanentCard2)
+        //                                                {
+        //                                                    fieldPermanentCard3.RemoveSelectEffect();
+        //                                                }
+
+        //                                                fieldPermanentCard3.CloseCommandPanel();
+        //                                                fieldPermanentCard3.RemoveClickTarget();
+        //                                                fieldPermanentCard3.RemoveDragTarget();
+        //                                            }
+        //                                        }
+        //                                        #endregion
+
+        //                                        SetAttackingPermaent( gameContext.TurnPlayer.GetFieldPermanents().IndexOf(fieldPermanentCard2.ThisPermanent), -1);
+        //                                        return;
+        //                                    }
+        //                                }
+        //                            }
+
+        //                            StartCoroutine(SetMainPhase());
+        //                        }
+        //                    }
+        //                    #endregion
+        //                }
+        //            }
+        //            #endregion
+        //        }
+        //    }
+        //    #endregion
+
+        //    #region cards in hand
+        //    foreach (HandCard handCard in gameContext.TurnPlayer.HandCardObjects)
+        //    {
+        //        #region drag and play
+        //        if (handCard.cardSource.CanPlayFromHandDuringMainPhase)
+        //        {
+        //            handCard.SetBlueOutline();
+
+        //            handCard.AddDragTarget(BeginDrag, OnDropCard, OnDragCard);
+
+        //            #region At the start of drag
+        //            void BeginDrag(HandCard handCard1)
+        //            {
+        //                if (isSync)
+        //                {
+        //                    //return;
+        //                }
+
+        //                if (gameContext.TurnPlayer.FieldPermanentObjects.Count((_fieldPermanentCard1) => _fieldPermanentCard1.fieldUnitCommandPanel.isActive()) == 0)
+        //                {
+        //                    IsSelecting = true;
+
+        //                    OffFieldCardTarget(gameContext.TurnPlayer);
+
+        //                    foreach (HandCard handCard2 in gameContext.TurnPlayer.HandCardObjects)
+        //                    {
+        //                        handCard2.RemoveOnClickAction();
+
+        //                        if (handCard2 != handCard1)
+        //                        {
+        //                            handCard2.RemoveSelectEffect();
+        //                        }
+        //                    }
+
+        //                    foreach (FieldPermanentCard fieldPermanentCard in GManager.instance.You.FieldPermanentObjects)
+        //                    {
+        //                        fieldPermanentCard.RemoveSelectEffect();
+        //                        fieldPermanentCard.RemoveDragTarget();
+        //                        fieldPermanentCard.Outline_Select.gameObject.SetActive(false);
+        //                    }
+
+        //                    foreach (FieldCardFrame fieldCardFrame in GManager.instance.You.fieldCardFrames)
+        //                    {
+        //                        fieldCardFrame.OffFrame_Select();
+        //                    }
+
+        //                    foreach (Player player in gameContext.Players_ForTurnPlayer)
+        //                    {
+        //                        foreach (FieldCardFrame fieldCardFrame in player.fieldCardFrames)
+        //                        {
+        //                            fieldCardFrame.AddClickTarget(null);
+        //                        }
+        //                    }
+
+        //                    GManager.instance.You.playMatCardFrame.AddClickTarget(null);
+        //                    GManager.instance.You.playMatCardFrame.OffFrame_Select();
+
+        //                    handCard1.SetBlueOutline();
+        //                    handCard1.OffPlayText();
+        //                    handCard1.OffJogressPlayText();
+        //                    handCard1.OffBurstPlayText();
+        //                    handCard1.OffAppFusionPlayText();
+        //                    handCard1.OffClickText();
+
+        //                    #region デジモン・テイマー
+        //                    if (handCard1.cardSource.IsPermanent)
+        //                    {
+        //                        bool CanPlayEmptyFrame = false;
+
+        //                        foreach (FieldCardFrame fieldCardFrame in GManager.instance.You.fieldCardFrames)
+        //                        {
+        //                            if (fieldCardFrame.IsEmptyFrame())
+        //                            {
+        //                                if (handCard1.cardSource.CanPlayCardTargetFrame(fieldCardFrame, true, null))
+        //                                {
+        //                                    CanPlayEmptyFrame = true;
+        //                                    break;
+        //                                }
+        //                            }
+        //                        }
+
+        //                        if (CanPlayEmptyFrame)
+        //                        {
+        //                            GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(true);
+        //                            GManager.instance.You.playMatCardFrame.OnFrame_Select(DataBase.SelectColor_Blue);
+        //                        }
+
+        //                        foreach (FieldCardFrame fieldCardFrame in GManager.instance.You.fieldCardFrames)
+        //                        {
+        //                            if (handCard1.cardSource.CanPlayCardTargetFrame(fieldCardFrame, true, null) || handCard1.cardSource.CanJogressFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true) || handCard1.cardSource.CanBurstDigivolutionFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true))
+        //                            {
+        //                                if (fieldCardFrame.GetFramePermanent() != null)
+        //                                {
+        //                                    if (fieldCardFrame.GetFramePermanent().ShowingPermanentCard != null)
+        //                                    {
+        //                                        fieldCardFrame.GetFramePermanent().ShowingPermanentCard.Outline_Select.gameObject.SetActive(true);
+        //                                        fieldCardFrame.GetFramePermanent().ShowingPermanentCard.SetBlueOutline();
+        //                                    }
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                    #endregion
+
+        //                    #region オプション
+        //                    else if (handCard1.cardSource.IsOption)
+        //                    {
+        //                        GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(true);
+        //                        GManager.instance.You.playMatCardFrame.OnFrame_Select(DataBase.SelectColor_Blue);
+        //                    }
+        //                    #endregion
+
+        //                    // check playablity
+        //                    ContinuousController.instance.StartCoroutine(SetHandCardPlayablity(handCard.cardSource));
+        //                }
+        //            }
+        //            #endregion
+
+        //            #region At the end of drag
+        //            void OnDropCard(List<DropArea> dropAreas)
+        //            {
+        //                if (isSync)
+        //                {
+        //                    StartCoroutine(Return());
+        //                }
+
+        //                if (gameContext.TurnPlayer.FieldPermanentObjects.Count((_fieldPermanentCard1) => _fieldPermanentCard1.fieldUnitCommandPanel.isActive()) == 0)
+        //                {
+        //                    foreach (FieldPermanentCard fieldPermanentCard in gameContext.TurnPlayer.FieldPermanentObjects)
+        //                    {
+        //                        fieldPermanentCard.RemoveSelectEffect();
+        //                        fieldPermanentCard.RemoveDragTarget();
+        //                        fieldPermanentCard.Outline_Select.gameObject.SetActive(false);
+        //                    }
+
+        //                    foreach (FieldCardFrame fieldCardFrame in GManager.instance.You.fieldCardFrames)
+        //                    {
+        //                        fieldCardFrame.OffFrame_Select();
+        //                    }
+
+        //                    GManager.instance.You.playMatCardFrame.OffFrame_Select();
+        //                    handCard.OffPlayText();
+        //                    handCard.OffJogressPlayText();
+        //                    handCard.OffBurstPlayText();
+        //                    handCard.OffAppFusionPlayText();
+
+        //                    #region play cards
+
+        //                    bool isOnHand = dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(GManager.instance.You.HandDropArea.gameObject)) > 0;
+        //                    bool selected = false;
+
+        //                    #region If it is not dropped in the hand area
+        //                    if (!isOnHand)
+        //                    {
+        //                        #region character field
+        //                        if (handCard.cardSource.IsPermanent)
+        //                        {
+        //                            #region Check if it is dropped in the frame
+        //                            foreach (FieldCardFrame fieldCardFrame in GManager.instance.You.fieldCardFrames)
+        //                            {
+        //                                if (handCard.cardSource.CanPlayCardTargetFrame(fieldCardFrame, true, null) || handCard.cardSource.CanJogressFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true) || handCard.cardSource.CanBurstDigivolutionFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true) || handCard.cardSource.CanAppFusionFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true))
+        //                                {
+        //                                    if (dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(fieldCardFrame.Frame)) > 0)
+        //                                    {
+        //                                        if (fieldCardFrame.GetFramePermanent() != null)
+        //                                        {
+        //                                            if (handCard.cardSource.Owner.HandTransform.GetComponent<HandContoller>() != null)
+        //                                            {
+        //                                                handCard.cardSource.Owner.HandTransform.GetComponent<HandContoller>().isDragging = true;
+        //                                            }
+
+        //                                            OffHandCardTarget(gameContext.TurnPlayer);
+
+        //                                            handCard.Outline_Select.gameObject.SetActive(false);
+
+        //                                            foreach (Player player in gameContext.Players_ForTurnPlayer)
+        //                                            {
+        //                                                foreach (FieldCardFrame fieldCardFrame1 in player.fieldCardFrames)
+        //                                                {
+        //                                                    fieldCardFrame1.RemoveClickTarget();
+        //                                                }
+        //                                            }
+
+        //                                            GManager.instance.You.playMatCardFrame.RemoveClickTarget();
+        //                                            GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(false);
+
+        //                                            selected = true;
+
+        //                                            Permanent targetPermanent = fieldCardFrame.GetFramePermanent();
+
+        //                                            bool canNormalDigivolution = handCard.cardSource.CanPlayCardTargetFrame(fieldCardFrame, true, null);
+        //                                            bool canJogressDigivolution = handCard.cardSource.CanJogressFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true);
+        //                                            bool canBurstDigivolution = handCard.cardSource.CanBurstDigivolutionFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true);
+        //                                            bool canAppFusion = handCard.cardSource.CanAppFusionFromTargetPermanent(fieldCardFrame.GetFramePermanent(), true);
+
+        //                                            //Only normal evolution possible
+        //                                            if (canNormalDigivolution && !canJogressDigivolution && !canBurstDigivolution && !canAppFusion)
+        //                                            {
+        //                                                Digivolution();
+        //                                            }
+
+        //                                            //Only jogless is possible
+        //                                            else if (!canNormalDigivolution && canJogressDigivolution && !canBurstDigivolution && !canAppFusion)
+        //                                            {
+        //                                                SelectJogressDigivolutionCards(true);
+        //                                            }
+
+        //                                            //Only burst evolution possible
+        //                                            else if (!canNormalDigivolution && !canJogressDigivolution && canBurstDigivolution && !canAppFusion)
+        //                                            {
+        //                                                SelectBurstDigivolutionCards(true);
+        //                                            }
+
+        //                                            //Only app fusion possible
+        //                                            else if (!canNormalDigivolution && !canJogressDigivolution && !canBurstDigivolution && canAppFusion)
+        //                                            {
+        //                                                SelectAppFusionCards(true);
+        //                                            }
+
+        //                                            //Normal evolution and Jogress possible
+        //                                            else if (canNormalDigivolution && canJogressDigivolution && !canBurstDigivolution && !canAppFusion)
+        //                                            {
+        //                                                Vector3 Pos = handCard.transform.position;
+
+        //                                                ResetUI();
+
+        //                                                handCard.transform.GetChild(0).gameObject.SetActive(false);
+
+        //                                                handCard.GetComponent<Draggable_HandCard>().ReturnDefaultPosition();
+
+        //                                                StartCoroutine(SelectWheterToJogress());
+
+        //                                                IEnumerator SelectWheterToJogress()
+        //                                                {
+        //                                                    isSync = true;
+
+        //                                                    yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().MoveToExecuteCardEffect_SetPosition(handCard.cardSource, Pos));
+        //                                                    handCard.transform.position = handCard.cardSource.Owner.brainStormObject.BrainStormHandCards[0].transform.position;
+
+        //                                                    GManager.instance.selectJogressEffect.SetUp_SelectWheterToJogress
+        //                                                        (card: handCard.cardSource,
+        //                                                        evoRoot: fieldCardFrame.GetFramePermanent().TopCard,
+        //                                                        canNoSelect: true,
+        //                                                        endSelectCoroutine_Digivolve: _Digivolution,
+        //                                                        endSelectCoroutine_Jogress: _SelectJogressDigivolutionCards,
+        //                                                        noSelectCoroutine: _NoSelectCoroutine);
+
+        //                                                    yield return ContinuousController.instance.StartCoroutine(GManager.instance.selectJogressEffect.SelectWheterToJogress());
+
+        //                                                    IEnumerator _Digivolution()
+        //                                                    {
+        //                                                        yield return null;
+        //                                                        Digivolution();
+        //                                                    }
+
+        //                                                    IEnumerator _SelectJogressDigivolutionCards()
+        //                                                    {
+        //                                                        yield return null;
+        //                                                        SelectJogressDigivolutionCards(false);
+        //                                                    }
+
+        //                                                    IEnumerator _NoSelectCoroutine()
+        //                                                    {
+        //                                                        yield return StartCoroutine(Return());
+        //                                                    }
+        //                                                }
+        //                                            }
+
+        //                                            //Normal evolution and burst evolution possible
+        //                                            else if (canNormalDigivolution && !canJogressDigivolution && canBurstDigivolution && !canAppFusion)
+        //                                            {
+        //                                                Vector3 Pos = handCard.transform.position;
+
+        //                                                ResetUI();
+
+        //                                                handCard.transform.GetChild(0).gameObject.SetActive(false);
+
+        //                                                handCard.GetComponent<Draggable_HandCard>().ReturnDefaultPosition();
+
+        //                                                StartCoroutine(SelectWheterToBurst());
+
+        //                                                IEnumerator SelectWheterToBurst()
+        //                                                {
+        //                                                    isSync = true;
+
+        //                                                    yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().MoveToExecuteCardEffect_SetPosition(handCard.cardSource, Pos));
+        //                                                    handCard.transform.position = handCard.cardSource.Owner.brainStormObject.BrainStormHandCards[0].transform.position;
+
+        //                                                    GManager.instance.selectBurstDigivolutionEffect.SetUp_SelectWheterToBurst
+        //                                                        (card: handCard.cardSource,
+        //                                                        evoRoot: fieldCardFrame.GetFramePermanent().TopCard,
+        //                                                        canNoSelect: true,
+        //                                                        endSelectCoroutine_Digivolve: _Digivolution,
+        //                                                        endSelectCoroutine_Burst: _SelectBurstPermanents,
+        //                                                        noSelectCoroutine: _NoSelectCoroutine);
+
+        //                                                    yield return ContinuousController.instance.StartCoroutine(GManager.instance.selectBurstDigivolutionEffect.SelectWheterToBurst());
+
+        //                                                    IEnumerator _Digivolution()
+        //                                                    {
+        //                                                        yield return null;
+        //                                                        Digivolution();
+        //                                                    }
+
+        //                                                    IEnumerator _SelectBurstPermanents()
+        //                                                    {
+        //                                                        yield return null;
+        //                                                        SelectBurstDigivolutionCards(false);
+        //                                                    }
+
+        //                                                    IEnumerator _NoSelectCoroutine()
+        //                                                    {
+        //                                                        yield return StartCoroutine(Return());
+        //                                                    }
+        //                                                }
+        //                                            }
+        //                                            //Normal evolution and App Fusion possible
+        //                                            else if (canNormalDigivolution && !canJogressDigivolution && !canBurstDigivolution && canAppFusion)
+        //                                            {
+        //                                                Vector3 Pos = handCard.transform.position;
+
+        //                                                ResetUI();
+
+        //                                                handCard.transform.GetChild(0).gameObject.SetActive(false);
+
+        //                                                handCard.GetComponent<Draggable_HandCard>().ReturnDefaultPosition();
+
+        //                                                StartCoroutine(SelectWheterToAppFusion());
+
+        //                                                IEnumerator SelectWheterToAppFusion()
+        //                                                {
+        //                                                    isSync = true;
+
+        //                                                    yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().MoveToExecuteCardEffect_SetPosition(handCard.cardSource, Pos));
+        //                                                    handCard.transform.position = handCard.cardSource.Owner.brainStormObject.BrainStormHandCards[0].transform.position;
+
+        //                                                    GManager.instance.selectAppFusionEffect.SetUp_SelectWheterToAppFusion
+        //                                                        (card: handCard.cardSource,
+        //                                                        evoRoot: fieldCardFrame.GetFramePermanent().TopCard,
+        //                                                        canNoSelect: true,
+        //                                                        endSelectCoroutine_Digivolve: _Digivolution,
+        //                                                        endSelectCoroutine_AppFusion: _SelectAppFusionPermanents,
+        //                                                        noSelectCoroutine: _NoSelectCoroutine);
+
+        //                                                    yield return ContinuousController.instance.StartCoroutine(GManager.instance.selectAppFusionEffect.SelectWheterToAppFusion());
+
+        //                                                    IEnumerator _Digivolution()
+        //                                                    {
+        //                                                        yield return null;
+        //                                                        Digivolution();
+        //                                                    }
+
+        //                                                    IEnumerator _SelectAppFusionPermanents()
+        //                                                    {
+        //                                                        yield return null;
+        //                                                        SelectAppFusionCards(false);
+        //                                                    }
+
+        //                                                    IEnumerator _NoSelectCoroutine()
+        //                                                    {
+        //                                                        yield return StartCoroutine(Return());
+        //                                                    }
+        //                                                }
+        //                                            }
+
+        //                                            #region Select Jogress evolution source
+        //                                            void SelectJogressDigivolutionCards(bool move)
+        //                                            {
+        //                                                Vector3 Pos = handCard.transform.position;
+
+        //                                                ResetUI();
+
+        //                                                handCard.transform.GetChild(0).gameObject.SetActive(false);
+
+        //                                                StartCoroutine(SelectJogressTarget());
+
+        //                                                IEnumerator SelectJogressTarget()
+        //                                                {
+        //                                                    isSync = true;
+
+        //                                                    if (move)
+        //                                                    {
+        //                                                        yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().MoveToExecuteCardEffect_SetPosition(handCard.cardSource, Pos));
+        //                                                        handCard.transform.position = handCard.cardSource.Owner.brainStormObject.BrainStormHandCards[0].transform.position;
+        //                                                    }
+
+        //                                                    yield return ContinuousController.instance.StartCoroutine(handCard.cardSource.Owner.brainStormObject.BrainStormCoroutine(handCard.cardSource));
+
+        //                                                    GManager.instance.selectJogressEffect.SetUp_SelectDigivolutionRoots
+        //                                                        (card: handCard.cardSource,
+        //                                                        isLocal: true,
+        //                                                        isPayCost: true,
+        //                                                        canNoSelect: true,
+        //                                                        endSelectCoroutine_SelectDigivolutionRoots: _EndSelectCoroutine_SelectDigivolutionRoots,
+        //                                                        noSelectCoroutine: _NoSelectCoroutine);
+
+        //                                                    yield return ContinuousController.instance.StartCoroutine(GManager.instance.selectJogressEffect.SelectDigivolutionRoots());
+
+        //                                                    IEnumerator _EndSelectCoroutine_SelectDigivolutionRoots(List<Permanent> permanents)
+        //                                                    {
+        //                                                        yield return null;
+        //                                                        SetPlayCard( handCard.cardSource.CardIndex, fieldCardFrame.FrameID, new int[] { permanents[0].PermanentFrame.FrameID, permanents[1].PermanentFrame.FrameID }, -1, new int[0]);
+        //                                                    }
+
+        //                                                    IEnumerator _NoSelectCoroutine()
+        //                                                    {
+        //                                                        yield return null;
+        //                                                        yield return StartCoroutine(Return());
+        //                                                    }
+
+        //                                                    isSync = false;
+        //                                                }
+        //                                            }
+        //                                            #endregion
+
+        //                                            #region Select the burst evolution source and tamer
+        //                                            void SelectBurstDigivolutionCards(bool move)
+        //                                            {
+        //                                                Vector3 Pos = handCard.transform.position;
+
+        //                                                ResetUI();
+
+        //                                                handCard.transform.GetChild(0).gameObject.SetActive(false);
+
+        //                                                StartCoroutine(SelectJogressTarget());
+
+        //                                                IEnumerator SelectJogressTarget()
+        //                                                {
+        //                                                    isSync = true;
+
+        //                                                    if (move)
+        //                                                    {
+        //                                                        yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().MoveToExecuteCardEffect_SetPosition(handCard.cardSource, Pos));
+        //                                                        handCard.transform.position = handCard.cardSource.Owner.brainStormObject.BrainStormHandCards[0].transform.position;
+        //                                                    }
+
+        //                                                    yield return ContinuousController.instance.StartCoroutine(handCard.cardSource.Owner.brainStormObject.BrainStormCoroutine(handCard.cardSource));
+
+        //                                                    GManager.instance.selectBurstDigivolutionEffect.SetUp_SelectTamer
+        //                                                        (card: handCard.cardSource,
+        //                                                        isLocal: true,
+        //                                                        isPayCost: true,
+        //                                                        canNoSelect: true,
+        //                                                        endSelectCoroutine_SelectTamer: EndSelectCoroutine_SelectTamer,
+        //                                                        noSelectCoroutine: _NoSelectCoroutine);
+
+
+        //                                                    yield return ContinuousController.instance.StartCoroutine(GManager.instance.selectBurstDigivolutionEffect.SelectTamer());
+
+        //                                                    IEnumerator EndSelectCoroutine_SelectTamer(Permanent permanent)
+        //                                                    {
+        //                                                        yield return null;
+        //                                                        SetPlayCard( handCard.cardSource.CardIndex, fieldCardFrame.FrameID, new int[0], permanent.PermanentFrame.FrameID, new int[0]);
+        //                                                    }
+
+        //                                                    IEnumerator _NoSelectCoroutine()
+        //                                                    {
+        //                                                        yield return null;
+        //                                                        yield return StartCoroutine(Return());
+        //                                                    }
+
+        //                                                    isSync = false;
+        //                                                }
+        //                                            }
+        //                                            #endregion
+
+        //                                            #region Select the app fusion source and link card
+        //                                            void SelectAppFusionCards(bool move)
+        //                                            {
+        //                                                Vector3 Pos = handCard.transform.position;
+
+        //                                                ResetUI();
+
+        //                                                handCard.transform.GetChild(0).gameObject.SetActive(false);
+
+        //                                                StartCoroutine(SelectAppFusionTarget());
+
+        //                                                IEnumerator SelectAppFusionTarget()
+        //                                                {
+        //                                                    isSync = true;
+
+        //                                                    if (move)
+        //                                                    {
+        //                                                        yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().MoveToExecuteCardEffect_SetPosition(handCard.cardSource, Pos));
+        //                                                        handCard.transform.position = handCard.cardSource.Owner.brainStormObject.BrainStormHandCards[0].transform.position;
+        //                                                    }
+
+        //                                                    yield return ContinuousController.instance.StartCoroutine(handCard.cardSource.Owner.brainStormObject.BrainStormCoroutine(handCard.cardSource));
                 
-                                                            GManager.instance.selectAppFusionEffect.SetUp_SelectLink
-                                                                (card: handCard.cardSource,
-                                                                isLocal: true,
-                                                                isPayCost: true,
-                                                                canNoSelect: true,
-                                                                endSelectCoroutine_SelectLink: EndSelectCoroutine_SelectLink,
-                                                                noSelectCoroutine: _NoSelectCoroutine);
-
-                                                            yield return ContinuousController.instance.StartCoroutine(GManager.instance.selectAppFusionEffect.SelectLink(targetPermanent));
-
-                                                            IEnumerator EndSelectCoroutine_SelectLink(CardSource cardSource)
-                                                            {
-                                                                yield return null;
-
-                                                                //int sourceIndex = fieldCardFrame.GetFramePermanent().LinkedCards.IndexOf(cardSource);
-                                                                photonView.RPC("SetPlayCard", RpcTarget.All, handCard.cardSource.CardIndex, fieldCardFrame.FrameID, new int[0], -1, new int[] { targetPermanent.PermanentFrame.FrameID, targetPermanent.LinkedCards.IndexOf(cardSource)});
-                                                            }
-
-                                                            IEnumerator _NoSelectCoroutine()
-                                                            {
-                                                                yield return null;
-                                                                yield return StartCoroutine(Return());
-                                                            }
-
-                                                            isSync = false;
-                                                        }
-                                                    }
-                                                    #endregion
-
-                                                    #region usually evolves
-                                                    void Digivolution()
-                                                    {
-                                                        photonView.RPC("SetPlayCard", RpcTarget.All, handCard.cardSource.CardIndex, fieldCardFrame.FrameID, new int[0], -1, new int[0]);
-                                                    }
-                                                    #endregion
-
-                                                    return;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    #endregion
-
-                                    bool CanPlayEmptyFrame = false;
-
-                                    foreach (FieldCardFrame fieldCardFrame in GManager.instance.You.fieldCardFrames)
-                                    {
-                                        if (fieldCardFrame.IsEmptyFrame())
-                                        {
-                                            if (handCard.cardSource.CanPlayCardTargetFrame(fieldCardFrame, true, null))
-                                            {
-                                                CanPlayEmptyFrame = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-
-                                    if (CanPlayEmptyFrame)
-                                    {
-                                        #region Check for drops on the playmat
-                                        if (dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(GManager.instance.You.playMatCardFrame.Frame)) > 0)
-                                        {
-                                            if (handCard.cardSource.Owner.HandTransform.GetComponent<HandContoller>() != null)
-                                            {
-                                                handCard.cardSource.Owner.HandTransform.GetComponent<HandContoller>().isDragging = true;
-                                            }
-
-                                            OffHandCardTarget(gameContext.TurnPlayer);
-
-                                            handCard.Outline_Select.gameObject.SetActive(false);
-
-                                            foreach (Player player in gameContext.Players_ForTurnPlayer)
-                                            {
-                                                foreach (FieldCardFrame fieldCardFrame in player.fieldCardFrames)
-                                                {
-                                                    fieldCardFrame.RemoveClickTarget();
-                                                }
-                                            }
-
-                                            GManager.instance.You.playMatCardFrame.RemoveClickTarget();
-                                            GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(false);
-
-                                            photonView.RPC("SetPlayCard", RpcTarget.All, handCard.cardSource.CardIndex, handCard.cardSource.PreferredFrame().FrameID, new int[0], -1, new int[0]);
-                                            selected = true;
-
-                                            return;
-                                        }
-                                        #endregion
-                                    }
-
-                                }
-                                #endregion
-
-                                #region option
-                                else if (handCard.cardSource.IsOption)
-                                {
-                                    #region Check for drops on the playmat
-                                    if (dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(GManager.instance.You.playMatCardFrame.Frame)) > 0)
-                                    {
-                                        if (handCard.cardSource.Owner.HandTransform.GetComponent<HandContoller>() != null)
-                                        {
-                                            handCard.cardSource.Owner.HandTransform.GetComponent<HandContoller>().isDragging = true;
-                                        }
-
-                                        OffHandCardTarget(gameContext.TurnPlayer);
-
-                                        handCard.Outline_Select.gameObject.SetActive(false);
-
-                                        foreach (Player player in gameContext.Players_ForTurnPlayer)
-                                        {
-                                            foreach (FieldCardFrame fieldCardFrame in player.fieldCardFrames)
-                                            {
-                                                fieldCardFrame.RemoveClickTarget();
-                                            }
-                                        }
-
-                                        GManager.instance.You.playMatCardFrame.RemoveClickTarget();
-                                        GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(false);
-
-                                        photonView.RPC("SetPlayCard", RpcTarget.All, handCard.cardSource.CardIndex, 0, new int[0], -1, new int[0]);
-                                        selected = true;
-
-                                        return;
-                                    }
-                                    #endregion
-                                }
-                                #endregion
-                            }
-                            #endregion
-
-                            #endregion
-
-                            if (!selected)
-                            {
-                                StartCoroutine(Return());
-                            }
-                        }
-                    }
-                    #endregion
-
-                    #region While dragging
-                    void OnDragCard(List<DropArea> dropAreas)
-                    {
-                        if (isSync)
-                        {
-                            StartCoroutine(Return());
-                        }
-
-                        GManager.instance.memoryObject.OffMemoryPredictionLine();
-
-                        if (gameContext.TurnPlayer.FieldPermanentObjects.Count((_fieldUnitCard1) => _fieldUnitCard1.fieldUnitCommandPanel.isActive()) == 0)
-                        {
-                            OffFieldCardTarget(gameContext.TurnPlayer);
-
-                            foreach (FieldPermanentCard fieldPermanentCard in gameContext.TurnPlayer.FieldPermanentObjects)
-                            {
-                                fieldPermanentCard.RemoveDragTarget();
-                                fieldPermanentCard.Outline_Select.gameObject.SetActive(false);
-                            }
-
-                            handCard.SetBlueOutline();
-                            handCard.OffPlayText();
-                            handCard.OffJogressPlayText();
-                            handCard.OffBurstPlayText();
-                            handCard.OffAppFusionPlayText();
-
-                            #region Digimon/Tamer
-                            if (handCard.cardSource.IsPermanent)
-                            {
-                                #region Check if it is on the frame
-                                bool isOnPermanentFrameAndCanEvolve = false;
-
-                                foreach (FieldCardFrame fieldCardFrame in GManager.instance.You.fieldCardFrames)
-                                {
-                                    int frameIndex = GManager.instance.You.fieldCardFrames.IndexOf(fieldCardFrame);
-
-                                    if (_canPlayTargetFrames[frameIndex])
-                                    {
-                                        if (fieldCardFrame.GetFramePermanent() != null)
-                                        {
-                                            if (fieldCardFrame.GetFramePermanent().ShowingPermanentCard != null)
-                                            {
-                                                if (dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(fieldCardFrame.Frame)) > 0)
-                                                {
-                                                    isOnPermanentFrameAndCanEvolve = true;
-
-                                                    if (_canDigivolves[frameIndex])
-                                                    {
-                                                        handCard.SetPlayText("DIGIVOLVE", new Color32(255, 135, 8, 255));
-                                                    }
-
-                                                    if (_canJogresses[frameIndex])
-                                                    {
-                                                        handCard.SetJogressPlayText();
-                                                    }
-
-                                                    if (_canBursts[frameIndex])
-                                                    {
-                                                        handCard.SetBurstPlayText();
-                                                    }
-
-                                                    if (_canAppFusions[frameIndex])
-                                                        handCard.SetAppFusionPlayText();
-
-                                                    handCard.SetOrangeOutline();
-
-                                                    fieldCardFrame.GetFramePermanent().ShowingPermanentCard.OnSelectEffect(1.1f);
-
-                                                    fieldCardFrame.GetFramePermanent().ShowingPermanentCard.Outline_Select.gameObject.SetActive(true);
-
-                                                    GManager.instance.memoryObject.ShowMemoryPredictionLine(gameContext.TurnPlayer.ExpectedMemory(_payingCosts[frameIndex]));
-                                                }
-
-                                                else
-                                                {
-                                                    fieldCardFrame.GetFramePermanent().ShowingPermanentCard.RemoveSelectEffect();
-                                                    fieldCardFrame.GetFramePermanent().ShowingPermanentCard.SetBlueOutline();
-
-                                                    fieldCardFrame.GetFramePermanent().ShowingPermanentCard.Outline_Select.gameObject.SetActive(true);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                if (_canPlayEmptyFrame)
-                                {
-                                    GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(true);
-
-                                    #region プレイマットの上にあるかチェック
-                                    if (!isOnPermanentFrameAndCanEvolve && dropAreas.Count((dropArea) =>
-                                    dropArea.IsChildThisDropArea(GManager.instance.You.playMatCardFrame.Frame)) > 0)
-                                    {
-                                        handCard.SetPlayText("PLAY", new Color32(47, 255, 64, 255));
-
-                                        handCard.SetOrangeOutline();
-
-                                        GManager.instance.You.playMatCardFrame.OnFrame_Select(DataBase.SelectColor_Orange);
-
-                                        GManager.instance.memoryObject.ShowMemoryPredictionLine(gameContext.TurnPlayer.ExpectedMemory(handCard.cardSource.PayingCost(SelectCardEffect.Root.Hand, null, checkAvailability: false)));
-                                    }
-
-                                    else
-                                    {
-                                        GManager.instance.You.playMatCardFrame.OffFrame_Select();
-                                    }
-                                    #endregion
-                                }
-                                #endregion
-                            }
-                            #endregion
-
-                            #region option
-                            else if (handCard.cardSource.IsOption)
-                            {
-                                #region プレイマットの上にあるかチェック
-                                if (dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(GManager.instance.You.playMatCardFrame.Frame)) > 0)
-                                {
-                                    handCard.SetPlayText("USE", new Color32(47, 255, 64, 255));
-
-                                    handCard.SetOrangeOutline();
-
-                                    GManager.instance.You.playMatCardFrame.OnFrame_Select(DataBase.SelectColor_Orange);
-
-                                    GManager.instance.memoryObject.ShowMemoryPredictionLine(gameContext.TurnPlayer.ExpectedMemory(handCard.cardSource.PayingCost(SelectCardEffect.Root.Hand, null, checkAvailability: false)));
-                                }
-
-                                else
-                                {
-                                    GManager.instance.You.playMatCardFrame.OffFrame_Select();
-                                }
-                                #endregion
-                            }
-                            #endregion
-                        }
-                    }
-                    #endregion
-
-                    IEnumerator Return()
-                    {
-                        foreach (Player player in gameContext.Players_ForTurnPlayer)
-                        {
-                            foreach (FieldCardFrame fieldCardFrame in player.fieldCardFrames)
-                            {
-                                fieldCardFrame.RemoveClickTarget();
-                            }
-
-                            player.brainStormObject.EndBrainStorm();
-                        }
-
-                        GManager.instance.You.playMatCardFrame.RemoveClickTarget();
-
-                        handCard.GetComponent<Draggable_HandCard>().ReturnDefaultPosition();
-                        handCard.transform.GetChild(0).gameObject.SetActive(true);
-
-                        if (handCard.transform.parent != null)
-                        {
-                            if (handCard.transform.parent.GetComponent<GridLayoutGroup>() != null)
-                            {
-                                handCard.transform.parent.GetComponent<GridLayoutGroup>().enabled = false;
-                            }
-                        }
-
-                        yield return new WaitForSeconds(Time.deltaTime);
-
-                        if (handCard.transform.parent != null)
-                        {
-                            if (handCard.transform.parent.GetComponent<GridLayoutGroup>() != null)
-                            {
-                                handCard.transform.parent.GetComponent<GridLayoutGroup>().enabled = true;
-                            }
-                        }
-
-                        isSync = false;
-                        StartCoroutine(SetMainPhase());
-                    }
-                }
-                #endregion
-
-                #region Click to declare activation effect
-                if (handCard.cardSource.CanDeclareSkill)
-                {
-                    handCard.SetOrangeOutline();
-
-                    handCard.SetClickText();
-
-                    handCard.AddClickTarget((_handCard) => StartCoroutine(OnClick_Select()));
-
-                    IEnumerator OnClick_Select()
-                    {
-                        foreach (HandCard handCard2 in handCard.cardSource.Owner.HandCardObjects)
-                        {
-                            handCard2.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = false;
-                        }
-
-                        yield return null;
-
-                        IsSelecting = true;
-
-                        #region Reset cards on the field
-                        foreach (FieldPermanentCard fieldPermanentCard in gameContext.TurnPlayer.FieldPermanentObjects)
-                        {
-                            fieldPermanentCard.RemoveSelectEffect();
-                            fieldPermanentCard.RemoveClickTarget();
-                            fieldPermanentCard.RemoveDragTarget();
-                            fieldPermanentCard.Outline_Select.gameObject.SetActive(false);
-                            fieldPermanentCard.CloseCommandPanel();
-                        }
-
-                        foreach (Player player in gameContext.Players)
-                        {
-                            OffFieldCardTarget(player);
-                        }
-                        #endregion
-
-                        #region Reset cards in hand
-                        foreach (HandCard handCard1 in gameContext.TurnPlayer.HandCardObjects)
-                        {
-                            handCard.Outline_Select.gameObject.SetActive(false);
-                            handCard1.RemoveSelectEffect();
-                            handCard1.RemoveClickTarget();
-                            handCard1.RemoveDragTarget();
-                        }
-                        #endregion
-
-                        List<CardCommand> FieldUnitCommands = new List<CardCommand>();
-
-                        #region Open launch effect command
-                        if (handCard.cardSource.CanDeclareSkill)
-                        {
-                            List<ICardEffect> cardEffects = new List<ICardEffect>();
-                            List<ICardEffect> cardEffects1 = new List<ICardEffect>();
-
-                            foreach (ICardEffect cardEffect in handCard.cardSource.EffectList(EffectTiming.OnDeclaration))
-                            {
-                                cardEffects1.Add(cardEffect);
-                                cardEffects.Add(cardEffect);
-                            }
-
-                            cardEffects.Reverse();
-
-                            foreach (ICardEffect cardEffect in cardEffects)
-                            {
-                                if (cardEffect is ActivateICardEffect)
-                                {
-                                    CardCommand SkillCommand = new CardCommand(cardEffect.EffectName, OnClick_SetUseSkillUnit_RPC, cardEffect.CanUse(null), DataBase.CommandColor_Skill);
-                                    FieldUnitCommands.Add(SkillCommand);
-
-                                    void OnClick_SetUseSkillUnit_RPC()
-                                    {
-                                        #region Reset cards on the field
-                                        foreach (Player player in gameContext.Players)
-                                        {
-                                            foreach (FieldPermanentCard fieldPermanentCard in player.FieldPermanentObjects)
-                                            {
-                                                fieldPermanentCard.RemoveSelectEffect();
-                                                fieldPermanentCard.RemoveClickTarget();
-                                                fieldPermanentCard.RemoveDragTarget();
-                                                fieldPermanentCard.Outline_Select.gameObject.SetActive(false);
-                                                fieldPermanentCard.CloseCommandPanel();
-                                            }
-                                        }
-                                        #endregion
-
-                                        #region Reset cards in hand
-                                        foreach (HandCard handCard1 in gameContext.TurnPlayer.HandCardObjects)
-                                        {
-                                            handCard.Outline_Select.gameObject.SetActive(false);
-                                            handCard1.RemoveSelectEffect();
-                                            handCard1.RemoveClickTarget();
-                                            handCard1.RemoveDragTarget();
-                                        }
-                                        #endregion
-
-                                        handCard.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = true;
-
-                                        photonView.RPC("SetActCardSkill", RpcTarget.All, handCard.cardSource.CardIndex, cardEffects1.IndexOf(cardEffect));
-                                    }
-                                }
-                            }
-                        }
-                        #endregion
-
-                        handCard.handCardCommandPanel.SetUpCommandPanel(FieldUnitCommands, null, handCard);
-
-                        handCard.AddClickTarget((_fieldUnitCard) => StartCoroutine(SetMainPhase()));
-
-                        handCard.Outline_Select.gameObject.SetActive(true);
-                        handCard.SetOrangeOutline();
-                    }
-
-                }
-                #endregion
-            }
-            #endregion
-        }
+        //                                                    GManager.instance.selectAppFusionEffect.SetUp_SelectLink
+        //                                                        (card: handCard.cardSource,
+        //                                                        isLocal: true,
+        //                                                        isPayCost: true,
+        //                                                        canNoSelect: true,
+        //                                                        endSelectCoroutine_SelectLink: EndSelectCoroutine_SelectLink,
+        //                                                        noSelectCoroutine: _NoSelectCoroutine);
+
+        //                                                    yield return ContinuousController.instance.StartCoroutine(GManager.instance.selectAppFusionEffect.SelectLink(targetPermanent));
+
+        //                                                    IEnumerator EndSelectCoroutine_SelectLink(CardSource cardSource)
+        //                                                    {
+        //                                                        yield return null;
+
+        //                                                        //int sourceIndex = fieldCardFrame.GetFramePermanent().LinkedCards.IndexOf(cardSource);
+        //                                                        SetPlayCard( handCard.cardSource.CardIndex, fieldCardFrame.FrameID, new int[0], -1, new int[] { targetPermanent.PermanentFrame.FrameID, targetPermanent.LinkedCards.IndexOf(cardSource)});
+        //                                                    }
+
+        //                                                    IEnumerator _NoSelectCoroutine()
+        //                                                    {
+        //                                                        yield return null;
+        //                                                        yield return StartCoroutine(Return());
+        //                                                    }
+
+        //                                                    isSync = false;
+        //                                                }
+        //                                            }
+        //                                            #endregion
+
+        //                                            #region usually evolves
+        //                                            void Digivolution()
+        //                                            {
+        //                                                SetPlayCard( handCard.cardSource.CardIndex, fieldCardFrame.FrameID, new int[0], -1, new int[0]);
+        //                                            }
+        //                                            #endregion
+
+        //                                            return;
+        //                                        }
+        //                                    }
+        //                                }
+        //                            }
+        //                            #endregion
+
+        //                            bool CanPlayEmptyFrame = false;
+
+        //                            foreach (FieldCardFrame fieldCardFrame in GManager.instance.You.fieldCardFrames)
+        //                            {
+        //                                if (fieldCardFrame.IsEmptyFrame())
+        //                                {
+        //                                    if (handCard.cardSource.CanPlayCardTargetFrame(fieldCardFrame, true, null))
+        //                                    {
+        //                                        CanPlayEmptyFrame = true;
+        //                                        break;
+        //                                    }
+        //                                }
+        //                            }
+
+        //                            if (CanPlayEmptyFrame)
+        //                            {
+        //                                #region Check for drops on the playmat
+        //                                if (dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(GManager.instance.You.playMatCardFrame.Frame)) > 0)
+        //                                {
+        //                                    if (handCard.cardSource.Owner.HandTransform.GetComponent<HandContoller>() != null)
+        //                                    {
+        //                                        handCard.cardSource.Owner.HandTransform.GetComponent<HandContoller>().isDragging = true;
+        //                                    }
+
+        //                                    OffHandCardTarget(gameContext.TurnPlayer);
+
+        //                                    handCard.Outline_Select.gameObject.SetActive(false);
+
+        //                                    foreach (Player player in gameContext.Players_ForTurnPlayer)
+        //                                    {
+        //                                        foreach (FieldCardFrame fieldCardFrame in player.fieldCardFrames)
+        //                                        {
+        //                                            fieldCardFrame.RemoveClickTarget();
+        //                                        }
+        //                                    }
+
+        //                                    GManager.instance.You.playMatCardFrame.RemoveClickTarget();
+        //                                    GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(false);
+
+        //                                    SetPlayCard( handCard.cardSource.CardIndex, handCard.cardSource.PreferredFrame().FrameID, new int[0], -1, new int[0]);
+        //                                    selected = true;
+
+        //                                    return;
+        //                                }
+        //                                #endregion
+        //                            }
+
+        //                        }
+        //                        #endregion
+
+        //                        #region option
+        //                        else if (handCard.cardSource.IsOption)
+        //                        {
+        //                            #region Check for drops on the playmat
+        //                            if (dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(GManager.instance.You.playMatCardFrame.Frame)) > 0)
+        //                            {
+        //                                if (handCard.cardSource.Owner.HandTransform.GetComponent<HandContoller>() != null)
+        //                                {
+        //                                    handCard.cardSource.Owner.HandTransform.GetComponent<HandContoller>().isDragging = true;
+        //                                }
+
+        //                                OffHandCardTarget(gameContext.TurnPlayer);
+
+        //                                handCard.Outline_Select.gameObject.SetActive(false);
+
+        //                                foreach (Player player in gameContext.Players_ForTurnPlayer)
+        //                                {
+        //                                    foreach (FieldCardFrame fieldCardFrame in player.fieldCardFrames)
+        //                                    {
+        //                                        fieldCardFrame.RemoveClickTarget();
+        //                                    }
+        //                                }
+
+        //                                GManager.instance.You.playMatCardFrame.RemoveClickTarget();
+        //                                GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(false);
+
+        //                                SetPlayCard( handCard.cardSource.CardIndex, 0, new int[0], -1, new int[0]);
+        //                                selected = true;
+
+        //                                return;
+        //                            }
+        //                            #endregion
+        //                        }
+        //                        #endregion
+        //                    }
+        //                    #endregion
+
+        //                    #endregion
+
+        //                    if (!selected)
+        //                    {
+        //                        StartCoroutine(Return());
+        //                    }
+        //                }
+        //            }
+        //            #endregion
+
+        //            #region While dragging
+        //            void OnDragCard(List<DropArea> dropAreas)
+        //            {
+        //                if (isSync)
+        //                {
+        //                    StartCoroutine(Return());
+        //                }
+
+        //                GManager.instance.memoryObject.OffMemoryPredictionLine();
+
+        //                if (gameContext.TurnPlayer.FieldPermanentObjects.Count((_fieldUnitCard1) => _fieldUnitCard1.fieldUnitCommandPanel.isActive()) == 0)
+        //                {
+        //                    OffFieldCardTarget(gameContext.TurnPlayer);
+
+        //                    foreach (FieldPermanentCard fieldPermanentCard in gameContext.TurnPlayer.FieldPermanentObjects)
+        //                    {
+        //                        fieldPermanentCard.RemoveDragTarget();
+        //                        fieldPermanentCard.Outline_Select.gameObject.SetActive(false);
+        //                    }
+
+        //                    handCard.SetBlueOutline();
+        //                    handCard.OffPlayText();
+        //                    handCard.OffJogressPlayText();
+        //                    handCard.OffBurstPlayText();
+        //                    handCard.OffAppFusionPlayText();
+
+        //                    #region Digimon/Tamer
+        //                    if (handCard.cardSource.IsPermanent)
+        //                    {
+        //                        #region Check if it is on the frame
+        //                        bool isOnPermanentFrameAndCanEvolve = false;
+
+        //                        foreach (FieldCardFrame fieldCardFrame in GManager.instance.You.fieldCardFrames)
+        //                        {
+        //                            int frameIndex = GManager.instance.You.fieldCardFrames.IndexOf(fieldCardFrame);
+
+        //                            if (_canPlayTargetFrames[frameIndex])
+        //                            {
+        //                                if (fieldCardFrame.GetFramePermanent() != null)
+        //                                {
+        //                                    if (fieldCardFrame.GetFramePermanent().ShowingPermanentCard != null)
+        //                                    {
+        //                                        if (dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(fieldCardFrame.Frame)) > 0)
+        //                                        {
+        //                                            isOnPermanentFrameAndCanEvolve = true;
+
+        //                                            if (_canDigivolves[frameIndex])
+        //                                            {
+        //                                                handCard.SetPlayText("DIGIVOLVE", new Color32(255, 135, 8, 255));
+        //                                            }
+
+        //                                            if (_canJogresses[frameIndex])
+        //                                            {
+        //                                                handCard.SetJogressPlayText();
+        //                                            }
+
+        //                                            if (_canBursts[frameIndex])
+        //                                            {
+        //                                                handCard.SetBurstPlayText();
+        //                                            }
+
+        //                                            if (_canAppFusions[frameIndex])
+        //                                                handCard.SetAppFusionPlayText();
+
+        //                                            handCard.SetOrangeOutline();
+
+        //                                            fieldCardFrame.GetFramePermanent().ShowingPermanentCard.OnSelectEffect(1.1f);
+
+        //                                            fieldCardFrame.GetFramePermanent().ShowingPermanentCard.Outline_Select.gameObject.SetActive(true);
+
+        //                                            GManager.instance.memoryObject.ShowMemoryPredictionLine(gameContext.TurnPlayer.ExpectedMemory(_payingCosts[frameIndex]));
+        //                                        }
+
+        //                                        else
+        //                                        {
+        //                                            fieldCardFrame.GetFramePermanent().ShowingPermanentCard.RemoveSelectEffect();
+        //                                            fieldCardFrame.GetFramePermanent().ShowingPermanentCard.SetBlueOutline();
+
+        //                                            fieldCardFrame.GetFramePermanent().ShowingPermanentCard.Outline_Select.gameObject.SetActive(true);
+        //                                        }
+        //                                    }
+        //                                }
+        //                            }
+        //                        }
+
+        //                        if (_canPlayEmptyFrame)
+        //                        {
+        //                            GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(true);
+
+        //                            #region プレイマットの上にあるかチェック
+        //                            if (!isOnPermanentFrameAndCanEvolve && dropAreas.Count((dropArea) =>
+        //                            dropArea.IsChildThisDropArea(GManager.instance.You.playMatCardFrame.Frame)) > 0)
+        //                            {
+        //                                handCard.SetPlayText("PLAY", new Color32(47, 255, 64, 255));
+
+        //                                handCard.SetOrangeOutline();
+
+        //                                GManager.instance.You.playMatCardFrame.OnFrame_Select(DataBase.SelectColor_Orange);
+
+        //                                GManager.instance.memoryObject.ShowMemoryPredictionLine(gameContext.TurnPlayer.ExpectedMemory(handCard.cardSource.PayingCost(SelectCardEffect.Root.Hand, null, checkAvailability: false)));
+        //                            }
+
+        //                            else
+        //                            {
+        //                                GManager.instance.You.playMatCardFrame.OffFrame_Select();
+        //                            }
+        //                            #endregion
+        //                        }
+        //                        #endregion
+        //                    }
+        //                    #endregion
+
+        //                    #region option
+        //                    else if (handCard.cardSource.IsOption)
+        //                    {
+        //                        #region プレイマットの上にあるかチェック
+        //                        if (dropAreas.Count((dropArea) => dropArea.IsChildThisDropArea(GManager.instance.You.playMatCardFrame.Frame)) > 0)
+        //                        {
+        //                            handCard.SetPlayText("USE", new Color32(47, 255, 64, 255));
+
+        //                            handCard.SetOrangeOutline();
+
+        //                            GManager.instance.You.playMatCardFrame.OnFrame_Select(DataBase.SelectColor_Orange);
+
+        //                            GManager.instance.memoryObject.ShowMemoryPredictionLine(gameContext.TurnPlayer.ExpectedMemory(handCard.cardSource.PayingCost(SelectCardEffect.Root.Hand, null, checkAvailability: false)));
+        //                        }
+
+        //                        else
+        //                        {
+        //                            GManager.instance.You.playMatCardFrame.OffFrame_Select();
+        //                        }
+        //                        #endregion
+        //                    }
+        //                    #endregion
+        //                }
+        //            }
+        //            #endregion
+
+        //            IEnumerator Return()
+        //            {
+        //                foreach (Player player in gameContext.Players_ForTurnPlayer)
+        //                {
+        //                    foreach (FieldCardFrame fieldCardFrame in player.fieldCardFrames)
+        //                    {
+        //                        fieldCardFrame.RemoveClickTarget();
+        //                    }
+
+        //                    player.brainStormObject.EndBrainStorm();
+        //                }
+
+        //                GManager.instance.You.playMatCardFrame.RemoveClickTarget();
+
+        //                handCard.GetComponent<Draggable_HandCard>().ReturnDefaultPosition();
+        //                handCard.transform.GetChild(0).gameObject.SetActive(true);
+
+        //                if (handCard.transform.parent != null)
+        //                {
+        //                    if (handCard.transform.parent.GetComponent<GridLayoutGroup>() != null)
+        //                    {
+        //                        handCard.transform.parent.GetComponent<GridLayoutGroup>().enabled = false;
+        //                    }
+        //                }
+
+        //                yield return new WaitForSeconds(Time.deltaTime);
+
+        //                if (handCard.transform.parent != null)
+        //                {
+        //                    if (handCard.transform.parent.GetComponent<GridLayoutGroup>() != null)
+        //                    {
+        //                        handCard.transform.parent.GetComponent<GridLayoutGroup>().enabled = true;
+        //                    }
+        //                }
+
+        //                isSync = false;
+        //                StartCoroutine(SetMainPhase());
+        //            }
+        //        }
+        //        #endregion
+
+        //        #region Click to declare activation effect
+        //        if (handCard.cardSource.CanDeclareSkill)
+        //        {
+        //            handCard.SetOrangeOutline();
+
+        //            handCard.SetClickText();
+
+        //            handCard.AddClickTarget((_handCard) => StartCoroutine(OnClick_Select()));
+
+        //            IEnumerator OnClick_Select()
+        //            {
+        //                foreach (HandCard handCard2 in handCard.cardSource.Owner.HandCardObjects)
+        //                {
+        //                    handCard2.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = false;
+        //                }
+
+        //                yield return null;
+
+        //                IsSelecting = true;
+
+        //                #region Reset cards on the field
+        //                foreach (FieldPermanentCard fieldPermanentCard in gameContext.TurnPlayer.FieldPermanentObjects)
+        //                {
+        //                    fieldPermanentCard.RemoveSelectEffect();
+        //                    fieldPermanentCard.RemoveClickTarget();
+        //                    fieldPermanentCard.RemoveDragTarget();
+        //                    fieldPermanentCard.Outline_Select.gameObject.SetActive(false);
+        //                    fieldPermanentCard.CloseCommandPanel();
+        //                }
+
+        //                foreach (Player player in gameContext.Players)
+        //                {
+        //                    OffFieldCardTarget(player);
+        //                }
+        //                #endregion
+
+        //                #region Reset cards in hand
+        //                foreach (HandCard handCard1 in gameContext.TurnPlayer.HandCardObjects)
+        //                {
+        //                    handCard.Outline_Select.gameObject.SetActive(false);
+        //                    handCard1.RemoveSelectEffect();
+        //                    handCard1.RemoveClickTarget();
+        //                    handCard1.RemoveDragTarget();
+        //                }
+        //                #endregion
+
+        //                List<CardCommand> FieldUnitCommands = new List<CardCommand>();
+
+        //                #region Open launch effect command
+        //                if (handCard.cardSource.CanDeclareSkill)
+        //                {
+        //                    List<ICardEffect> cardEffects = new List<ICardEffect>();
+        //                    List<ICardEffect> cardEffects1 = new List<ICardEffect>();
+
+        //                    foreach (ICardEffect cardEffect in handCard.cardSource.EffectList(EffectTiming.OnDeclaration))
+        //                    {
+        //                        cardEffects1.Add(cardEffect);
+        //                        cardEffects.Add(cardEffect);
+        //                    }
+
+        //                    cardEffects.Reverse();
+
+        //                    foreach (ICardEffect cardEffect in cardEffects)
+        //                    {
+        //                        if (cardEffect is ActivateICardEffect)
+        //                        {
+        //                            CardCommand SkillCommand = new CardCommand(cardEffect.EffectName, OnClick_SetUseSkillUnit_RPC, cardEffect.CanUse(null), DataBase.CommandColor_Skill);
+        //                            FieldUnitCommands.Add(SkillCommand);
+
+        //                            void OnClick_SetUseSkillUnit_RPC()
+        //                            {
+        //                                #region Reset cards on the field
+        //                                foreach (Player player in gameContext.Players)
+        //                                {
+        //                                    foreach (FieldPermanentCard fieldPermanentCard in player.FieldPermanentObjects)
+        //                                    {
+        //                                        fieldPermanentCard.RemoveSelectEffect();
+        //                                        fieldPermanentCard.RemoveClickTarget();
+        //                                        fieldPermanentCard.RemoveDragTarget();
+        //                                        fieldPermanentCard.Outline_Select.gameObject.SetActive(false);
+        //                                        fieldPermanentCard.CloseCommandPanel();
+        //                                    }
+        //                                }
+        //                                #endregion
+
+        //                                #region Reset cards in hand
+        //                                foreach (HandCard handCard1 in gameContext.TurnPlayer.HandCardObjects)
+        //                                {
+        //                                    handCard.Outline_Select.gameObject.SetActive(false);
+        //                                    handCard1.RemoveSelectEffect();
+        //                                    handCard1.RemoveClickTarget();
+        //                                    //handCard1.RemoveDragTarget();
+        //                                }
+        //                                #endregion
+
+        //                                handCard.GetComponent<Draggable_HandCard>().CanPointerEnterExitAction = true;
+
+        //                                SetActCardSkill( handCard.cardSource.CardIndex, cardEffects1.IndexOf(cardEffect));
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //                #endregion
+
+        //                handCard.handCardCommandPanel.SetUpCommandPanel(FieldUnitCommands, null, handCard);
+
+        //                handCard.AddClickTarget((_fieldUnitCard) => StartCoroutine(SetMainPhase()));
+
+        //                handCard.Outline_Select.gameObject.SetActive(true);
+        //                handCard.SetOrangeOutline();
+        //            }
+
+        //        }
+        //        #endregion
+        //    }
+        //    #endregion
+        //}
         #endregion
     }
     #endregion
@@ -3030,7 +3028,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
             {
                 handCard.RemoveSelectEffect();
                 handCard.RemoveClickTarget();
-                handCard.RemoveDragTarget();
+                //handCard.RemoveDragTarget();
                 handCard.Outline_Select.gameObject.SetActive(false);
                 handCard.transform.GetChild(0).gameObject.SetActive(true);
             }
@@ -3050,25 +3048,25 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
 
             player.playMatCardFrame.OffFrame_Select();
 
-            player.securityObject.securityBreakGlass.gameObject.SetActive(false);
+            //player.securityObject.securityBreakGlass.gameObject.SetActive(false);
 
             player.securityObject.OffShowSecurityAttackObject();
         }
 
-        GManager.instance.memoryObject.OffMemoryPredictionLine();
+        //GManager.instance.memoryObject.OffMemoryPredictionLine();
 
         GManager.instance.You.playMatCardFrame.Frame.transform.parent.gameObject.SetActive(false);
 
-        GManager.instance.BackButton.CloseSelectCommandButton();
+       // GManager.instance.BackButton.CloseSelectCommandButton();
 
-        GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
+       // GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
 
-        GManager.instance.commandText.CloseCommandText();
+        ////GManager.instance.commandText.CloseCommandText();
     }
     #endregion
 
     #region Activation effect permanent determination
-    [PunRPC]
+    ////[PunRPC]
     public void SetActSkill(int permanentIndex, int skillIndex)
     {
         Permanent UseSkillPermanent = gameContext.TurnPlayer.GetFieldPermanents()[permanentIndex];
@@ -3081,7 +3079,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     #endregion
 
     #region Activation effect card determination
-    [PunRPC]
+    ////[PunRPC]
     public void SetActCardSkill(int cardIndex, int skillIndex)
     {
         CardSource UseSkillCard = gameContext.ActiveCardList[cardIndex];
@@ -3094,7 +3092,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     #endregion
 
     #region Play card decision
-    [PunRPC]
+    ////[PunRPC]
     public void SetPlayCard(int cardIndex, int TargetFrameID, int[] JogressEvoRootsFrameIDs, int BurstTamerFrameID, int[] AppFusionFrameIDs)
     {
         PlayCard = gameContext.ActiveCardList[cardIndex];
@@ -3131,7 +3129,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     #endregion
 
     #region Attack permanent determination
-    [PunRPC]
+   // //[PunRPC]
     public void SetAttackingPermaent(int permanentIndex, int attackTargetPermanentIndex)
     {
         Permanent AttackingPermanent = gameContext.TurnPlayer.GetFieldPermanents()[permanentIndex];
@@ -3163,7 +3161,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
         isSync = true;
         gameContext.TurnPhase = GameContext.phase.End;
         Debug.Log($"{gameContext.TurnPlayer}:End Phase");
-        yield return GManager.instance.photonWaitController.StartWait("EndPhase");
+        ////yield return GManager.instance.photonWaitController.StartWait("EndPhase");
         isSync = false;
 
         isFirstPlayerFirstTurn = false;
@@ -3220,10 +3218,10 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
         {
             if (_handCard != null)
             {
-                _handCard.RemoveDragTarget();
+                //_handCard.RemoveDragTarget();
                 _handCard.RemoveClickTarget();
                 _handCard.RemoveSelectEffect();
-                _handCard.handCardCommandPanel.CloseCommandPanel();
+                //_handCard.handCardCommandPanel.CloseCommandPanel();
                 _handCard.OffPlayText();
             }
         }
@@ -3249,49 +3247,51 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     {
         int localPlayerID = 0;
 
-        if (PhotonNetwork.IsMasterClient)
-        {
-            localPlayerID = 0;
-        }
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //    localPlayerID = 0;
+        //}
 
-        else
-        {
-            localPlayerID = 1;
-        }
+        //else
+        //{
+        //    localPlayerID = 1;
+        //}
 
-        photonView.RPC("Surrender", RpcTarget.All, localPlayerID);
+        // TODO
+        //Surrender( localPlayerID);
     }
 
-    [PunRPC]
+    ////[PunRPC]
     public void Surrender(int loserPlayerID)
     {
         Player player = null;
 
-        if (loserPlayerID == 0)
-        {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                player = GManager.instance.You;
-            }
+        // TODO
+        //if (loserPlayerID == 0)
+        //{
+        //    if (PhotonNetwork.IsMasterClient)
+        //    {
+        //        player = GManager.instance.You;
+        //    }
 
-            else
-            {
-                player = GManager.instance.Opponent;
-            }
-        }
+        //    else
+        //    {
+        //        player = GManager.instance.Opponent;
+        //    }
+        //}
 
-        else if (loserPlayerID == 1)
-        {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                player = GManager.instance.Opponent;
-            }
+        //else if (loserPlayerID == 1)
+        //{
+        //    if (PhotonNetwork.IsMasterClient)
+        //    {
+        //        player = GManager.instance.Opponent;
+        //    }
 
-            else
-            {
-                player = GManager.instance.You;
-            }
-        }
+        //    else
+        //    {
+        //        player = GManager.instance.You;
+        //    }
+        //}
 
         if (player != null)
         {
@@ -3313,17 +3313,17 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
 
         ContinuousController.instance.CanSetRandom = false;
 
-        GManager.instance.photonWaitController.ResetKeys();
+        //GManager.instance.photonWaitController.ResetKeys();
 
-        if (PhotonNetwork.InRoom)
-        {
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new ExitGames.Client.Photon.Hashtable());
-        }
+        //if (PhotonNetwork.InRoom)
+        //{
+        //    PhotonNetwork.CurrentRoom.SetCustomProperties(new ExitGames.Client.Photon.Hashtable());
+        //}
 
         if (!ContinuousController.instance.isRandomMatch && !ContinuousController.instance.isAI)
         {
             Debug.Log("Player property initialization");
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable());
+            //PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable());
         }
 
         endGame = true;
@@ -3340,21 +3340,21 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
             player.securityObject.OffShowSecurityAttackObject();
         }
 
-        GManager.instance.optionPanel.Close_(false);
+        //GManager.instance.optionPanel.Close_(false);
 
-        GManager.instance.LoadingObject.gameObject.SetActive(false);
+       // GManager.instance.LoadingObject.gameObject.SetActive(false);
+       
+        //GManager.instance.resultObject.ShowResult(Winner, Surrendered, effectName);
 
-        GManager.instance.resultObject.ShowResult(Winner, Surrendered, effectName);
+        //EventSystem.current.SetSelectedGameObject(GManager.instance.resultObject.transform.GetChild(3).gameObject);
 
-        EventSystem.current.SetSelectedGameObject(GManager.instance.resultObject.transform.GetChild(3).gameObject);
-
-        GManager.instance.commandText.CloseCommandText();
+        ////GManager.instance.commandText.CloseCommandText();
 
         StopAllCoroutines();
         GManager.instance.StopAllCoroutines();
         ContinuousController.instance.StopAllCoroutines();
 
-        ContinuousController.instance.StartCoroutine(GManager.instance.BattleBGM.FadeOut(1));
+        //ContinuousController.instance.StartCoroutine(GManager.instance.BattleBGM.FadeOut(1));
 
         if (GManager.instance.isAuto && GManager.instance.IsAI)
         {
@@ -3365,7 +3365,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     #endregion
 
     #region Go to the next phase
-    [PunRPC]
+    ////[PunRPC]
     public void NextPhase()
     {
         if (gameContext.TurnPhase != GameContext.phase.Main)

@@ -1,5 +1,4 @@
-﻿using Photon.Pun;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +6,7 @@ using UnityEngine;
 
 
 
-public class SelectPermanentEffect : MonoBehaviourPunCallbacks
+public class SelectPermanentEffect : MonoBehaviour
 {
     public void SetUp
         (Player selectPlayer,
@@ -253,7 +252,7 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
 
             if (!_isLocal)
             {
-                yield return GManager.instance.photonWaitController.StartWait("SelectPermanentEffect");
+                //yield return GManager.instance.photonWaitController.StartWait("SelectPermanentEffect");
             }
 
             foreach (Player player in GManager.instance.turnStateMachine.gameContext.Players)
@@ -269,7 +268,7 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
                 #region Message display
                 if (!string.IsNullOrEmpty(_customMessage))
                 {
-                    GManager.instance.commandText.OpenCommandText(_customMessage, _isdigiXros);
+                    //GManager.instance.commandText.OpenCommandText(_customMessage, _isdigiXros);
                 }
 
                 else
@@ -305,7 +304,7 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
 
                     if (!string.IsNullOrEmpty(message))
                     {
-                        GManager.instance.commandText.OpenCommandText(message, _isdigiXros);
+                        //GManager.instance.commandText.OpenCommandText(message, _isdigiXros);
                     }
                 }
 
@@ -353,7 +352,7 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
 
                 if (!forcesSelection)
                 {
-                    GManager.instance.sideBar.SetUpSideBar();
+                   // GManager.instance.sideBar.SetUpSideBar();
 
                     List<FieldPermanentCard> candidates = new List<FieldPermanentCard>();
 
@@ -371,7 +370,7 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
 
                     if (candidates.Count >= 1)
                     {
-                        GManager.instance.hideCannotSelectObject.SetUpHideCannotSelectObject(candidates, false);
+                       //GManager.instance.hideCannotSelectObject.SetUpHideCannotSelectObject(candidates, false);
                     }
 
                     CheckEndSelect();
@@ -435,16 +434,17 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
                         #region UI display depending on whether it can be terminated
                         if (CanEndSelect(PreSelectedPermanents))
                         {
-                            GManager.instance.selectCommandPanel.SetUpCommandButton(new List<Command_SelectCommand>()
-                            {
-                                new Command_SelectCommand("End Selection", EndSelect_RPC, 0)
-                            });
+                            // TODO
+                            //GManager.instance.selectCommandPanel.SetUpCommandButton(new List<Command_SelectCommand>()
+                            //{
+                            //    new Command_SelectCommand("End Selection", EndSelect_RPC, 0)
+                            //});
                         }
 
                         else
                         {
-                            GManager.instance.selectCommandPanel.Off(false);
-                            GManager.instance.sideBar.SetUpSideBar();
+                            //GManager.instance.selectCommandPanel.Off(false);
+                            //GManager.instance.sideBar.SetUpSideBar();
                         }
                         #endregion
 
@@ -490,7 +490,7 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
 
                         if (PreSelectedPermanents.Count >= 1)
                         {
-                            GManager.instance.BackButton.CloseSelectCommandButton();
+                          //  GManager.instance.BackButton.CloseSelectCommandButton();
                         }
 
                         else
@@ -504,13 +504,14 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
                                     backButtonMessage = _customBackButtonMessage;
                                 }
 
-                                GManager.instance.BackButton.OpenSelectCommandButton(backButtonMessage, () => NoSelect_RPC(), 0);
+                                //GManager.instance.BackButton.OpenSelectCommandButton(backButtonMessage, () => NoSelect_RPC(), 0);
 
                                 void NoSelect_RPC()
                                 {
                                     if (!_isLocal)
                                     {
-                                        photonView.RPC("SetNoSelectChara", RpcTarget.All);
+                                        // TODO
+                                        //SetNoSelectChara", RpcTarget.All);
                                     }
 
                                     else
@@ -521,7 +522,7 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
                             }
                         }
 
-                        GManager.instance.sideBar.SetUpSideBar();
+                        //GManager.instance.sideBar.SetUpSideBar();
                     }
 
                     #endregion
@@ -550,7 +551,8 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
 
                     if (!_isLocal)
                     {
-                        photonView.RPC("SetTargetFrames", RpcTarget.All, isTurnPlayer.ToArray(), CharaIndex.ToArray());
+                        //TODO
+                       // SetTargetFrames( isTurnPlayer.ToArray(), CharaIndex.ToArray());
                     }
 
                     else
@@ -558,7 +560,7 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
                         SetTargetFrames(isTurnPlayer.ToArray(), CharaIndex.ToArray());
                     }
 
-                    GManager.instance.BackButton.CloseSelectCommandButton();
+                    //GManager.instance.BackButton.CloseSelectCommandButton();
                 }
                 #endregion
             }
@@ -568,12 +570,12 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
                 #region Message display
                 if (!string.IsNullOrEmpty(_customMessage_Enemy))
                 {
-                    GManager.instance.commandText.OpenCommandText(_customMessage_Enemy, _isdigiXros);
+                    //GManager.instance.commandText.OpenCommandText(_customMessage_Enemy, _isdigiXros);
                 }
 
                 else
                 {
-                    GManager.instance.commandText.OpenCommandText("The opponent is selecting cards.", _isdigiXros);
+                    //GManager.instance.commandText.OpenCommandText("The opponent is selecting cards.", _isdigiXros);
                 }
                 #endregion
 
@@ -654,15 +656,15 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
                 }
             }
 
-            GManager.instance.hideCannotSelectObject.Close();
+            //GManager.instance.hideCannotSelectObject.Close();
 
-            GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
-            GManager.instance.BackButton.CloseSelectCommandButton();
+            //GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
+            //GManager.instance.BackButton.CloseSelectCommandButton();
 
-            GManager.instance.commandText.CloseCommandText();
-            yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+            //GManager.instance.commandText.CloseCommandText();
+            //yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
 
-            GManager.instance.sideBar.OffSideBar();
+            //GManager.instance.sideBar.OffSideBar();
             #endregion
 
             if (CanEndSelect(_targetPermanents))
@@ -696,20 +698,20 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
                                     {
                                         if (_cardEffect.EffectSourceCard.Owner.isYou)
                                         {
-                                            yield return GManager.instance.OnTargetArrow(
-                                            new Vector3(-840, -100, 0),
-                                            fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
-                                            null,
-                                            null);
+                                            //yield return GManager.instance.OnTargetArrow(
+                                            //new Vector3(-840, -100, 0),
+                                            //fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
+                                            //null,
+                                            //null);
                                         }
 
                                         else
                                         {
-                                            yield return GManager.instance.OnTargetArrow(
-                                            new Vector3(810, 240, 0),
-                                            fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
-                                            null,
-                                            null);
+                                            //yield return GManager.instance.OnTargetArrow(
+                                            //new Vector3(810, 240, 0),
+                                            //fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
+                                            //null,
+                                            //null);
                                         }
                                     }
                                     #endregion
@@ -719,20 +721,20 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
                                     {
                                         if (_cardEffect.EffectSourceCard.Owner.isYou)
                                         {
-                                            yield return GManager.instance.OnTargetArrow(
-                                            new Vector3(725, -220, 0),
-                                            fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
-                                            null,
-                                            null);
+                                            //yield return GManager.instance.OnTargetArrow(
+                                            //new Vector3(725, -220, 0),
+                                            //fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
+                                            //null,
+                                            //null);
                                         }
 
                                         else
                                         {
-                                            yield return GManager.instance.OnTargetArrow(
-                                            new Vector3(-684, 287, 0),
-                                            fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
-                                            null,
-                                            null);
+                                            //yield return GManager.instance.OnTargetArrow(
+                                            //new Vector3(-684, 287, 0),
+                                            //fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
+                                            //null,
+                                            //null);
                                         }
                                     }
                                     #endregion
@@ -743,20 +745,20 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
 
                                         if (_cardEffect.EffectSourceCard.Owner.isYou)
                                         {
-                                            yield return GManager.instance.OnTargetArrow(
-                                            new Vector3(0, -380, 0),
-                                            fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
-                                            null,
-                                            null);
+                                            //yield return GManager.instance.OnTargetArrow(
+                                            //new Vector3(0, -380, 0),
+                                            //fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
+                                            //null,
+                                            //null);
                                         }
 
                                         else
                                         {
-                                            yield return GManager.instance.OnTargetArrow(
-                                            new Vector3(0, 480, 0),
-                                            fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
-                                            null,
-                                            null);
+                                            //yield return GManager.instance.OnTargetArrow(
+                                            //new Vector3(0, 480, 0),
+                                            //fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
+                                            //null,
+                                            //null);
                                         }
 
                                     }
@@ -775,11 +777,11 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
                                     #region character card in place
                                     if (_cardEffect.EffectSourceCard.PermanentOfThisCard().ShowingPermanentCard != null)
                                     {
-                                        yield return GManager.instance.OnTargetArrow(
-                                            _cardEffect.EffectSourceCard.PermanentOfThisCard().ShowingPermanentCard.GetLocalCanvasPosition() + _cardEffect.EffectSourceCard.Owner.playerUIObjectParent.localPosition,
-                                            fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
-                                            _cardEffect.EffectSourceCard.PermanentOfThisCard().ShowingPermanentCard,
-                                            fieldPermanentCard);
+                                        //yield return GManager.instance.OnTargetArrow(
+                                        //    _cardEffect.EffectSourceCard.PermanentOfThisCard().ShowingPermanentCard.GetLocalCanvasPosition() + _cardEffect.EffectSourceCard.Owner.playerUIObjectParent.localPosition,
+                                        //    fieldPermanentCard.GetLocalCanvasPosition() + fieldPermanentCard.ThisPermanent.TopCard.Owner.playerUIObjectParent.localPosition,
+                                        //    _cardEffect.EffectSourceCard.PermanentOfThisCard().ShowingPermanentCard,
+                                        //    fieldPermanentCard);
                                     }
                                     #endregion
                                 }
@@ -826,7 +828,7 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
 
                         for (int i = 0; i < 1; i++)
                         {
-                            GManager.instance.OffTargetArrow();
+                            //GManager.instance.OffTargetArrow();
                             yield return new WaitForSeconds(Time.deltaTime);
                         }
 
@@ -882,7 +884,7 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
     }
 
     #region 選択決定
-    [PunRPC]
+    ////[PunRPC]
     public void SetTargetFrames(bool[] isTurnPlayer, int[] UnitIndex)
     {
         _targetPermanents = new List<Permanent>();
@@ -911,10 +913,10 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
     #endregion
 
     #region 選択しない
-    [PunRPC]
+    ////[PunRPC]
     public void SetNoSelectChara()
     {
-        GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
+        //GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
 
         _targetPermanents = new List<Permanent>();
 

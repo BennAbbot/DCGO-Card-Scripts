@@ -1,4 +1,4 @@
-using Photon.Pun;
+//using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -634,7 +634,7 @@ namespace DCGO.CardEffects.BT11
         bool endSelect = false;
         bool fromHand = false;
 
-        [PunRPC]
+        //[PunRPC]
         public void SetFromHand(bool fromHand)
         {
             this.fromHand = fromHand;

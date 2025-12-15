@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon;
+//using Photon;
 using System;
-using Photon.Pun;
+//using Photon.Pun;
 
 public class P_012 : CEntity_Effect
 {
@@ -60,8 +60,8 @@ public class P_012 : CEntity_Effect
 
                             List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
                                 {
-                                    new Command_SelectCommand($"Draw 1", () => photonView.RPC("SetActionID", RpcTarget.All, 0), 0),
-                                    new Command_SelectCommand($"DP +1000", () => photonView.RPC("SetActionID", RpcTarget.All, 1), 0),
+                                    new Command_SelectCommand($"Draw 1", () => SetActionID( 0), 0),
+                                    new Command_SelectCommand($"DP +1000", () => SetActionID( 1), 0),
                                 };
 
                             GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -143,7 +143,7 @@ public class P_012 : CEntity_Effect
     bool endSelect = false;
     int actionID = -1;
 
-    [PunRPC]
+    //[PunRPC]
     public void SetActionID(int actionID)
     {
         this.actionID = actionID;

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon;
+//using Photon;
 using System;
-using Photon.Pun;
+//using Photon.Pun;
 
 public class P_088 : CEntity_Effect
 {

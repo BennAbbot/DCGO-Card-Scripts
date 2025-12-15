@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon;
+//using Photon;
 using System;
-using Photon.Pun;
+//using Photon.Pun;
 public class BT1_089 : CEntity_Effect
 {
     public override List<ICardEffect> CardEffects(EffectTiming timing, CardSource card)
@@ -25,7 +25,7 @@ public class BT1_089 : CEntity_Effect
 
             string EffectDiscription()
             {
-                return "[Main] If you have a level 5 or higher green Digimon in play�Cyou can suspend this Tamer to hatch 1 Digi-Egg card to an empty space in your breeding area�Cor move 1 level 3 or higher Digimon from your breeding area to your battle area. ";
+                return "[Main] If you have a level 5 or higher green Digimon in play, you can suspend this Tamer to hatch 1 Digi-Egg card to an empty space in your breeding area, or move 1 level 3 or higher Digimon from your breeding area to your battle area. ";
             }
 
             bool CanUseCondition(Hashtable hashtable)

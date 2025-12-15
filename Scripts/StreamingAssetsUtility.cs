@@ -4,7 +4,6 @@ using System.IO;
 using System;
 using System.Threading.Tasks;
 using UnityEngine.Networking;
-using WebP;
 
 public class StreamingAssetsUtility
 {
@@ -93,67 +92,69 @@ public class StreamingAssetsUtility
 
     public static async Task<Sprite> GetCardImageDataLocal(string path)
     {
-        if (File.Exists(path))
-        {
-            Debug.Log($"File Exists Locally: {path}");
-            byte[] imageBuff = await ReadFile(path);
-            Debug.Log($"Grabbing image bytes: {imageBuff}");
-            Texture2D texture = Texture2DExt.CreateTexture2DFromWebP(imageBuff, lMipmaps: true, lLinear: false, lError: out WebP.Error lError);
-            Debug.Log($"Converting WebP to Texture2D: {texture}");
-            if (lError == WebP.Error.Success)
-            {
-                Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+        // TODO
+        //if (File.Exists(path))
+        //{
+        //    Debug.Log($"File Exists Locally: {path}");
+        //    byte[] imageBuff = await ReadFile(path);
+        //    Debug.Log($"Grabbing image bytes: {imageBuff}");
+        //    Texture2D texture = Texture2DExt.CreateTexture2DFromWebP(imageBuff, lMipmaps: true, lLinear: false, lError: out WebP.Error lError);
+        //    Debug.Log($"Converting WebP to Texture2D: {texture}");
+        //    if (lError == WebP.Error.Success)
+        //    {
+        //        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
 
-                return sprite;
-            }
-            else
-            {
-                Debug.Log(lError.ToString());
-            }
-        }
+        //        return sprite;
+        //    }
+        //    else
+        //    {
+        //        Debug.Log(lError.ToString());
+        //    }
+        //}
 
         return null;
     }
 
     public static async Task<Sprite> GetCardImageData(string fileName, string filePath)
     {
-        //string urlPath = $"https://raw.githubusercontent.com/TakaOtaku/Digimon-Cards/main/src/assets/images/cards/{fileName}.webp";
-        string urlPath = $"https://raw.githubusercontent.com/TakaOtaku/Digimon-Card-App/main/src/assets/images/cards/{fileName}.webp";
+        // TODO
+        ////string urlPath = $"https://raw.githubusercontent.com/TakaOtaku/Digimon-Cards/main/src/assets/images/cards/{fileName}.webp";
+        //string urlPath = $"https://raw.githubusercontent.com/TakaOtaku/Digimon-Card-App/main/src/assets/images/cards/{fileName}.webp";
 
-        UnityWebRequest webReq_CardImage = UnityWebRequest.Get(urlPath);
-        UnityWebRequestAsyncOperation operation = webReq_CardImage.SendWebRequest();
+        //UnityWebRequest webReq_CardImage = UnityWebRequest.Get(urlPath);
+        //UnityWebRequestAsyncOperation operation = webReq_CardImage.SendWebRequest();
 
-        while (!operation.isDone)
-        {
-            await Task.Yield();
-        }
+        //while (!operation.isDone)
+        //{
+        //    await Task.Yield();
+        //}
 
-        Debug.Log($"WebRequest isDone: {fileName}");
-        if (webReq_CardImage.result == UnityWebRequest.Result.ConnectionError)
-            return null;
-        else if (webReq_CardImage.result == UnityWebRequest.Result.ProtocolError)
-            return null;
-        else
-        {
-            Debug.Log($"WebRequest Successful: Checking local file - {File.Exists(filePath)}");
-            if(!File.Exists(filePath))
-                File.WriteAllBytes(filePath, webReq_CardImage.downloadHandler.data);
+        //Debug.Log($"WebRequest isDone: {fileName}");
+        //if (webReq_CardImage.result == UnityWebRequest.Result.ConnectionError)
+        //    return null;
+        //else if (webReq_CardImage.result == UnityWebRequest.Result.ProtocolError)
+        //    return null;
+        //else
+        //{
+        //    Debug.Log($"WebRequest Successful: Checking local file - {File.Exists(filePath)}");
+        //    if(!File.Exists(filePath))
+        //        File.WriteAllBytes(filePath, webReq_CardImage.downloadHandler.data);
 
-            Texture2D texture = Texture2DExt.CreateTexture2DFromWebP(webReq_CardImage.downloadHandler.data, lMipmaps: true, lLinear: false, lError: out WebP.Error lError);
+        //    Texture2D texture = Texture2DExt.CreateTexture2DFromWebP(webReq_CardImage.downloadHandler.data, lMipmaps: true, lLinear: false, lError: out WebP.Error lError);
 
-            if (lError == WebP.Error.Success)
-            {
-                Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+        //    if (lError == WebP.Error.Success)
+        //    {
+        //        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
 
-                return sprite;
-            }
-            else
-            {
-                Debug.Log($"Failed to convert: {lError.ToString()}");
-            }
+        //        return sprite;
+        //    }
+        //    else
+        //    {
+        //        Debug.Log($"Failed to convert: {lError.ToString()}");
+        //    }
 
-            return null;
-        }
+           return null;
+        //}
     }
 
     #endregion

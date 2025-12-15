@@ -1,4 +1,4 @@
-using Photon.Pun;
+//using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -64,9 +64,9 @@ namespace DCGO.CardEffects.EX4
 
                                 List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
                                 {
-                                    new Command_SelectCommand($"De-Digivolve", () => photonView.RPC("SetActionID", RpcTarget.All, 0), 0),
-                                    new Command_SelectCommand($"Your other 1 Digimon digivolves", () => photonView.RPC("SetActionID", RpcTarget.All, 1), 0),
-                                    new Command_SelectCommand($"DNA Digivolution", () => photonView.RPC("SetActionID", RpcTarget.All, 2), 0),
+                                    new Command_SelectCommand($"De-Digivolve", () => SetActionID( 0), 0),
+                                    new Command_SelectCommand($"Your other 1 Digimon digivolves", () => SetActionID( 1), 0),
+                                    new Command_SelectCommand($"DNA Digivolution", () => SetActionID( 2), 0),
                                 };
 
                                 GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -341,7 +341,7 @@ namespace DCGO.CardEffects.EX4
                                                                 yield return null;
                                                             }
 
-                                                            photonView.RPC("SetJogressEvoRootsFrameIDs", RpcTarget.All, JogressEvoRootsFrameIDs);
+                                                            SetJogressEvoRootsFrameIDs( JogressEvoRootsFrameIDs);
                                                         }
 
                                                         else
@@ -432,7 +432,7 @@ namespace DCGO.CardEffects.EX4
         bool endSelect = false;
         int actionID = -1;
 
-        [PunRPC]
+        //[PunRPC]
         public void SetActionID(int actionID)
         {
             this.actionID = actionID;
@@ -441,7 +441,7 @@ namespace DCGO.CardEffects.EX4
 
         int[] JogressEvoRootsFrameIDs = new int[0];
 
-        [PunRPC]
+        //[PunRPC]
         public void SetJogressEvoRootsFrameIDs(int[] JogressEvoRootsFrameIDs)
         {
             this.JogressEvoRootsFrameIDs = JogressEvoRootsFrameIDs;

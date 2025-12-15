@@ -1,12 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon;
-using Photon.Pun;
 using System;
 using System.Linq;
 
-public class MultipleSkills : MonoBehaviourPunCallbacks
+public class MultipleSkills : MonoBehaviour
 {
     public bool IsUsing { get; private set; } = false;
     AutoProcessing _autoProcessing = null;
@@ -160,7 +158,7 @@ public class MultipleSkills : MonoBehaviourPunCallbacks
             
             if (skillInfos_active.Count > 0)
             {
-                bool oldIsSecurityGlassBlue = player.securityObject.securityBreakGlass.IsBlueGlass && IsOnlyHandEffectStacked && IsOnlyOptionalEffectStacked && IsEachStackedEffectHasDistinctSourceCard;
+                bool oldIsSecurityGlassBlue = false;// player.securityObject.securityBreakGlass.IsBlueGlass && IsOnlyHandEffectStacked && IsOnlyOptionalEffectStacked && IsEachStackedEffectHasDistinctSourceCard;
 
                 #region If the effect list is one, process normally.
                 if (skillInfos_active.Count == 1)
@@ -176,7 +174,7 @@ public class MultipleSkills : MonoBehaviourPunCallbacks
                 {
                     List<CardSource> RootCardSources = skillInfos_active.Map(skillInfo => skillInfo.CardEffect.EffectSourceCard);
 
-                    yield return GManager.instance.photonWaitController.StartWait("StartSelectMultipleSkill");
+                    ////yield return GManager.instance.photonWaitController.StartWait("StartSelectMultipleSkill");
 
                     // Blast Digivolution
                     if (IsOnlyHandEffectStacked && IsOnlyOptionalEffectStacked && IsEachStackedEffectHasDistinctSourceCard)
@@ -189,7 +187,7 @@ public class MultipleSkills : MonoBehaviourPunCallbacks
                             {
                                 if (oldIsSecurityGlassBlue)
                                 {
-                                    player.securityObject.securityBreakGlass.gameObject.SetActive(false);
+                                    //player.securityObject.securityBreakGlass.gameObject.SetActive(false);
                                 }
 
                                 SelectHandEffect selectHandEffect = GManager.instance.GetComponent<SelectHandEffect>();
@@ -242,7 +240,8 @@ public class MultipleSkills : MonoBehaviourPunCallbacks
                                 }
                             }
 
-                            photonView.RPC("SetTargetSkill", RpcTarget.All, skillIndex);
+                            //TODO
+                            //SetTargetSkill( skillIndex);
                         }
 
                         else
@@ -288,14 +287,15 @@ public class MultipleSkills : MonoBehaviourPunCallbacks
                                 skillIndex = AutomaticOrder.GetSkillIndexAutomaticOrder(skillInfos_active);
                             }
 
-                            photonView.RPC("SetTargetSkill", RpcTarget.All, skillIndex);
+                            //TODO
+                            //SetTargetSkill( skillIndex);
                         }
 
                         else
                         {
                             if (!IsOnlyHandEffectStacked)
                             {
-                                GManager.instance.commandText.OpenCommandText("The opponent is choosing which effect to process first.");
+                                ////GManager.instance.commandText.OpenCommandText("The opponent is choosing which effect to process first.");
                             }
 
                             #region AI
@@ -310,12 +310,12 @@ public class MultipleSkills : MonoBehaviourPunCallbacks
                     yield return new WaitWhile(() => !_endSelect);
                     _endSelect = false;
 
-                    GManager.instance.commandText.CloseCommandText();
-                    yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+                   // //GManager.instance.commandText.CloseCommandText();
+                    ////yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
 
                     yield return ContinuousController.instance.StartCoroutine(Activate(!(IsOnlyHandEffectStacked && IsOnlyOptionalEffectStacked && IsEachStackedEffectHasDistinctSourceCard)));
 
-                    yield return GManager.instance.photonWaitController.StartWait("EndSelectMultipleSkill");
+                    ////yield return GManager.instance.photonWaitController.StartWait("EndSelectMultipleSkill");
                 }
                 #endregion
 
@@ -330,7 +330,7 @@ public class MultipleSkills : MonoBehaviourPunCallbacks
 
                     if (oldIsSecurityGlassBlue)
                     {
-                        player.securityObject.securityBreakGlass.gameObject.SetActive(false);
+                        //player.securityObject.securityBreakGlass.gameObject.SetActive(false);
                     }
 
                     ICardEffect cardEffect = skillInfos_active[_skillIndex].CardEffect;
@@ -372,7 +372,7 @@ public class MultipleSkills : MonoBehaviourPunCallbacks
 
                     if (oldIsSecurityGlassBlue)
                     {
-                        player.securityObject.securityBreakGlass.ShowBlueMatarial();
+                        //player.securityObject.securityBreakGlass.ShowBlueMatarial();
                     }
                 }
                 #endregion
@@ -405,7 +405,7 @@ public class MultipleSkills : MonoBehaviourPunCallbacks
         }
     }
 
-    [PunRPC]
+    ////[PunRPC]
     public void SetTargetSkill(int skillIndex)
     {
         _skillIndex = skillIndex;

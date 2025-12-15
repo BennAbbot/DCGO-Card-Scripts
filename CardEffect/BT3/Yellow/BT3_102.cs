@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon;
+//using Photon;
 using System;
-using Photon.Pun;
+//using Photon.Pun;
 
 public class BT3_102 : CEntity_Effect
 {
@@ -43,8 +43,8 @@ public class BT3_102 : CEntity_Effect
 
                         List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
                                 {
-                                    new Command_SelectCommand($"Discard", () => photonView.RPC("SetDoDiscard", RpcTarget.All, true), 0),
-                                    new Command_SelectCommand($"Not Discard", () => photonView.RPC("SetDoDiscard", RpcTarget.All, false), 1),
+                                    new Command_SelectCommand($"Discard", () => SetDoDiscard( true), 0),
+                                    new Command_SelectCommand($"Not Discard", () => SetDoDiscard( false), 1),
                                 };
 
                         GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -91,7 +91,7 @@ public class BT3_102 : CEntity_Effect
     bool endSelect = false;
     bool doDiscard = false;
 
-    [PunRPC]
+    //[PunRPC]
     public void SetDoDiscard(bool doDiscard)
     {
         this.doDiscard = doDiscard;

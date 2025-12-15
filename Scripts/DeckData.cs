@@ -808,8 +808,8 @@ public class DeckData
 
         deckName = sb.ToString();
 
-        var filter = new ProfanityFilter.ProfanityFilter();
-        deckName = filter.CensorString(deckName);
+        //var filter = new ProfanityFilter.ProfanityFilter();
+        //deckName = filter.CensorString();
 
         return deckName;
     }

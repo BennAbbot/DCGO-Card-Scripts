@@ -1,4 +1,4 @@
-using Photon.Pun;
+//using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -119,8 +119,8 @@ namespace DCGO.CardEffects.BT18
 
                                     List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
                                 {
-                                    new Command_SelectCommand($"Discard", () => photonView.RPC("SetDoDiscard", RpcTarget.All, true), 0),
-                                    new Command_SelectCommand($"Not Discard", () => photonView.RPC("SetDoDiscard", RpcTarget.All, false), 1),
+                                    new Command_SelectCommand($"Discard", () => SetDoDiscard( true), 0),
+                                    new Command_SelectCommand($"Not Discard", () => SetDoDiscard( false), 1),
                                 };
 
                                     GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -245,8 +245,8 @@ namespace DCGO.CardEffects.BT18
 
                                     List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
                                 {
-                                    new Command_SelectCommand($"Discard", () => photonView.RPC("SetDoDiscard", RpcTarget.All, true), 0),
-                                    new Command_SelectCommand($"Not Discard", () => photonView.RPC("SetDoDiscard", RpcTarget.All, false), 1),
+                                    new Command_SelectCommand($"Discard", () => SetDoDiscard( true), 0),
+                                    new Command_SelectCommand($"Not Discard", () => SetDoDiscard( false), 1),
                                 };
 
                                     GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -444,7 +444,7 @@ namespace DCGO.CardEffects.BT18
         bool endSelect = false;
         bool doDiscard = false;
 
-        [PunRPC]
+        //[PunRPC]
         public void SetDoDiscard(bool doDiscard)
         {
             this.doDiscard = doDiscard;

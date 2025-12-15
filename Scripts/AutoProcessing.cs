@@ -1,12 +1,11 @@
-﻿using Photon.Pun;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 
-public class AutoProcessing : MonoBehaviourPunCallbacks
+public class AutoProcessing : MonoBehaviour
 {
     //Skill list before triggering and entering resolution timing
     public List<SkillInfo> StackedSkillInfos { get; set; } = new List<SkillInfo>();
@@ -669,7 +668,7 @@ public class AutoProcessing : MonoBehaviourPunCallbacks
         {
             GManager.instance.turnStateMachine.isSync = true;
 
-            // yield return GManager.instance.photonWaitController.StartWait("EndTurnProcess");
+            // //yield return GManager.instance.photonWaitController.StartWait("EndTurnProcess");
 
             if (GManager.instance.turnStateMachine.Passed && GManager.instance.turnStateMachine.gameContext.TurnPhase == GameContext.phase.Main)
             {
@@ -683,7 +682,7 @@ public class AutoProcessing : MonoBehaviourPunCallbacks
                     GManager.instance.turnStateMachine.gameContext.Memory = -3;
                 }
 
-                yield return ContinuousController.instance.StartCoroutine(GManager.instance.memoryObject.SetMemory());
+                //yield return ContinuousController.instance.StartCoroutine(GManager.instance.memoryObject.SetMemory());
             }
 
             GManager.instance.turnStateMachine.Passed = true;

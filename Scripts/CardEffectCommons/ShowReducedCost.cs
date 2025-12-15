@@ -20,8 +20,8 @@ public partial class CardEffectCommons
                 {
                     List<Permanent> Permanents = GetPermanentsFromHashtable(hashtable);
                     {
-                        GManager.instance.memoryObject.ShowMemoryPredictionLine(
-                                                Card.Owner.ExpectedMemory(Card.PayingCost(playCard.Root, Permanents, checkAvailability: false)));
+                        //GManager.instance.memoryObject.ShowMemoryPredictionLine(
+                        //                        Card.Owner.ExpectedMemory(Card.PayingCost(playCard.Root, Permanents, checkAvailability: false)));
 
                         yield return new WaitForSeconds(0.2f);
                     }

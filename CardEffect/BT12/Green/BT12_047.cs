@@ -1,4 +1,4 @@
-using Photon.Pun;
+//using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -256,7 +256,7 @@ namespace DCGO.CardEffects.BT12
                                                     yield return null;
                                                 }
 
-                                                photonView.RPC("SetJogressEvoRootsFrameIDs", RpcTarget.All, JogressEvoRootsFrameIDs);
+                                                SetJogressEvoRootsFrameIDs( JogressEvoRootsFrameIDs);
                                             }
                                             else
                                             {
@@ -301,7 +301,7 @@ namespace DCGO.CardEffects.BT12
         bool endSelect = false;
         int[] JogressEvoRootsFrameIDs = new int[0];
 
-        [PunRPC]
+        //[PunRPC]
         public void SetJogressEvoRootsFrameIDs(int[] JogressEvoRootsFrameIDs)
         {
             this.JogressEvoRootsFrameIDs = JogressEvoRootsFrameIDs;

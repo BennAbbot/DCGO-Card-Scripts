@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon;
-using Photon.Pun;
 using System;
 using UnityEngine.Events;
 
-public class SelectDigiXrosClass : MonoBehaviourPunCallbacks
+public class SelectDigiXrosClass : MonoBehaviour
 {
     public List<CardSource> selectedDigicrossCards { get; private set; } = new List<CardSource>();
     public List<AddDigivolutionCardsInfo> addDigivolutionCardInfos { get; private set; } = new List<AddDigivolutionCardsInfo>();
@@ -372,7 +370,7 @@ public class SelectDigiXrosClass : MonoBehaviourPunCallbacks
 
                 foreach (DigiXrosConditionElement element in digiXrosCondition.elements)
                 {
-                    yield return GManager.instance.photonWaitController.StartWait("SelectDigiXross");
+                    //yield return GManager.instance.photonWaitController.StartWait("SelectDigiXross");
 
                     if (selectedDigicrossCards.Count >= 1)
                     {
@@ -473,50 +471,51 @@ public class SelectDigiXrosClass : MonoBehaviourPunCallbacks
                     {
                         if (card.Owner.isYou)
                         {
-                            GManager.instance.commandText.OpenCommandText($"From which area will you select {element.selectMessage}?", digiXros: true);
+                            // TODO
+                            ////GManager.instance.commandText.OpenCommandText($"From which area will you select {element.selectMessage}?", digiXros: true);
 
-                            List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>();
+                            //List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>();
 
-                            for (int i = 0; i < canSelectActions.Count; i++)
-                            {
-                                int k = actions.IndexOf(canSelectActions[i]);
-                                int spriteIndex = 0;
+                            //for (int i = 0; i < canSelectActions.Count; i++)
+                            //{
+                            //    int k = actions.IndexOf(canSelectActions[i]);
+                            //    int spriteIndex = 0;
 
-                                string message = "";
+                            //    string message = "";
 
-                                switch (k)
-                                {
-                                    case 0:
-                                        message = "Hand";
-                                        break;
+                            //    switch (k)
+                            //    {
+                            //        case 0:
+                            //            message = "Hand";
+                            //            break;
 
-                                    case 1:
-                                        message = "Field Digimon";
-                                        break;
+                            //        case 1:
+                            //            message = "Field Digimon";
+                            //            break;
 
-                                    case 2:
-                                        message = "Trash";
-                                        break;
+                            //        case 2:
+                            //            message = "Trash";
+                            //            break;
 
-                                    case 3:
-                                        message = "Tamer digivolution cards";
-                                        break;
+                            //        case 3:
+                            //            message = "Tamer digivolution cards";
+                            //            break;
 
-                                    case 4:
-                                        message = "End Selection";
-                                        spriteIndex = 1;
-                                        break;
-                                }
+                            //        case 4:
+                            //            message = "End Selection";
+                            //            spriteIndex = 1;
+                            //            break;
+                            //    }
 
-                                command_SelectCommands.Add(new Command_SelectCommand(message, () => photonView.RPC("SetTargetDigiXrossIndex", RpcTarget.All, k), spriteIndex));
-                            }
+                            //    command_SelectCommands.Add(new Command_SelectCommand(message, () => SetTargetDigiXrossIndex( k), spriteIndex));
+                            //}
 
-                            GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
+                            //GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
                         }
 
                         else
                         {
-                            GManager.instance.commandText.OpenCommandText($"The opponent is choosing from which area to select {element.selectMessage}.", digiXros: true);
+                            //GManager.instance.commandText.OpenCommandText($"The opponent is choosing from which area to select {element.selectMessage}.", digiXros: true);
 
                             #region AIƒ‚[ƒh
                             if (GManager.instance.IsAI)
@@ -539,8 +538,8 @@ public class SelectDigiXrosClass : MonoBehaviourPunCallbacks
                     yield return new WaitWhile(() => !_endSelect);
                     _endSelect = false;
 
-                    GManager.instance.commandText.CloseCommandText();
-                    yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+                    //GManager.instance.commandText.CloseCommandText();
+                    //yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
 
                     if (0 <= _targetIndex && _targetIndex <= actions.Count - 1)
                     {
@@ -1011,7 +1010,7 @@ public class SelectDigiXrosClass : MonoBehaviourPunCallbacks
 
     bool _endSelectDigiXros = false;
 
-    [PunRPC]
+    ////[PunRPC]
     public void SetTargetDigiXrossIndex(int targetIndex)
     {
         this._targetIndex = targetIndex;

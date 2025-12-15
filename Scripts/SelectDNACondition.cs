@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 using System;
 using System.Linq;
 
 
-public class SelectDNACondition : MonoBehaviourPunCallbacks
+public class SelectDNACondition : MonoBehaviour
 {
     public void SetUp
         (Player SelectPlayer,
@@ -39,7 +38,7 @@ public class SelectDNACondition : MonoBehaviourPunCallbacks
     {
         if (!_notDoSync)
         {
-            //yield return GManager.instance.photonWaitController.StartWait("SelectDNACondition");
+            ////yield return GManager.instance.photonWaitController.StartWait("SelectDNACondition");
         }
 
         if(_targetDNA.jogressCondition.Count > 1)
@@ -74,15 +73,16 @@ public class SelectDNACondition : MonoBehaviourPunCallbacks
 
                 yield return ContinuousController.instance.StartCoroutine(GManager.instance.userSelectionManager.WaitForEndSelect());
 
-                GManager.instance.photonView.RPC("SetDNACondition", RpcTarget.All, GManager.instance.userSelectionManager.SelectedIntValue);
+                //TODO
+                //GManager.instance.SetDNACondition( GManager.instance.userSelectionManager.SelectedIntValue);
             }
         }
 
         yield return new WaitWhile(() => !_endSelect);
         _endSelect = false;
 
-        GManager.instance.commandText.CloseCommandText();
-        yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+        //GManager.instance.commandText.CloseCommandText();
+        //yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
 
         if (_selectDNACoroutine != null)
         {
@@ -90,7 +90,7 @@ public class SelectDNACondition : MonoBehaviourPunCallbacks
         }
     }
 
-    [PunRPC]
+    ////[PunRPC]
     public void SetDNACondition(int selectedCount)
     {
         _selectedCount = selectedCount;

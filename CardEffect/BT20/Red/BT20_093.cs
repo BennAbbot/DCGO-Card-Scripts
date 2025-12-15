@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
-using Photon.Pun;
+//using Photon.Pun;
 
 namespace DCGO.CardEffects.BT20
 {
@@ -279,7 +279,7 @@ namespace DCGO.CardEffects.BT20
                                         yield return null;
                                     }
 
-                                    photonView.RPC("SetJogressEvoRootsFrameIDs", RpcTarget.All, _jogressEvoRootsFrameIDs);
+                                    SetJogressEvoRootsFrameIDs( _jogressEvoRootsFrameIDs);
                                 }
 
                                 else
@@ -460,7 +460,7 @@ namespace DCGO.CardEffects.BT20
         bool _endSelect;
         int[] _jogressEvoRootsFrameIDs = Array.Empty<int>();
 
-        [PunRPC]
+        //[PunRPC]
         public void SetJogressEvoRootsFrameIDs(int[] jogressEvoRootsFrameIDs)
         {
             this._jogressEvoRootsFrameIDs = jogressEvoRootsFrameIDs;

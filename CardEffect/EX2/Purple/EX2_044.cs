@@ -1,4 +1,4 @@
-using Photon.Pun;
+//using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -172,8 +172,8 @@ namespace DCGO.CardEffects.EX2
 
                                     List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
                                 {
-                                    new Command_SelectCommand($"Trash", () => photonView.RPC("SetDoTrash", RpcTarget.All, true), 0),
-                                    new Command_SelectCommand($"Not trash", () => photonView.RPC("SetDoTrash", RpcTarget.All, false), 1),
+                                    new Command_SelectCommand($"Trash", () => SetDoTrash( true), 0),
+                                    new Command_SelectCommand($"Not trash", () => SetDoTrash( false), 1),
                                 };
 
                                     GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -300,8 +300,8 @@ namespace DCGO.CardEffects.EX2
 
                                     List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
                                 {
-                                    new Command_SelectCommand($"Trash", () => photonView.RPC("SetDoTrash", RpcTarget.All, true), 0),
-                                    new Command_SelectCommand($"Not trash", () => photonView.RPC("SetDoTrash", RpcTarget.All, false), 1),
+                                    new Command_SelectCommand($"Trash", () => SetDoTrash( true), 0),
+                                    new Command_SelectCommand($"Not trash", () => SetDoTrash( false), 1),
                                 };
 
                                     GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -363,7 +363,7 @@ namespace DCGO.CardEffects.EX2
         bool endSelect = false;
         bool doTrash = false;
 
-        [PunRPC]
+        //[PunRPC]
         public void SetDoTrash(bool doTrash)
         {
             this.doTrash = doTrash;

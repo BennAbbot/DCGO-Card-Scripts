@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon;
+//using Photon;
 using System;
-using Photon.Pun;
+//using Photon.Pun;
 
 public class BT5_104 : CEntity_Effect
 {
@@ -76,8 +76,8 @@ public class BT5_104 : CEntity_Effect
 
                             List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
                                 {
-                                    new Command_SelectCommand($"Play 1 Token", () => photonView.RPC("SetPlayToken", RpcTarget.All, true), 0),
-                                    new Command_SelectCommand($"Not Play", () => photonView.RPC("SetPlayToken", RpcTarget.All, false), 1),
+                                    new Command_SelectCommand($"Play 1 Token", () => SetPlayToken( true), 0),
+                                    new Command_SelectCommand($"Not Play", () => SetPlayToken( false), 1),
                                 };
 
                             GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -121,7 +121,7 @@ public class BT5_104 : CEntity_Effect
     bool endSelect = false;
     bool playToken = false;
 
-    [PunRPC]
+    //[PunRPC]
     public void SetPlayToken(bool playToken)
     {
         this.playToken = playToken;

@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Photon.Pun;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using DCGO.CardEntities;
 
 public class CardSource : MonoBehaviour
 {
@@ -17,7 +15,7 @@ public class CardSource : MonoBehaviour
 
     #region PhotonView
 
-    public PhotonView PhotonView { get; set; }
+    //public PhotonView PhotonView { get; set; }
 
     #endregion
 
@@ -89,15 +87,16 @@ public class CardSource : MonoBehaviour
 
     public void SetUpCardIndex(int _cardIndex)
     {
-        PhotonView _PhotonView = GetComponent<PhotonView>();
+        // TODO?
+        //PhotonView _PhotonView = GetComponent<PhotonView>();
 
-        _PhotonView ??= gameObject.AddComponent<PhotonView>();
+        //_PhotonView ??= gameObject.AddComponent<PhotonView>();
 
         CardIndex = _cardIndex;
 
-        _PhotonView.ViewID = CardIndex + 60;
+        //_PhotonView.ViewID = CardIndex + 60;
 
-        PhotonView = _PhotonView;
+        //PhotonView = _PhotonView;
     }
 
     #endregion
@@ -3407,6 +3406,18 @@ public class CardSource : MonoBehaviour
         get
         {
             return EqualsTraits("TS");
+        }
+    }
+
+    #endregion
+
+    #region whether this card has "Iliad" trait
+
+    public bool HasIliadTraits
+    {
+        get
+        {
+            return EqualsTraits("Iliad");
         }
     }
 

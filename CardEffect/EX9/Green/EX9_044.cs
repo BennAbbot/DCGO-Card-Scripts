@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Photon.Pun;
+//using Photon.Pun;
 using UnityEngine;
 
 //Hydramon
@@ -545,7 +545,7 @@ namespace DCGO.CardEffects.EX9
                                         yield return null;
                                     }
 
-                                    photonView.RPC("SetJogressEvoRootsFrameIDs", RpcTarget.All, _jogressEvoRootsFrameIDs);
+                                    SetJogressEvoRootsFrameIDs( _jogressEvoRootsFrameIDs);
                                 }
                                 else
                                 {
@@ -592,7 +592,7 @@ namespace DCGO.CardEffects.EX9
         bool _endSelect;
         int[] _jogressEvoRootsFrameIDs = Array.Empty<int>();
 
-        [PunRPC]
+        //[PunRPC]
         public void SetJogressEvoRootsFrameIDs(int[] jogressEvoRootsFrameIDs)
         {
             this._jogressEvoRootsFrameIDs = jogressEvoRootsFrameIDs;

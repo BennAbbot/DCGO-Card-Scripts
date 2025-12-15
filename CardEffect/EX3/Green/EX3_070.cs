@@ -1,4 +1,4 @@
-using Photon.Pun;
+//using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -174,7 +174,7 @@ namespace DCGO.CardEffects.EX3
                                                     break;
                                             }
 
-                                            command_SelectCommands.Add(new Command_SelectCommand(message, () => photonView.RPC("SetEffectIndex", RpcTarget.All, k), 0));
+                                            command_SelectCommands.Add(new Command_SelectCommand(message, () => SetEffectIndex( k), 0));
                                         }
                                     }
 
@@ -187,7 +187,7 @@ namespace DCGO.CardEffects.EX3
                                     {
                                         if (!activatedEffects.Contains(canSelectEffects[i]))
                                         {
-                                            photonView.RPC("SetEffectIndex", RpcTarget.All, i);
+                                            SetEffectIndex( i);
                                             break;
                                         }
                                     }
@@ -250,8 +250,8 @@ namespace DCGO.CardEffects.EX3
 
                             List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
                                 {
-                                    new Command_SelectCommand("Suspend & gain Pierce", () => photonView.RPC("SetEffectIndex", RpcTarget.All, 0), 0),
-                                    new Command_SelectCommand("Unsuspend", () => photonView.RPC("SetEffectIndex", RpcTarget.All, 1), 0),
+                                    new Command_SelectCommand("Suspend & gain Pierce", () => SetEffectIndex( 0), 0),
+                                    new Command_SelectCommand("Unsuspend", () => SetEffectIndex( 1), 0),
                                 };
 
                             GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -369,7 +369,7 @@ namespace DCGO.CardEffects.EX3
         int effectIndex = 0;
         bool endSelect = false;
 
-        [PunRPC]
+        //[PunRPC]
         public void SetEffectIndex(int effectIndex)
         {
             this.effectIndex = effectIndex;

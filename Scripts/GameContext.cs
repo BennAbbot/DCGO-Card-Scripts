@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 using System.Linq;
 
 //Class to manage the overall game situation
@@ -14,10 +13,10 @@ public class GameContext
         You = _You;
         Opponent = _Opponent;
 
-        if (PhotonNetwork.IsConnected)
-        {
+        //if (PhotonNetwork.IsConnected)
+        //{
             SetPlayerID();
-        }
+        //}
 
         Memory = 0;
     }
@@ -129,17 +128,17 @@ public class GameContext
     #region Player ID Assignment
     public void SetPlayerID()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
+        //if (PhotonNetwork.IsMasterClient)
+        //{
             You.PlayerID = 0;
             Opponent.PlayerID = 1;
-        }
+        //}
 
-        else
-        {
-            You.PlayerID = 1;
-            Opponent.PlayerID = 0;
-        }
+        //else
+        //{
+         //   You.PlayerID = 1;
+        //    Opponent.PlayerID = 0;
+        //}
     }
     #endregion
 

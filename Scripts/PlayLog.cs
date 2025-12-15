@@ -47,7 +47,6 @@ public class PlayLog : MonoBehaviour
         {
             OffPlayLog();
         }
-
         else
         {
             SetUpPlayLog();
@@ -63,16 +62,6 @@ public class PlayLog : MonoBehaviour
     {
         this.gameObject.SetActive(true);
 
-        if (Opening.instance != null)
-        {
-            Opening.instance.PlayDecisionSE();
-        }
-
-        else if (GManager.instance != null)
-        {
-            GManager.instance.PlayDecisionSE();
-        }
-
         _logText.text = GetLogString();
 
         _scroll.content.GetComponent<ContentSizeFitter>().SetLayoutVertical();
@@ -86,20 +75,7 @@ public class PlayLog : MonoBehaviour
 
     public void OffPlayLog()
     {
-        if (_first)
-        {
-            if (Opening.instance != null)
-            {
-                Opening.instance.PlayCancelSE();
-            }
-
-            else if (GManager.instance != null)
-            {
-                GManager.instance.PlayCancelSE();
-            }
-        }
-
-        _first = true;
+         _first = true;
 
         gameObject.SetActive(false);
     }
@@ -168,7 +144,7 @@ public class PlayLog : MonoBehaviour
 
         if (founcdCardSource != null)
         {
-            GManager.instance.cardDetail.OpenCardDetail(founcdCardSource, true);
+            //GManager.instance.cardDetail.OpenCardDetail(founcdCardSource, true);
         }
     }
 

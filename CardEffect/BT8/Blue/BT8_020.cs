@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon;
+//using Photon;
 using System;
-using Photon.Pun;
+//using Photon.Pun;
 
 public class BT8_020 : CEntity_Effect
 {
@@ -161,7 +161,7 @@ public class BT8_020 : CEntity_Effect
                                             yield return null;
                                         }
 
-                                        photonView.RPC("SetJogressEvoRootsFrameIDs", RpcTarget.All, JogressEvoRootsFrameIDs);
+                                        SetJogressEvoRootsFrameIDs( JogressEvoRootsFrameIDs);
                                     }
 
                                     else
@@ -206,7 +206,7 @@ public class BT8_020 : CEntity_Effect
     bool endSelect = false;
     int[] JogressEvoRootsFrameIDs = new int[0];
 
-    [PunRPC]
+    //[PunRPC]
     public void SetJogressEvoRootsFrameIDs(int[] JogressEvoRootsFrameIDs)
     {
         this.JogressEvoRootsFrameIDs = JogressEvoRootsFrameIDs;

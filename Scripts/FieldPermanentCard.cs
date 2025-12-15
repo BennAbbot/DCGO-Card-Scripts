@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using DG.Tweening;
 using UnityEngine.EventSystems;
 using TMPro;
-using System;
-using System.Diagnostics;
 
 public class FieldPermanentCard : MonoBehaviour
 {
@@ -29,8 +26,8 @@ public class FieldPermanentCard : MonoBehaviour
     [Header("アニメーター")]
     public Animator anim;
 
-    [Header("コマンドパネル")]
-    public CommandPanel fieldUnitCommandPanel;
+    //[Header("コマンドパネル")]
+    //public CommandPanel fieldUnitCommandPanel;
 
     [Header("スキル名Text")]
     public Text SkillNameText;
@@ -279,10 +276,10 @@ public class FieldPermanentCard : MonoBehaviour
 
     void OnRightClicked()
     {
-        if (!ThisPermanent.TopCard.IsFlipped || ThisPermanent.TopCard.Owner.isYou)
-        {
-            GManager.instance.pokemonDetail.OpenUnitDetail(ThisPermanent);
-        }
+        //if (!ThisPermanent.TopCard.IsFlipped || ThisPermanent.TopCard.Owner.isYou)
+        //{
+        //    GManager.instance.pokemonDetail.OpenUnitDetail(ThisPermanent);
+        //}
     }
     #endregion
 
@@ -841,31 +838,31 @@ public class FieldPermanentCard : MonoBehaviour
     #region コマンドパネルを閉じる
     public void CloseCommandPanel()
     {
-        if (fieldUnitCommandPanel != null)
-        {
-            fieldUnitCommandPanel.CloseCommandPanel();
-        }
+        //if (fieldUnitCommandPanel != null)
+        //{
+        //   fieldUnitCommandPanel.CloseCommandPanel();
+        //}
     }
     #endregion
 
     #region ドラッグ
     public UnityAction<FieldPermanentCard> OnBeginDragAction { get; set; }
-    public UnityAction<FieldPermanentCard, List<DropArea>> OnDragAction { get; set; }
-    public UnityAction<FieldPermanentCard, List<DropArea>> OnEndDragAction { get; set; }
+    //public UnityAction<FieldPermanentCard, List<DropArea>> OnDragAction { get; set; }
+    //public UnityAction<FieldPermanentCard, List<DropArea>> OnEndDragAction { get; set; }
 
     public void RemoveDragTarget()
     {
         this.OnBeginDragAction = null;
-        this.OnDragAction = null;
-        this.OnEndDragAction = null;
+        //this.OnDragAction = null;
+        //this.OnEndDragAction = null;
     }
 
-    public void AddDragTarget(UnityAction<FieldPermanentCard> OnBeginDragAction, UnityAction<FieldPermanentCard, List<DropArea>> OnDragAction, UnityAction<FieldPermanentCard, List<DropArea>> OnEndDragAction)
-    {
-        this.OnBeginDragAction = OnBeginDragAction;
-        this.OnDragAction = OnDragAction;
-        this.OnEndDragAction = OnEndDragAction;
-    }
+    //public void AddDragTarget(UnityAction<FieldPermanentCard> OnBeginDragAction, UnityAction<FieldPermanentCard, List<DropArea>> OnDragAction, UnityAction<FieldPermanentCard, List<DropArea>> OnEndDragAction)
+    //{
+    //    this.OnBeginDragAction = OnBeginDragAction;
+    //    this.OnDragAction = OnDragAction;
+    //    this.OnEndDragAction = OnEndDragAction;
+    //}
 
     public void OnBeginDrag()
     {
@@ -874,12 +871,12 @@ public class FieldPermanentCard : MonoBehaviour
 
     public void OnDrag()
     {
-        OnDragAction?.Invoke(this, Draggable.GetRaycastArea());
+       // OnDragAction?.Invoke(this, Draggable.GetRaycastArea());
     }
 
     public void OnEndDrag()
     {
-        OnEndDragAction?.Invoke(this, Draggable.GetRaycastArea());
+        //OnEndDragAction?.Invoke(this, Draggable.GetRaycastArea());
     }
     #endregion
 }

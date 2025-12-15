@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon.Pun;
 using System;
 
-public class SelectCardEffect : MonoBehaviourPunCallbacks
+public class SelectCardEffect : MonoBehaviour
 {
     public void SetUp(
         Func<CardSource, bool> canTargetCondition,
@@ -330,7 +329,7 @@ public class SelectCardEffect : MonoBehaviourPunCallbacks
         
         if (!_isLocal)
         {
-            yield return GManager.instance.photonWaitController.StartWait("SelectCardEffect");
+            //yield return GManager.instance.photonWaitController.StartWait("SelectCardEffect");
         }
 
         bool oldIsActiveOutline_AttackingPermanent = false;
@@ -391,7 +390,7 @@ public class SelectCardEffect : MonoBehaviourPunCallbacks
 
                     if (!string.IsNullOrEmpty(_customMessage))
                     {
-                        GManager.instance.commandText.OpenCommandText(_customMessage, _isDigiXros, _isAssembly);
+                        //GManager.instance.commandText.OpenCommandText(_customMessage, _isDigiXros, _isAssembly);
                     }
                     else
                     {
@@ -414,7 +413,7 @@ public class SelectCardEffect : MonoBehaviourPunCallbacks
 
                         if (!string.IsNullOrEmpty(message))
                         {
-                            GManager.instance.commandText.OpenCommandText(message, _isDigiXros, _isAssembly);
+                            //GManager.instance.commandText.OpenCommandText(message, _isDigiXros, _isAssembly);
                         }
                     }
 
@@ -554,19 +553,20 @@ public class SelectCardEffect : MonoBehaviourPunCallbacks
                         _slectedInexesInList.Add(selectedIndex);
                     }
 
-                    photonView.RPC("SetTargetIndicies", RpcTarget.All, _slectedInexesInList.ToArray());
-                    photonView.RPC("SetTargetCard", RpcTarget.All, targetCardIDs.ToArray());
+                    // TODO
+                    //SetTargetIndicies( _slectedInexesInList.ToArray());
+                    //SetTargetCard( targetCardIDs.ToArray());
                 }
             }
             else
             {
                 if (!string.IsNullOrEmpty(_customMessage_Enemy))
                 {
-                    GManager.instance.commandText.OpenCommandText(_customMessage_Enemy, _isDigiXros, _isAssembly);
+                    //GManager.instance.commandText.OpenCommandText(_customMessage_Enemy, _isDigiXros, _isAssembly);
                 }
                 else
                 {
-                    GManager.instance.commandText.OpenCommandText("The opponent is selecting cards.", _isDigiXros, _isAssembly);
+                    //GManager.instance.commandText.OpenCommandText("The opponent is selecting cards.", _isDigiXros, _isAssembly);
                 }
 
                 #region AI
@@ -627,7 +627,8 @@ public class SelectCardEffect : MonoBehaviourPunCallbacks
                         }
                         else
                         {
-                            photonView.RPC("SetTargetCard", RpcTarget.All, CardIDs.ToArray());
+                            // TODO
+                            //SetTargetCard( CardIDs.ToArray());
                         }
 
                         break;
@@ -643,8 +644,8 @@ public class SelectCardEffect : MonoBehaviourPunCallbacks
             yield return new WaitWhile(() => !_endSelect);
             _endSelect = false;
 
-            GManager.instance.commandText.CloseCommandText();
-            yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+            //GManager.instance.commandText.CloseCommandText();
+           // yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
 
             #region Show selected card
 
@@ -804,7 +805,7 @@ public class SelectCardEffect : MonoBehaviourPunCallbacks
         GManager.instance.turnStateMachine.IsSelecting = oldIsSelecting;
     }
 
-    [PunRPC]
+    ////[PunRPC]
     public void SetTargetCard(int[] CardIDs)
     {
         _targetCards = new List<CardSource>();
@@ -817,7 +818,7 @@ public class SelectCardEffect : MonoBehaviourPunCallbacks
         _endSelect = true;
     }
 
-    [PunRPC]
+    ////[PunRPC]
     public void SetTargetIndicies(int[] CardIDs)
     {
         _slectedInexesInList = new List<int>();

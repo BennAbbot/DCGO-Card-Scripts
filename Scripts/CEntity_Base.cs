@@ -56,7 +56,8 @@ public class CEntity_Base : ScriptableObject
 
         HasLoadStarted = true;
 
-        Sprite sprite = await StreamingAssetsUtility.GetSprite(CardSpriteName, isCard: true);
+        // TODO
+        Sprite sprite = null;// await StreamingAssetsUtility.GetSprite(CardSpriteName, isCard: true);
 
         CardSprite = sprite;
     }

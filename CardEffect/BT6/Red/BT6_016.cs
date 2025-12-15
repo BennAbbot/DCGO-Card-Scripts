@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon;
+//using Photon;
 using System;
-using Photon.Pun;
+//using Photon.Pun;
 
 public class BT6_016 : CEntity_Effect
 {
@@ -236,7 +236,7 @@ public class BT6_016 : CEntity_Effect
     bool endSelect = false;
     bool fromHand = false;
 
-    [PunRPC]
+    //[PunRPC]
     public void SetFromHand(bool fromHand)
     {
         this.fromHand = fromHand;

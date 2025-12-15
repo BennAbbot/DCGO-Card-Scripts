@@ -1,4 +1,4 @@
-using Photon.Pun;
+//using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -125,8 +125,8 @@ namespace DCGO.CardEffects.EX2
 
                                     List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
                                 {
-                                    new Command_SelectCommand($"From Field", () => photonView.RPC("SetFromHand", RpcTarget.All, false), 0),
-                                    new Command_SelectCommand($"From hand", () => photonView.RPC("SetFromHand", RpcTarget.All, true), 1),
+                                    new Command_SelectCommand($"From Field", () => SetFromHand( false), 0),
+                                    new Command_SelectCommand($"From hand", () => SetFromHand( true), 1),
                                 };
 
                                     GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -439,8 +439,8 @@ namespace DCGO.CardEffects.EX2
 
                                             List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
                                 {
-                                    new Command_SelectCommand($"From Field", () => photonView.RPC("SetFromHand", RpcTarget.All, false), 0),
-                                    new Command_SelectCommand($"From hand", () => photonView.RPC("SetFromHand", RpcTarget.All, true), 1),
+                                    new Command_SelectCommand($"From Field", () => SetFromHand( false), 0),
+                                    new Command_SelectCommand($"From hand", () => SetFromHand( true), 1),
                                 };
 
                                             GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -620,7 +620,7 @@ namespace DCGO.CardEffects.EX2
         bool endSelect = false;
         bool fromHand = false;
 
-        [PunRPC]
+        //[PunRPC]
         public void SetFromHand(bool fromHand)
         {
             this.fromHand = fromHand;

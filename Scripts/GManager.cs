@@ -1,12 +1,11 @@
-﻿using Photon.Pun;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GManager : MonoBehaviourPun
+public class GManager : MonoBehaviour
 {
     [Header("あなた")]
     public Player You;
@@ -23,26 +22,24 @@ public class GManager : MonoBehaviourPun
     [Header("手札のカードプレハブ")]
     public HandCard handCardPrefab;
 
-    [Header("読み込み中オブジェクト")]
-    public LoadingObject LoadingObject;
+    //[Header("読み込み中オブジェクト")]
+    //public LoadingObject LoadingObject;
 
-    [Header("コマンド選択パネル")]
     public SelectCommandPanel selectCommandPanel;
 
-    [Header("戻るボタン")]
-    public SelectCommand BackButton;
+    //[Header("戻るボタン")]
+    //public SelectCommand BackButton;
 
-    [Header("結果表示オブジェクト")]
-    public ResultObject resultObject;
+    //[Header("結果表示オブジェクト")]
+    //public ResultObject resultObject;
 
-    [Header("メッセージテキスト")]
     public CommandText commandText;
 
-    [Header("ターンプレイヤー表示")]
-    public ShowTurnPlayerObject showTurnPlayerObject;
+    //[Header("ターンプレイヤー表示")]
+    //public ShowTurnPlayerObject showTurnPlayerObject;
 
-    [Header("フェイズ通知")]
-    public ShowPhaseNotificationObject showPhaseNotificationObject;
+    //[Header("フェイズ通知")]
+    //public ShowPhaseNotificationObject showPhaseNotificationObject;
 
     [Header("キャンバス")]
     public Canvas canvas;
@@ -50,26 +47,26 @@ public class GManager : MonoBehaviourPun
     [Header("キャンバス2")]
     public Canvas canvas2;
 
-    [Header("カード詳細")]
-    public CardDetail cardDetail;
+    //[Header("カード詳細")]
+    //public CardDetail cardDetail;
 
-    [Header("パーマネント詳細")]
-    public PermanentDetail pokemonDetail;
+    //[Header("パーマネント詳細")]
+    //public PermanentDetail pokemonDetail;
 
     [Header("カード選択パネル")]
     public SelectCardPanel selectCardPanel;
 
-    [Header("カード確認パネル")]
-    public CheckCardPanel checkCardPanel;
+    //[Header("カード確認パネル")]
+    //public CheckCardPanel checkCardPanel;
 
-    [Header("次のフェイズに進むボタン")]
-    public NextPhaseButton nextPhaseButton;
+    //[Header("次のフェイズに進むボタン")]
+    //public NextPhaseButton nextPhaseButton;
 
-    [Header("設定パネル")]
-    public OptionPanel optionPanel;
+    //[Header("設定パネル")]
+    //public OptionPanel optionPanel;
 
-    [Header("ターゲット矢印プレハブ")]
-    public TargetArrow targetArrowPrefab;
+    //[Header("ターゲット矢印プレハブ")]
+    //public TargetArrow targetArrowPrefab;
 
     [Header("ターゲット矢印親")]
     public Transform targetArrowParent;
@@ -113,11 +110,11 @@ public class GManager : MonoBehaviourPun
     [Header("ユーザー選択")]
     public UserSelectionManager userSelectionManager;
 
-    [Header("選択可能なものだけ表示")]
-    public HideCannotSelectObject hideCannotSelectObject;
+    //[Header("選択可能なものだけ表示")]
+    //public HideCannotSelectObject hideCannotSelectObject;
 
-    [Header("サイドバー")]
-    public SideBar sideBar;
+    //[Header("サイドバー")]
+    //public SideBar sideBar;
 
     [Header("UseSkillSE")]
     public AudioClip UseSkillSE;
@@ -182,26 +179,26 @@ public class GManager : MonoBehaviourPun
     [Header("BGM")]
     public List<AudioClip> bgms;
 
-    [Header("BGMObject")]
-    public BGMObject BattleBGM;
+    //[Header("BGMObject")]
+    //public BGMObject BattleBGM;
 
     [Header("オートモード")]
     public bool isAuto;
 
-    [Header("進化演出")]
-    public EvolutionEffectObject EvolutionEffectObject;
+    //[Header("進化演出")]
+    //public EvolutionEffectObject EvolutionEffectObject;
 
-    [Header("ジョグレス進化演出")]
-    public JogressEffectObject jogressEffectObject;
+    //[Header("ジョグレス進化演出")]
+    //public JogressEffectObject jogressEffectObject;
 
-    [Header("デジクロス演出")]
-    public DigiXrosEffectObject digiXrosEffectObject;
+    //[Header("デジクロス演出")]
+    //public DigiXrosEffectObject digiXrosEffectObject;
 
-    [Header("バースト進化演出")]
-    public BurstEffectObject burstEffectObject;
+    //[Header("バースト進化演出")]
+    //public BurstEffectObject burstEffectObject;
     [Header("Background Particle effects")]
     [SerializeField] List<ParticleSystem> _backgroundParticles = new List<ParticleSystem>();
-    [Header("Photon wait controller")]
+
     public PhotonWaitController photonWaitController;
     [Header("Gameobjects closed when ending game")]
     public List<GameObject> CloseWhenEndingGameObjects = new List<GameObject>();
@@ -231,13 +228,13 @@ public class GManager : MonoBehaviourPun
     {
         //return;
 
-        if (Opening.instance != null)
-        {
-            if (Opening.instance.OpeningBGM != null)
-            {
-                Opening.instance.OpeningBGM.StopPlayBGM();
-            }
-        }
+        //if (Opening.instance != null)
+        //{
+        //    if (Opening.instance.OpeningBGM != null)
+        //    {
+        //        Opening.instance.OpeningBGM.StopPlayBGM();
+        //    }
+        //}
 
         instance = this;
 
@@ -249,10 +246,10 @@ public class GManager : MonoBehaviourPun
 #if UNITY_EDITOR
 
 #endif
-        if (!PhotonNetwork.IsConnected)
-        {
-            IsAI = true;
-        }
+        //if (!PhotonNetwork.IsConnected)
+        //{
+        //    IsAI = true;
+        //}
 
         if (ContinuousController.instance != null)
         {
@@ -271,11 +268,11 @@ public class GManager : MonoBehaviourPun
 
         GetComponent<Effects>().Init();
 
-        playLog.Init();
+        //playLog.Init();
 
-        hideCannotSelectObject.Init();
+        //hideCannotSelectObject.Init();
 
-        ChangeBackground();
+        //ChangeBackground();
 
         yield return StartCoroutine(Init());
 
@@ -283,10 +280,10 @@ public class GManager : MonoBehaviourPun
 
         StartCoroutine(CheckDisconnect());
 
-        if (Opening.instance != null)
-        {
-            Opening.instance.openingObject.SetActive(false);
-        }
+        //if (Opening.instance != null)
+        //{
+        //    Opening.instance.openingObject.SetActive(false);
+        //}
 
         Debug.Log("Battle Initialization");
 
@@ -305,12 +302,12 @@ public class GManager : MonoBehaviourPun
 
     public void PlayDecisionSE()
     {
-        ContinuousController.instance.PlaySE(DecisionSE);
+       // ContinuousController.instance.PlaySE(DecisionSE);
     }
 
     public void PlayCancelSE()
     {
-        ContinuousController.instance.PlaySE(CancelSE);
+        //ContinuousController.instance.PlaySE(CancelSE);
     }
 
     public async void ChangeBackground()
@@ -336,87 +333,89 @@ public class GManager : MonoBehaviourPun
 
     IEnumerator CheckDisconnect()
     {
-        if (IsAI)
-        {
-            yield break;
-        }
+        yield break;
+        //if (IsAI)
+        //{
+        //    yield break;
+        //}
 
-        yield return new WaitWhile(() => turnStateMachine == null);
+        //yield return new WaitWhile(() => turnStateMachine == null);
 
-        yield return new WaitForSeconds(5f);
+        //yield return new WaitForSeconds(5f);
 
-        while (true)
-        {
-            if (!PhotonNetwork.IsConnected)
-            {
-                break;
-            }
+        //while (true)
+        //{
+        //    if (!PhotonNetwork.IsConnected)
+        //    {
+        //        break;
+        //    }
 
-            else
-            {
-                if (!PhotonNetwork.InRoom)
-                {
-                    break;
-                }
+        //    else
+        //    {
+        //        if (!PhotonNetwork.InRoom)
+        //        {
+        //            break;
+        //        }
 
-                else
-                {
-                    if (PhotonNetwork.CurrentRoom != null)
-                    {
-                        if (PhotonNetwork.PlayerList.Length < 2)
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
+        //        else
+        //        {
+        //            if (PhotonNetwork.CurrentRoom != null)
+        //            {
+        //                if (PhotonNetwork.PlayerList.Length < 2)
+        //                {
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //    }
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
 
-        if (!turnStateMachine.endGame)
-        {
-            turnStateMachine.EndGame(null, false);
-        }
+        //if (!turnStateMachine.endGame)
+        //{
+        //    turnStateMachine.EndGame(null, false);
+        //}
     }
 
     public IEnumerator Init()
     {
-        yield return StartCoroutine(LoadingObject.StartLoading("Now Loading"));
+        yield break;
+        //yield return StartCoroutine(LoadingObject.StartLoading("Now Loading"));
 
-        selectCommandPanel.Off();
+        //selectCommandPanel.Off();
 
-        BackButton.CloseSelectCommandButton();
+        //BackButton.CloseSelectCommandButton();
 
-        resultObject.Init();
+        //resultObject.Init();
 
-        commandText.Init();
+        //commandText.Init();
 
-        sideBar.Init();
+        //sideBar.Init();
 
-        showTurnPlayerObject.Init();
+        //showTurnPlayerObject.Init();
 
-        showPhaseNotificationObject.Init();
+        //showPhaseNotificationObject.Init();
 
-        OffTargetArrow();
+        //OffTargetArrow();
 
-        cardDetail.CloseCardDetail();
+        //cardDetail.CloseCardDetail();
 
-        pokemonDetail.CloseUnitDetail();
+        //pokemonDetail.CloseUnitDetail();
 
-        selectCardPanel.CloseSelectCardPanel();
+        //selectCardPanel.CloseSelectCardPanel();
 
-        yield return StartCoroutine(checkCardPanel.CloseSelectCardPanelCoroutine());
+        //yield return StartCoroutine(checkCardPanel.CloseSelectCardPanelCoroutine());
 
-        optionPanel.Init();
+        //optionPanel.Init();
 
-        EvolutionEffectObject.Init();
+        //EvolutionEffectObject.Init();
 
-        jogressEffectObject.Init();
+        //jogressEffectObject.Init();
 
-        digiXrosEffectObject.Init();
+        //digiXrosEffectObject.Init();
 
-        burstEffectObject.Init();
+        //burstEffectObject.Init();
     }
 
     public void ReturnToTitle()
@@ -442,32 +441,32 @@ public class GManager : MonoBehaviourPun
         }
     }
 
-    public TargetArrow CreateTargetArrow()
-    {
-        TargetArrow targetArrow = Instantiate(targetArrowPrefab, targetArrowParent);
+    //public TargetArrow CreateTargetArrow()
+    //{
+    //    TargetArrow targetArrow = Instantiate(targetArrowPrefab, targetArrowParent);
 
-        return targetArrow;
-    }
+    //    return targetArrow;
+    //}
 
-    public Coroutine OnTargetArrow(Vector3 InitialPosition, Vector3 targetPosition, FieldPermanentCard StartFieldUnitCard, FieldPermanentCard EndFieldUnitCard)
-    {
-        TargetArrow targetArrow = CreateTargetArrow();
+    //public Coroutine OnTargetArrow(Vector3 InitialPosition, Vector3 targetPosition, FieldPermanentCard StartFieldUnitCard, FieldPermanentCard EndFieldUnitCard)
+    //{
+    //    TargetArrow targetArrow = CreateTargetArrow();
 
-        return targetArrow.OnTargetArrow(InitialPosition, targetPosition, StartFieldUnitCard, EndFieldUnitCard);
-    }
+    //    return targetArrow.OnTargetArrow(InitialPosition, targetPosition, StartFieldUnitCard, EndFieldUnitCard);
+    //}
 
-    public void OffTargetArrow()
-    {
-        if (targetArrowParent.childCount > 0)
-        {
-            if (targetArrowParent.GetChild(targetArrowParent.childCount - 1).GetComponent<TargetArrow>() != null)
-            {
-                targetArrowParent.GetChild(targetArrowParent.childCount - 1).GetComponent<TargetArrow>().Destroyed = true;
-            }
+    //public void OffTargetArrow()
+    //{
+    //    if (targetArrowParent.childCount > 0)
+    //    {
+    //        if (targetArrowParent.GetChild(targetArrowParent.childCount - 1).GetComponent<TargetArrow>() != null)
+    //        {
+    //            targetArrowParent.GetChild(targetArrowParent.childCount - 1).GetComponent<TargetArrow>().Destroyed = true;
+    //        }
 
-            Destroy(targetArrowParent.GetChild(targetArrowParent.childCount - 1).gameObject);
-        }
-    }
+    //        Destroy(targetArrowParent.GetChild(targetArrowParent.childCount - 1).gameObject);
+    //    }
+    //}
 
     void Update()
     {
@@ -482,201 +481,201 @@ public class GManager : MonoBehaviourPun
             }
         }
 
-        if (Input.GetKey(KeyCode.LeftControl) &&
-           Input.GetKey(KeyCode.LeftShift) && 
-           Input.GetKey(KeyCode.LeftAlt) &&
-           Input.GetKeyDown(KeyCode.A))
-            ActivateShortcuts = !ActivateShortcuts;
+        //if (Input.GetKey(KeyCode.LeftControl) &&
+        //   Input.GetKey(KeyCode.LeftShift) && 
+        //   Input.GetKey(KeyCode.LeftAlt) &&
+        //   Input.GetKeyDown(KeyCode.A))
+        //    ActivateShortcuts = !ActivateShortcuts;
 
 
-        AllowAlphaInputs();
+        //AllowAlphaInputs();
     }
 
-    void AllowAlphaInputs()
-    {
-        if (ContinuousController.instance.isRandomMatch && !ContinuousController.instance.isAI)
-            return;
+//    void AllowAlphaInputs()
+//    {
+//        if (ContinuousController.instance.isRandomMatch && !ContinuousController.instance.isAI)
+//            return;
 
-        if (turnStateMachine == null)
-            return;
+//        if (turnStateMachine == null)
+//            return;
         
-        if (!ActivateShortcuts)
-            return;
+//        if (!ActivateShortcuts)
+//            return;
 
-        //Draw a card
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.D))
-        {
-            photonView.RPC("DrawCardRPC", RpcTarget.Others);
-            StartCoroutine(DrawCard(You));
-        }
+//        //Draw a card
+//        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.D))
+//        {
+//            DrawCardRPC", RpcTarget.Others);
+//            StartCoroutine(DrawCard(You));
+//        }
 
-        //Trash a card
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.T))
-        {
-            photonView.RPC("TrashCardRPC", RpcTarget.Others);
-            StartCoroutine(TrashCard(You));
-        }
+//        //Trash a card
+//        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.T))
+//        {
+//            TrashCardRPC", RpcTarget.Others);
+//            StartCoroutine(TrashCard(You));
+//        }
 
-        //Top deck a card
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.L))
-        {
-            photonView.RPC("TopDeckCardRPC", RpcTarget.Others);
-            StartCoroutine(TopDeckCard(You));
-        }
+//        //Top deck a card
+//        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.L))
+//        {
+//            TopDeckCardRPC", RpcTarget.Others);
+//            StartCoroutine(TopDeckCard(You));
+//        }
 
-        //Place Top Security
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.R))
-        {
-            bool keyInput = Input.GetKey(KeyCode.LeftShift);
-            photonView.RPC("PlaceInSecurityRPC", RpcTarget.Others, keyInput);
-            StartCoroutine(PlaceInSecurity(You, keyInput));
-        }
+//        //Place Top Security
+//        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.R))
+//        {
+//            bool keyInput = Input.GetKey(KeyCode.LeftShift);
+//            PlaceInSecurityRPC", RpcTarget.Others, keyInput);
+//            StartCoroutine(PlaceInSecurity(You, keyInput));
+//        }
 
-        //Gain Memory
-        if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Equals))
-        {
-            photonView.RPC("AlterMemoryRPC", RpcTarget.Others, -1);
-            StartCoroutine(AlterMemory(You, 1));
-        }
+//        //Gain Memory
+//        if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Equals))
+//        {
+//            AlterMemoryRPC", RpcTarget.Others, -1);
+//            StartCoroutine(AlterMemory(You, 1));
+//        }
 
-        //Lose Memory
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Minus))
-        {
-            photonView.RPC("AlterMemoryRPC", RpcTarget.Others, 1);
-            StartCoroutine(AlterMemory(You, -1));
-        }
+//        //Lose Memory
+//        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Minus))
+//        {
+//            AlterMemoryRPC", RpcTarget.Others, 1);
+//            StartCoroutine(AlterMemory(You, -1));
+//        }
             
-    }
+//    }
 
-    [PunRPC]
-    public void DrawCardRPC()
-    {
-        StartCoroutine(DrawCard(Opponent));
-    }
+//    //[PunRPC]
+//    public void DrawCardRPC()
+//    {
+//        StartCoroutine(DrawCard(Opponent));
+//    }
 
-    [PunRPC]
-    public void TrashCardRPC()
-    {
-        StartCoroutine(TrashCard(Opponent));
-    }
+//    //[PunRPC]
+//    public void TrashCardRPC()
+//    {
+//        StartCoroutine(TrashCard(Opponent));
+//    }
 
-    [PunRPC]
-    public void TopDeckCardRPC()
-    {
-        StartCoroutine(TopDeckCard(Opponent));
-    }
+//    //[PunRPC]
+//    public void TopDeckCardRPC()
+//    {
+//        StartCoroutine(TopDeckCard(Opponent));
+//    }
 
-    [PunRPC]
-    public void PlaceInSecurityRPC(bool keyInput)
-    {
-        StartCoroutine(PlaceInSecurity(Opponent, keyInput));
-    }
+//    //[PunRPC]
+//    public void PlaceInSecurityRPC(bool keyInput)
+//    {
+//        StartCoroutine(PlaceInSecurity(Opponent, keyInput));
+//    }
 
-    [PunRPC]
-    public void AlterMemoryRPC(int value)
-    {
-        StartCoroutine(AlterMemory(Opponent,value));
-    }
+//    //[PunRPC]
+//    public void AlterMemoryRPC(int value)
+//    {
+//        StartCoroutine(AlterMemory(Opponent,value));
+//    }
 
 
-    public IEnumerator DrawCard(Player _player)
-    {
-        yield return StartCoroutine(new DrawClass(_player, 1, null).Draw());
+//    public IEnumerator DrawCard(Player _player)
+//    {
+//        yield return StartCoroutine(new DrawClass(_player, 1, null).Draw());
 
-        yield return StartCoroutine(turnStateMachine.SetMainPhase());
-    }
+//        yield return StartCoroutine(turnStateMachine.SetMainPhase());
+//    }
 
-    IEnumerator AlterMemory(Player _player, int value)
-    {
-        yield return StartCoroutine(You.AddMemory(value, null));
+//    IEnumerator AlterMemory(Player _player, int value)
+//    {
+//        yield return StartCoroutine(You.AddMemory(value, null));
 
-        yield return StartCoroutine(turnStateMachine.SetMainPhase());
+//        yield return StartCoroutine(turnStateMachine.SetMainPhase());
 
-        yield return StartCoroutine(autoProcessing.EndTurnCheck());
-    }
+//        yield return StartCoroutine(autoProcessing.EndTurnCheck());
+//    }
 
-    IEnumerator TrashCard(Player _player)
-    {
-        SelectHandEffect selectHandEffect = GManager.instance.GetComponent<SelectHandEffect>();
+//    IEnumerator TrashCard(Player _player)
+//    {
+//        SelectHandEffect selectHandEffect = GManager.instance.GetComponent<SelectHandEffect>();
 
-        selectHandEffect.SetUp(
-            selectPlayer: _player,
-            canTargetCondition: (CardSource) => true,
-            canTargetCondition_ByPreSelecetedList: null,
-            canEndSelectCondition: null,
-            maxCount: _player.HandCards.Count,
-            canNoSelect: true,
-            canEndNotMax: true,
-            isShowOpponent: true,
-            selectCardCoroutine: null,
-            afterSelectCardCoroutine: null,
-            mode: SelectHandEffect.Mode.Discard,
-            cardEffect: null);
+//        selectHandEffect.SetUp(
+//            selectPlayer: _player,
+//            canTargetCondition: (CardSource) => true,
+//            canTargetCondition_ByPreSelecetedList: null,
+//            canEndSelectCondition: null,
+//            maxCount: _player.HandCards.Count,
+//            canNoSelect: true,
+//            canEndNotMax: true,
+//            isShowOpponent: true,
+//            selectCardCoroutine: null,
+//            afterSelectCardCoroutine: null,
+//            mode: SelectHandEffect.Mode.Discard,
+//            cardEffect: null);
 
-        yield return StartCoroutine(selectHandEffect.Activate());
+//        yield return StartCoroutine(selectHandEffect.Activate());
 
-        yield return StartCoroutine(turnStateMachine.SetMainPhase());
-    }
+//        yield return StartCoroutine(turnStateMachine.SetMainPhase());
+//    }
 
-    IEnumerator TopDeckCard(Player _player)
-    {
-        SelectHandEffect selectHandEffect = GManager.instance.GetComponent<SelectHandEffect>();
+//    IEnumerator TopDeckCard(Player _player)
+//    {
+//        SelectHandEffect selectHandEffect = GManager.instance.GetComponent<SelectHandEffect>();
 
-        selectHandEffect.SetUp(
-            selectPlayer: _player,
-            canTargetCondition: (CardSource) => true,
-            canTargetCondition_ByPreSelecetedList: null,
-            canEndSelectCondition: null,
-            maxCount: _player.HandCards.Count,
-            canNoSelect: true,
-            canEndNotMax: true,
-            isShowOpponent: true,
-            selectCardCoroutine: null,
-            afterSelectCardCoroutine: null,
-            mode: SelectHandEffect.Mode.PutLibraryTop,
-            cardEffect: null);
+//        selectHandEffect.SetUp(
+//            selectPlayer: _player,
+//            canTargetCondition: (CardSource) => true,
+//            canTargetCondition_ByPreSelecetedList: null,
+//            canEndSelectCondition: null,
+//            maxCount: _player.HandCards.Count,
+//            canNoSelect: true,
+//            canEndNotMax: true,
+//            isShowOpponent: true,
+//            selectCardCoroutine: null,
+//            afterSelectCardCoroutine: null,
+//            mode: SelectHandEffect.Mode.PutLibraryTop,
+//            cardEffect: null);
 
-        yield return StartCoroutine(selectHandEffect.Activate());
+//        yield return StartCoroutine(selectHandEffect.Activate());
 
-        yield return StartCoroutine(turnStateMachine.SetMainPhase());
-    }
+//        yield return StartCoroutine(turnStateMachine.SetMainPhase());
+//    }
 
-    IEnumerator PlaceInSecurity(Player _player, bool placeFaceup)
-    {
-        CardSource selectedSource = null;
+//    IEnumerator PlaceInSecurity(Player _player, bool placeFaceup)
+//    {
+//        CardSource selectedSource = null;
 
-        SelectHandEffect selectHandEffect = GManager.instance.GetComponent<SelectHandEffect>();
+//        SelectHandEffect selectHandEffect = GManager.instance.GetComponent<SelectHandEffect>();
 
-        selectHandEffect.SetUp(
-            selectPlayer: _player,
-            canTargetCondition: (CardSource) => true,
-            canTargetCondition_ByPreSelecetedList: null,
-            canEndSelectCondition: null,
-            maxCount: 1,
-            canNoSelect: true,
-            canEndNotMax: false,
-            isShowOpponent: true,
-            selectCardCoroutine: CardSelectCoroutine,
-            afterSelectCardCoroutine: null,
-            mode: SelectHandEffect.Mode.Custom,
-            cardEffect: null);
+//        selectHandEffect.SetUp(
+//            selectPlayer: _player,
+//            canTargetCondition: (CardSource) => true,
+//            canTargetCondition_ByPreSelecetedList: null,
+//            canEndSelectCondition: null,
+//            maxCount: 1,
+//            canNoSelect: true,
+//            canEndNotMax: false,
+//            isShowOpponent: true,
+//            selectCardCoroutine: CardSelectCoroutine,
+//            afterSelectCardCoroutine: null,
+//            mode: SelectHandEffect.Mode.Custom,
+//            cardEffect: null);
 
-        yield return StartCoroutine(selectHandEffect.Activate());
+//        yield return StartCoroutine(selectHandEffect.Activate());
 
-        IEnumerator CardSelectCoroutine(CardSource source)
-        {
-            if (source != null)
-                selectedSource = source;
+//        IEnumerator CardSelectCoroutine(CardSource source)
+//        {
+//            if (source != null)
+//                selectedSource = source;
 
-            yield return null;
-        }
+//            yield return null;
+//        }
 
-        if (selectedSource != null)
-        {
-            // Place this card face up as the top security card
-            yield return StartCoroutine(CardObjectController.AddSecurityCard(selectedSource, toTop: true, faceUp: placeFaceup));
-        }
+//        if (selectedSource != null)
+//        {
+//            // Place this card face up as the top security card
+//            yield return StartCoroutine(CardObjectController.AddSecurityCard(selectedSource, toTop: true, faceUp: placeFaceup));
+//        }
 
-        yield return StartCoroutine(turnStateMachine.SetMainPhase());
-    }
+//        yield return StartCoroutine(turnStateMachine.SetMainPhase());
+//    }
 }

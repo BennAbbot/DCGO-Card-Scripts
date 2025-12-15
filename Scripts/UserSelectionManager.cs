@@ -1,11 +1,9 @@
-using Photon.Pun;
-using System;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using System.Linq;
 
-public class UserSelectionManager : MonoBehaviourPunCallbacks
+public class UserSelectionManager : MonoBehaviour
 {
     bool _endSelect = false;
     int _selectedIntValue = 0;
@@ -13,7 +11,7 @@ public class UserSelectionManager : MonoBehaviourPunCallbacks
     public int SelectedIntValue => _selectedIntValue;
     public bool SelectedBoolValue => _selectedBoolValue;
 
-    [PunRPC]
+    ////[PunRPC]
     public void SetInt(int value)
     {
         _selectedIntValue = value;
@@ -22,10 +20,11 @@ public class UserSelectionManager : MonoBehaviourPunCallbacks
 
     protected void SetInt_RPC(int value)
     {
-        photonView.RPC("SetInt", RpcTarget.All, value);
+        // TODO
+        //SetInt( value);
     }
 
-    [PunRPC]
+    ////[PunRPC]
     public void SetBool(bool value)
     {
         _selectedIntValue = getIntFromBool(value);
@@ -34,7 +33,7 @@ public class UserSelectionManager : MonoBehaviourPunCallbacks
 
     protected void SetBool_RPC(bool value)
     {
-        photonView.RPC("SetBool", RpcTarget.All, value);
+        //SetBool( value);
     }
 
     internal int getIntFromBool(bool value)
@@ -52,8 +51,8 @@ public class UserSelectionManager : MonoBehaviourPunCallbacks
         yield return new WaitWhile(() => !_endSelect);
         _endSelect = false;
 
-        GManager.instance.commandText.CloseCommandText();
-        yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+        //GManager.instance.commandText.CloseCommandText();
+        //yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
     }
 
     public void SetIntSelection(List<SelectionElement<int>> selectionElements, Player selectPlayer, string selectPlayerMessage, string notSelectPlayerMessage)
@@ -63,21 +62,22 @@ public class UserSelectionManager : MonoBehaviourPunCallbacks
 
         if (selectPlayer.isYou)
         {
-            GManager.instance.commandText.OpenCommandText(selectPlayerMessage);
+            // TODO
+            ////GManager.instance.commandText.OpenCommandText(selectPlayerMessage);
 
-            List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>();
+            //List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>();
 
-            foreach (SelectionElement<int> selectionElement in selectionElements)
-            {
-                command_SelectCommands.Add(new Command_SelectCommand(selectionElement.Message, () => SetInt_RPC(selectionElement.Value), selectionElement.SpriteIndex));
-            }
+            //foreach (SelectionElement<int> selectionElement in selectionElements)
+            //{
+            //    command_SelectCommands.Add(new Command_SelectCommand(selectionElement.Message, () => SetInt_RPC(selectionElement.Value), selectionElement.SpriteIndex));
+            //}
 
-            GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
+            //GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
         }
 
         else
         {
-            GManager.instance.commandText.OpenCommandText(notSelectPlayerMessage);
+            //GManager.instance.commandText.OpenCommandText(notSelectPlayerMessage);
 
             #region AIモード
             if (GManager.instance.IsAI)
@@ -107,21 +107,22 @@ public class UserSelectionManager : MonoBehaviourPunCallbacks
     {
         if (selectPlayer.isYou)
         {
-            GManager.instance.commandText.OpenCommandText(selectPlayerMessage);
+            // TODO
+            ////GManager.instance.commandText.OpenCommandText(selectPlayerMessage);
 
-            List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>();
+            //List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>();
 
-            foreach (SelectionElement<bool> selectionElement in selectionElements)
-            {
-                command_SelectCommands.Add(new Command_SelectCommand(selectionElement.Message, () => SetBool_RPC(selectionElement.Value), selectionElement.SpriteIndex));
-            }
+            //foreach (SelectionElement<bool> selectionElement in selectionElements)
+            //{
+            //    command_SelectCommands.Add(new Command_SelectCommand(selectionElement.Message, () => SetBool_RPC(selectionElement.Value), selectionElement.SpriteIndex));
+            //}
 
-            GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
+            //GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
         }
 
         else
         {
-            GManager.instance.commandText.OpenCommandText(notSelectPlayerMessage);
+            //GManager.instance.commandText.OpenCommandText(notSelectPlayerMessage);
 
             #region AIモード
             if (GManager.instance.IsAI)

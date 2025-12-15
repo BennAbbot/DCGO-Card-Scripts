@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
-using DG.Tweening;
 using TMPro;
 
 public class SelectCardPanel : MonoBehaviour
@@ -172,31 +171,32 @@ public class SelectCardPanel : MonoBehaviour
 
     IEnumerator OpenSelectCardPanelAnimation(SelectCardEffect.Root root)
     {
-        bool end = false;
-        var sequence = DOTween.Sequence();
-        float time = 0.4f;
+        yield break;
+        //bool end = false;
+        //var sequence = DOTween.Sequence();
+        //float time = 0.4f;
 
-        this.transform.localScale = new Vector3(0.1f, 0.1f, 1f);
+        //this.transform.localScale = new Vector3(0.1f, 0.1f, 1f);
 
-        if (root == SelectCardEffect.Root.Security)
-        {
-            this.transform.localPosition = new Vector3(-580f, -110f, 0f);
-        }
+        //if (root == SelectCardEffect.Root.Security)
+        //{
+        //    this.transform.localPosition = new Vector3(-580f, -110f, 0f);
+        //}
 
-        else
-        {
-            this.transform.localPosition = new Vector3(0f, 0f, 0f);
-        }
+        //else
+        //{
+        //    this.transform.localPosition = new Vector3(0f, 0f, 0f);
+        //}
 
-        sequence
-            .Append(this.transform.DOLocalMove(new Vector3(0f, 0f, 0f), time))
-            .Join(this.transform.DOScale(new Vector3(1f, 1f, 1f), time))
-            .AppendCallback(() => { end = true; });
+        //sequence
+        //    .Append(this.transform.DOLocalMove(new Vector3(0f, 0f, 0f), time))
+        //    .Join(this.transform.DOScale(new Vector3(1f, 1f, 1f), time))
+        //    .AppendCallback(() => { end = true; });
 
-        sequence.Play();
+        //sequence.Play();
 
-        yield return new WaitWhile(() => !end);
-        end = false;
+        //yield return new WaitWhile(() => !end);
+        //end = false;
     }
 
     #region Open panel to generate card prefab
@@ -257,9 +257,9 @@ public class SelectCardPanel : MonoBehaviour
             HandCard handCard = Instantiate(GManager.instance.handCardPrefab, scrollRect.content);
             handCard.gameObject.name = $"selectCardPanel_{cardSource.Owner.PlayerName}";
 
-            handCard.GetComponent<Draggable_HandCard>().startScale = new Vector3(2.7f, 2.7f, 1);
+           // handCard.GetComponent<Draggable_HandCard>().startScale = new Vector3(2.7f, 2.7f, 1);
 
-            handCard.GetComponent<Draggable_HandCard>().DefaultY = -292;
+            //handCard.GetComponent<Draggable_HandCard>().DefaultY = -292;
 
             EventTrigger eventTrigger = handCard.CardImage.GetComponent<EventTrigger>();
 
@@ -281,7 +281,7 @@ public class SelectCardPanel : MonoBehaviour
                         {
                             if (!cardSource1.IsFlipped)
                             {
-                                GManager.instance.cardDetail.OpenCardDetail(cardSource1, true);
+                                //GManager.instance.cardDetail.OpenCardDetail(cardSource1, true);
 
                                 GManager.instance.PlayDecisionSE();
                             }
@@ -290,7 +290,7 @@ public class SelectCardPanel : MonoBehaviour
                         //If you can see the card face down
                         else
                         {
-                            GManager.instance.cardDetail.OpenCardDetail(cardSource1, true);
+                            //GManager.instance.cardDetail.OpenCardDetail(cardSource1, true);
 
                             GManager.instance.PlayDecisionSE();
                         }

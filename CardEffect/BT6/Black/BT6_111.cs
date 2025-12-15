@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon;
+//using Photon;
 using System;
-using Photon.Pun;
+//using Photon.Pun;
 
 public class BT6_111 : CEntity_Effect
 {
@@ -221,8 +221,8 @@ public class BT6_111 : CEntity_Effect
 
                                 List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
                                 {
-                                    new Command_SelectCommand($"Pay Cost", () => photonView.RPC("SetPayCost", RpcTarget.All, true), 0),
-                                    new Command_SelectCommand($"Not Pay Cost", () => photonView.RPC("SetPayCost", RpcTarget.All, false), 1),
+                                    new Command_SelectCommand($"Pay Cost", () => SetPayCost( true), 0),
+                                    new Command_SelectCommand($"Not Pay Cost", () => SetPayCost( false), 1),
                                 };
 
                                 GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -318,7 +318,7 @@ public class BT6_111 : CEntity_Effect
     bool endSelect = false;
     bool payCost = false;
 
-    [PunRPC]
+    //[PunRPC]
     public void SetPayCost(bool payCost)
     {
         this.payCost = payCost;

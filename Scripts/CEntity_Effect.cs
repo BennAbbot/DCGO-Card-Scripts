@@ -1,11 +1,8 @@
-﻿using Photon.Pun;
-using System;
-using System.Collections.Generic;
-using System.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
-public abstract partial class CEntity_Effect : MonoBehaviourPunCallbacks
+
+public abstract partial class CEntity_Effect : MonoBehaviour
 {
     public virtual List<ICardEffect> CardEffects(EffectTiming timing, CardSource cardSource)
     {

@@ -1,13 +1,8 @@
-﻿using Photon.Pun;
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.UI;
-using DG.Tweening;
 
 //Card-related operations
 public class CardObjectController : MonoBehaviour
@@ -18,328 +13,329 @@ public class CardObjectController : MonoBehaviour
 
         yield return null;
 
-        DeckData RandomDeck = null;
+//        DeckData RandomDeck = null;
 
-        if (GManager.instance.IsAI)
-        {
-            if (ContinuousController.instance.DeckDatas.Count((deckData) => deckData.IsValidDeckData()) > 0)
-            {
-                List<DeckData> deckDatas = new List<DeckData>();
+//        if (GManager.instance.IsAI)
+//        {
+//            if (ContinuousController.instance.DeckDatas.Count((deckData) => deckData.IsValidDeckData()) > 0)
+//            {
+//                List<DeckData> deckDatas = new List<DeckData>();
 
-                foreach (DeckData deckData in ContinuousController.instance.DeckDatas)
-                {
-                    if (deckData.IsValidDeckData())
-                    {
-                        deckDatas.Add(deckData);
-                    }
-                }
+//                foreach (DeckData deckData in ContinuousController.instance.DeckDatas)
+//                {
+//                    if (deckData.IsValidDeckData())
+//                    {
+//                        deckDatas.Add(deckData);
+//                    }
+//                }
 
-                DeckData randomDeck = deckDatas[UnityEngine.Random.Range(0, deckDatas.Count)];
+//                DeckData randomDeck = deckDatas[UnityEngine.Random.Range(0, deckDatas.Count)];
 
-                RandomDeck = new DeckData(randomDeck.GetThisDeckCode(), randomDeck.DeckID);
+//                RandomDeck = new DeckData(randomDeck.GetThisDeckCode(), randomDeck.DeckID);
 
-#if UNITY_EDITOR && !UNITY_WINDOWS
-                foreach (DeckData deckData in ContinuousController.instance.DeckDatas)
-                {
-                    if (deckData.IsValidDeckData())
-                    {
-                        RandomDeck = new DeckData(deckData.GetThisDeckCode(), deckData.DeckID);
-                        break;
-                    }
-                }
-#endif
-            }
+//#if UNITY_EDITOR && !UNITY_WINDOWS
+//                foreach (DeckData deckData in ContinuousController.instance.DeckDatas)
+//                {
+//                    if (deckData.IsValidDeckData())
+//                    {
+//                        RandomDeck = new DeckData(deckData.GetThisDeckCode(), deckData.DeckID);
+//                        break;
+//                    }
+//                }
+//#endif
+//            }
 
-            else
-            {
-                List<CEntity_Base> mainDeckCards = new List<CEntity_Base>();
+//            else
+//            {
+//                List<CEntity_Base> mainDeckCards = new List<CEntity_Base>();
 
-                List<CEntity_Base> digitamaDeckCards = new List<CEntity_Base>();
+//                List<CEntity_Base> digitamaDeckCards = new List<CEntity_Base>();
 
-                List<CEntity_Base> mainDeckCandidates = new List<CEntity_Base>();
+//                List<CEntity_Base> mainDeckCandidates = new List<CEntity_Base>();
 
-                List<CEntity_Base> digitamaDeckCandidates = new List<CEntity_Base>();
+//                List<CEntity_Base> digitamaDeckCandidates = new List<CEntity_Base>();
 
-                foreach (CEntity_Base cEntity_Base in ContinuousController.instance.CardList)
-                {
-                    if (cEntity_Base.cardKind != CardKind.DigiEgg)
-                    {
-                        mainDeckCandidates.Add(cEntity_Base);
-                    }
+//                foreach (CEntity_Base cEntity_Base in ContinuousController.instance.CardList)
+//                {
+//                    if (cEntity_Base.cardKind != CardKind.DigiEgg)
+//                    {
+//                        mainDeckCandidates.Add(cEntity_Base);
+//                    }
 
-                    else
-                    {
-                        digitamaDeckCandidates.Add(cEntity_Base);
-                    }
-                }
+//                    else
+//                    {
+//                        digitamaDeckCandidates.Add(cEntity_Base);
+//                    }
+//                }
 
-                if (mainDeckCandidates.Count >= 1)
-                {
-                    for (int i = 0; i < 50; i++)
-                    {
-                        mainDeckCards.Add(mainDeckCandidates[UnityEngine.Random.Range(0, mainDeckCandidates.Count)]);
-                    }
-                }
+//                if (mainDeckCandidates.Count >= 1)
+//                {
+//                    for (int i = 0; i < 50; i++)
+//                    {
+//                        mainDeckCards.Add(mainDeckCandidates[UnityEngine.Random.Range(0, mainDeckCandidates.Count)]);
+//                    }
+//                }
 
-                if (digitamaDeckCandidates.Count >= 1)
-                {
-                    for (int i = 0; i < 5; i++)
-                    {
-                        digitamaDeckCards.Add(digitamaDeckCandidates[UnityEngine.Random.Range(0, digitamaDeckCandidates.Count)]);
-                    }
-                }
+//                if (digitamaDeckCandidates.Count >= 1)
+//                {
+//                    for (int i = 0; i < 5; i++)
+//                    {
+//                        digitamaDeckCards.Add(digitamaDeckCandidates[UnityEngine.Random.Range(0, digitamaDeckCandidates.Count)]);
+//                    }
+//                }
 
-                RandomDeck = new DeckData(DeckData.GetDeckCode("サンプルデッキ", mainDeckCards, digitamaDeckCards, null));
-            }
-        }
+//                RandomDeck = new DeckData(DeckData.GetDeckCode("サンプルデッキ", mainDeckCards, digitamaDeckCards, null));
+//            }
+//        }
 
-        #region マスタークライアントと非マスタークライアントを抽出
-        Photon.Realtime.Player MasterPlayer = null;
-        Photon.Realtime.Player nonMasterPlayer = null;
+//        #region マスタークライアントと非マスタークライアントを抽出
+//        // TODO: remove?
+//        //Photon.Realtime.Player MasterPlayer = null;
+//        //Photon.Realtime.Player nonMasterPlayer = null;
 
-        if (PhotonNetwork.IsMasterClient)
-        {
-            MasterPlayer = PhotonNetwork.LocalPlayer;
+//        //if (PhotonNetwork.IsMasterClient)
+//        //{
+//        //    MasterPlayer = PhotonNetwork.LocalPlayer;
 
-            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
-            {
-                if (player != PhotonNetwork.LocalPlayer)
-                {
-                    nonMasterPlayer = player;
-                    break;
-                }
-            }
-        }
+//        //    foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
+//        //    {
+//        //        if (player != PhotonNetwork.LocalPlayer)
+//        //        {
+//        //            nonMasterPlayer = player;
+//        //            break;
+//        //        }
+//        //    }
+//        //}
 
-        else
-        {
-            nonMasterPlayer = PhotonNetwork.LocalPlayer;
+//        //else
+//        //{
+//        //    nonMasterPlayer = PhotonNetwork.LocalPlayer;
 
-            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
-            {
-                if (player != PhotonNetwork.LocalPlayer)
-                {
-                    MasterPlayer = player;
-                    break;
-                }
-            }
-        }
-        #endregion
+//        //    foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
+//        //    {
+//        //        if (player != PhotonNetwork.LocalPlayer)
+//        //        {
+//        //            MasterPlayer = player;
+//        //            break;
+//        //        }
+//        //    }
+//        //}
+//        #endregion
 
-        #region そのPhotonクライアントのメインデッキレシピ
-        List<CEntity_Base> DeckRecipie(Photon.Realtime.Player player)
-        {
-            #region 対人戦
-            if (!GManager.instance.IsAI)
-            {
-                Hashtable hashtable = player.CustomProperties;
+//        #region そのPhotonクライアントのメインデッキレシピ
+//        List<CEntity_Base> DeckRecipie(Photon.Realtime.Player player)
+//        {
+//            #region 対人戦
+//            if (!GManager.instance.IsAI)
+//            {
+//                Hashtable hashtable = player.CustomProperties;
 
-                if (HasDeckRecipie(player))
-                {
-                    if (hashtable.TryGetValue(ContinuousController.DeckDataPropertyKey, out object value))
-                    {
-                        DeckData deckData = new DeckData((string)value);
+//                if (HasDeckRecipie(player))
+//                {
+//                    if (hashtable.TryGetValue(ContinuousController.DeckDataPropertyKey, out object value))
+//                    {
+//                        DeckData deckData = new DeckData((string)value);
 
-                        return RandomUtility.ShuffledDeckCards(deckData.DeckCards());
-                    }
-                }
+//                        return RandomUtility.ShuffledDeckCards(deckData.DeckCards());
+//                    }
+//                }
 
-                else
-                {
-                    Debug.Log("!HasDeckRecipie");
-                }
+//                else
+//                {
+//                    Debug.Log("!HasDeckRecipie");
+//                }
 
-                return null;
-            }
-            #endregion
+//                return null;
+//            }
+//            #endregion
 
-            #region vs.AI
-            else
-            {
-                #region プレイヤーのデッキ
-                if (player == MasterPlayer)
-                {
-                    if (ContinuousController.instance.BattleDeckData == null)
-                    {
-                        foreach (DeckData deckData in ContinuousController.instance.DeckDatas)
-                        {
-                            if (deckData.IsValidDeckData())
-                            {
-                                return RandomUtility.ShuffledDeckCards(deckData.DeckCards());
-                            }
-                        }
-                    }
+//            #region vs.AI
+//            else
+//            {
+//                #region プレイヤーのデッキ
+//                if (player == MasterPlayer)
+//                {
+//                    if (ContinuousController.instance.BattleDeckData == null)
+//                    {
+//                        foreach (DeckData deckData in ContinuousController.instance.DeckDatas)
+//                        {
+//                            if (deckData.IsValidDeckData())
+//                            {
+//                                return RandomUtility.ShuffledDeckCards(deckData.DeckCards());
+//                            }
+//                        }
+//                    }
 
-                    else
-                    {
-                        if (ContinuousController.instance.BattleDeckData.IsValidDeckData())
-                        {
-                            return RandomUtility.ShuffledDeckCards(ContinuousController.instance.BattleDeckData.DeckCards());
-                        }
-                    }
+//                    else
+//                    {
+//                        if (ContinuousController.instance.BattleDeckData.IsValidDeckData())
+//                        {
+//                            return RandomUtility.ShuffledDeckCards(ContinuousController.instance.BattleDeckData.DeckCards());
+//                        }
+//                    }
 
-                    if (RandomDeck != null)
-                    {
-                        return RandomUtility.ShuffledDeckCards(RandomDeck.DeckCards());
-                    }
+//                    if (RandomDeck != null)
+//                    {
+//                        return RandomUtility.ShuffledDeckCards(RandomDeck.DeckCards());
+//                    }
 
-                    return null;
-                }
-                #endregion
+//                    return null;
+//                }
+//                #endregion
 
-                #region AIのデッキ
-                else
-                {
-                    if (RandomDeck != null)
-                    {
-                        return RandomUtility.ShuffledDeckCards(RandomDeck.DeckCards());
-                    }
+//                #region AIのデッキ
+//                else
+//                {
+//                    if (RandomDeck != null)
+//                    {
+//                        return RandomUtility.ShuffledDeckCards(RandomDeck.DeckCards());
+//                    }
 
-                    foreach (DeckData deckData in ContinuousController.instance.DeckDatas)
-                    {
-                        if (deckData.IsValidDeckData())
-                        {
-                            return RandomUtility.ShuffledDeckCards(deckData.DeckCards());
-                        }
-                    }
+//                    foreach (DeckData deckData in ContinuousController.instance.DeckDatas)
+//                    {
+//                        if (deckData.IsValidDeckData())
+//                        {
+//                            return RandomUtility.ShuffledDeckCards(deckData.DeckCards());
+//                        }
+//                    }
 
-                    return null;
-                }
-                #endregion
+//                    return null;
+//                }
+//                #endregion
 
-            }
-            #endregion
-        }
-        #endregion
+//            }
+//            #endregion
+//        }
+//        #endregion
 
-        #region そのPhotonクライアントのデジタマデッキレシピ
-        List<CEntity_Base> DigitamaDeckRecipie(Photon.Realtime.Player player)
-        {
-            #region 対人戦
-            if (!GManager.instance.IsAI)
-            {
-                Hashtable hashtable = player.CustomProperties;
+//        #region そのPhotonクライアントのデジタマデッキレシピ
+//        List<CEntity_Base> DigitamaDeckRecipie(Photon.Realtime.Player player)
+//        {
+//            #region 対人戦
+//            if (!GManager.instance.IsAI)
+//            {
+//                Hashtable hashtable = player.CustomProperties;
 
-                if (HasDeckRecipie(player))
-                {
-                    if (hashtable.TryGetValue(ContinuousController.DeckDataPropertyKey, out object value))
-                    {
-                        DeckData deckData = new DeckData((string)value);
+//                if (HasDeckRecipie(player))
+//                {
+//                    if (hashtable.TryGetValue(ContinuousController.DeckDataPropertyKey, out object value))
+//                    {
+//                        DeckData deckData = new DeckData((string)value);
 
-                        return RandomUtility.ShuffledDeckCards(deckData.DigitamaDeckCards());
-                    }
-                }
+//                        return RandomUtility.ShuffledDeckCards(deckData.DigitamaDeckCards());
+//                    }
+//                }
 
-                else
-                {
-                    Debug.Log("!HasDeckRecipie");
-                }
+//                else
+//                {
+//                    Debug.Log("!HasDeckRecipie");
+//                }
 
-                return null;
-            }
-            #endregion
+//                return null;
+//            }
+//            #endregion
 
-            #region vs.AI
-            else
-            {
-                #region プレイヤーのデッキ
-                if (player == MasterPlayer)
-                {
-                    if (ContinuousController.instance.BattleDeckData == null)
-                    {
-                        foreach (DeckData deckData in ContinuousController.instance.DeckDatas)
-                        {
-                            if (deckData.IsValidDeckData())
-                            {
-                                return RandomUtility.ShuffledDeckCards(deckData.DigitamaDeckCards());
-                            }
-                        }
-                    }
+//            #region vs.AI
+//            else
+//            {
+//                #region プレイヤーのデッキ
+//                if (player == MasterPlayer)
+//                {
+//                    if (ContinuousController.instance.BattleDeckData == null)
+//                    {
+//                        foreach (DeckData deckData in ContinuousController.instance.DeckDatas)
+//                        {
+//                            if (deckData.IsValidDeckData())
+//                            {
+//                                return RandomUtility.ShuffledDeckCards(deckData.DigitamaDeckCards());
+//                            }
+//                        }
+//                    }
 
-                    else
-                    {
-                        if (ContinuousController.instance.BattleDeckData.IsValidDeckData())
-                        {
-                            return RandomUtility.ShuffledDeckCards(ContinuousController.instance.BattleDeckData.DigitamaDeckCards());
-                        }
-                    }
+//                    else
+//                    {
+//                        if (ContinuousController.instance.BattleDeckData.IsValidDeckData())
+//                        {
+//                            return RandomUtility.ShuffledDeckCards(ContinuousController.instance.BattleDeckData.DigitamaDeckCards());
+//                        }
+//                    }
 
-                    if (RandomDeck != null)
-                    {
-                        return RandomUtility.ShuffledDeckCards(RandomDeck.DigitamaDeckCards());
-                    }
+//                    if (RandomDeck != null)
+//                    {
+//                        return RandomUtility.ShuffledDeckCards(RandomDeck.DigitamaDeckCards());
+//                    }
 
-                    return null;
-                }
-                #endregion
+//                    return null;
+//                }
+//                #endregion
 
-                #region AIのデッキ
-                else
-                {
-                    if (RandomDeck != null)
-                    {
-                        return RandomUtility.ShuffledDeckCards(RandomDeck.DigitamaDeckCards());
-                    }
+//                #region AIのデッキ
+//                else
+//                {
+//                    if (RandomDeck != null)
+//                    {
+//                        return RandomUtility.ShuffledDeckCards(RandomDeck.DigitamaDeckCards());
+//                    }
 
-                    foreach (DeckData deckData in ContinuousController.instance.DeckDatas)
-                    {
-                        if (deckData.IsValidDeckData())
-                        {
-                            return RandomUtility.ShuffledDeckCards(deckData.DigitamaDeckCards());
-                        }
-                    }
-                    return null;
-                }
-                #endregion
+//                    foreach (DeckData deckData in ContinuousController.instance.DeckDatas)
+//                    {
+//                        if (deckData.IsValidDeckData())
+//                        {
+//                            return RandomUtility.ShuffledDeckCards(deckData.DigitamaDeckCards());
+//                        }
+//                    }
+//                    return null;
+//                }
+//                #endregion
 
-            }
-            #endregion
-        }
-        #endregion
+//            }
+//            #endregion
+//        }
+//        #endregion
 
-        #region そのPhotonクライアントがデッキレシピのキーを持っているかの判定
-        bool HasDeckRecipie(Photon.Realtime.Player _player)
-        {
-            Hashtable _hashtable = _player.CustomProperties;
+//        #region そのPhotonクライアントがデッキレシピのキーを持っているかの判定
+//        bool HasDeckRecipie(Photon.Realtime.Player _player)
+//        {
+//            Hashtable _hashtable = _player.CustomProperties;
 
-            if (_hashtable.TryGetValue(ContinuousController.DeckDataPropertyKey, out object value))
-            {
-                DeckData deckData = new DeckData((string)value);
+//            if (_hashtable.TryGetValue(ContinuousController.DeckDataPropertyKey, out object value))
+//            {
+//                DeckData deckData = new DeckData((string)value);
 
-                if (deckData.IsValidDeckData())
-                {
-                    return true;
-                }
-            }
+//                if (deckData.IsValidDeckData())
+//                {
+//                    return true;
+//                }
+//            }
 
-            return false;
-        }
-        #endregion
+//            return false;
+//        }
+//        #endregion
 
-        #region カードを生成
-        GManager.instance.CardIndex = 0;
+//        #region カードを生成
+//        GManager.instance.CardIndex = 0;
 
-        foreach (CEntity_Base cEntity_Base in DeckRecipie(MasterPlayer))
-        {
-            GManager.instance.turnStateMachine.gameContext.PlayerFromID(0).LibraryCards.Add(CreateCardSource(0, cEntity_Base, false));
-        }
+//        foreach (CEntity_Base cEntity_Base in DeckRecipie(MasterPlayer))
+//        {
+//            GManager.instance.turnStateMachine.gameContext.PlayerFromID(0).LibraryCards.Add(CreateCardSource(0, cEntity_Base, false));
+//        }
 
-        foreach (CEntity_Base cEntity_Base in DigitamaDeckRecipie(MasterPlayer))
-        {
-            GManager.instance.turnStateMachine.gameContext.PlayerFromID(0).DigitamaLibraryCards.Add(CreateCardSource(0, cEntity_Base, false));
-        }
+//        foreach (CEntity_Base cEntity_Base in DigitamaDeckRecipie(MasterPlayer))
+//        {
+//            GManager.instance.turnStateMachine.gameContext.PlayerFromID(0).DigitamaLibraryCards.Add(CreateCardSource(0, cEntity_Base, false));
+//        }
 
-        foreach (CEntity_Base cEntity_Base in DeckRecipie(nonMasterPlayer))
-        {
-            GManager.instance.turnStateMachine.gameContext.PlayerFromID(1).LibraryCards.Add(CreateCardSource(1, cEntity_Base, false));
-        }
+//        foreach (CEntity_Base cEntity_Base in DeckRecipie(nonMasterPlayer))
+//        {
+//            GManager.instance.turnStateMachine.gameContext.PlayerFromID(1).LibraryCards.Add(CreateCardSource(1, cEntity_Base, false));
+//        }
 
-        foreach (CEntity_Base cEntity_Base in DigitamaDeckRecipie(nonMasterPlayer))
-        {
-            GManager.instance.turnStateMachine.gameContext.PlayerFromID(1).DigitamaLibraryCards.Add(CreateCardSource(1, cEntity_Base, false));
-        }
+//        foreach (CEntity_Base cEntity_Base in DigitamaDeckRecipie(nonMasterPlayer))
+//        {
+//            GManager.instance.turnStateMachine.gameContext.PlayerFromID(1).DigitamaLibraryCards.Add(CreateCardSource(1, cEntity_Base, false));
+//        }
 
-        #endregion
+        //#endregion
     }
     #endregion
 
@@ -638,16 +634,16 @@ public class CardObjectController : MonoBehaviour
 
                 else
                 {
-                    ContinuousController.instance.PlaySE(GManager.instance.DrawSE);
+                    //ContinuousController.instance.PlaySE(GManager.instance.DrawSE);
                 }
 
                 HandCard handCard = Instantiate(GManager.instance.handCardPrefab, cardSource.Owner.HandTransform);
 
                 handCard.gameObject.name = $"handCard_{cardSource.Owner.PlayerName}";
 
-                handCard.GetComponent<Draggable_HandCard>().startScale = handCard.transform.localScale;
+                //handCard.GetComponent<Draggable_HandCard>().startScale = handCard.transform.localScale;
 
-                handCard.GetComponent<Draggable_HandCard>().DefaultY = -9;
+                //handCard.GetComponent<Draggable_HandCard>().DefaultY = -9;
 
                 handCard.SetUpHandCard(cardSource);
 
@@ -683,14 +679,14 @@ public class CardObjectController : MonoBehaviour
 
                     handCard.transform.localPosition = startPosition;
 
-                    bool end = false;
-                    var sequence = DOTween.Sequence();
-                    sequence
-                        .Append(handCard.transform.DOLocalMove(targetPositon, 0.08f).SetEase(Ease.OutBack))
-                        .AppendCallback(() => { end = true; });
+                    //bool end = false;
+                    //var sequence = DOTween.Sequence();
+                    //sequence
+                    //    .Append(handCard.transform.DOLocalMove(targetPositon, 0.08f).SetEase(Ease.OutBack))
+                    //    .AppendCallback(() => { end = true; });
 
-                    yield return new WaitWhile(() => !end);
-                    end = false;
+                    //yield return new WaitWhile(() => !end);
+                    //end = false;
 
                     cardSource.Owner.HandTransform.GetComponent<GridLayoutGroup>().enabled = true;
                 }
@@ -999,7 +995,7 @@ public class CardObjectController : MonoBehaviour
     #region Shuffle
     public static IEnumerator Shuffle(Player player)
     {
-        ContinuousController.instance.PlaySE(GManager.instance.ShuffleSE);
+        //ContinuousController.instance.PlaySE(GManager.instance.ShuffleSE);
 
         player.LibraryCards = RandomUtility.ShuffledDeckCards(player.LibraryCards);
 
@@ -1061,7 +1057,7 @@ public class CardObjectController : MonoBehaviour
 
                         #region animation
                         bool end = false;
-                        var sequence = DOTween.Sequence();
+                       // var sequence = DOTween.Sequence();
 
                         FieldPermanentCard movingPermanentCard = movingPermanent.ShowingPermanentCard;
 
@@ -1071,14 +1067,14 @@ public class CardObjectController : MonoBehaviour
 
                         float GoTime = 0.2f;
 
-                        sequence
-                            .Append(movingPermanentCard.transform.DOLocalMove(TargetPosition, GoTime).SetEase(Ease.OutCubic))
-                            .AppendCallback(() =>
-                            {
-                                end = true;
-                            });
+                        //sequence
+                        //    .Append(movingPermanentCard.transform.DOLocalMove(TargetPosition, GoTime).SetEase(Ease.OutCubic))
+                        //    .AppendCallback(() =>
+                        //    {
+                        //        end = true;
+                        //    });
 
-                        sequence.Play();
+                        //sequence.Play();
 
                         yield return new WaitWhile(() => !end);
                         end = false;

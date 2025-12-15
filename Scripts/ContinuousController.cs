@@ -1,15 +1,12 @@
-﻿using Photon.Pun;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class ContinuousController : MonoBehaviour
 {
@@ -32,8 +29,8 @@ public class ContinuousController : MonoBehaviour
     public Sprite ReverseCard;
     public Sprite ReverseCard_Digitama;
 
-    [Header("SE prefab")]
-    public SoundObject soundObject;
+    //[Header("SE prefab")]
+    //public SoundObject soundObject;
 
     [Header("deck code encryption")]
     public ShuffleDeckCode ShuffleDeckCode;
@@ -517,7 +514,7 @@ public class ContinuousController : MonoBehaviour
         // deck data
         //DeckDatas = PlayerPrefsUtil.LoadList<DeckData>(DeckDatasPlayerPrefsKey);
         LoadDeckLists();
-        GetComponent<StarterDeck>().SetStarterDecks();
+        //GetComponent<StarterDeck>().SetStarterDecks();
 
         // player data
         LoadPlayerName();
@@ -595,7 +592,7 @@ public class ContinuousController : MonoBehaviour
     {
         string savePath = StreamingAssetsUtility.GetStreamingAssetPath("Decks", false);
 
-        File.WriteAllText($"{savePath}/{data.DeckName}_{data.DeckID}.txt", DeckCodeUtility.GetDeckBuilderFile(data));
+        //File.WriteAllText($"{savePath}/{data.DeckName}_{data.DeckID}.txt", DeckCodeUtility.GetDeckBuilderFile(data));
     }
 
     public void RenameDeck(DeckData data, string newName)
@@ -673,36 +670,37 @@ public class ContinuousController : MonoBehaviour
 
     private void CreateDeckFromFile(string id, string name, int keyID, string deckCode, int index = 0)
     {
-        List<CEntity_Base> AllDeckCards = DeckCodeUtility.GetAllDeckCardsFromDeckBuilderDeckCode(deckCode);
+        // TODO
+        //List<CEntity_Base> AllDeckCards = DeckCodeUtility.GetAllDeckCardsFromDeckBuilderDeckCode(deckCode);
 
-        if (AllDeckCards.Count == 0)
-        {
-            AllDeckCards = DeckCodeUtility.GetAllDeckCardsFromTTSDeckCode(deckCode);
-        }
+        //if (AllDeckCards.Count == 0)
+        //{
+        //    AllDeckCards = DeckCodeUtility.GetAllDeckCardsFromTTSDeckCode(deckCode);
+        //}
 
-        List<CEntity_Base> deckCards = new List<CEntity_Base>();
-        List<CEntity_Base> digitamaDeckCards = new List<CEntity_Base>();
+        //List<CEntity_Base> deckCards = new List<CEntity_Base>();
+        //List<CEntity_Base> digitamaDeckCards = new List<CEntity_Base>();
 
-        foreach (CEntity_Base cEntity_Base in AllDeckCards)
-        {
-            if (cEntity_Base.cardKind == CardKind.DigiEgg)
-            {
-                digitamaDeckCards.Add(cEntity_Base);
-            }
+        //foreach (CEntity_Base cEntity_Base in AllDeckCards)
+        //{
+        //    if (cEntity_Base.cardKind == CardKind.DigiEgg)
+        //    {
+        //        digitamaDeckCards.Add(cEntity_Base);
+        //    }
 
-            else
-            {
-                deckCards.Add(cEntity_Base);
-            }
-        }
-        Debug.Log($"Create Deck From File: {name}");
-        DeckData deckData = (new DeckData(DeckData.GetDeckCode(name, deckCards, digitamaDeckCards, null),id)).ModifiedDeckData();
+        //    else
+        //    {
+        //        deckCards.Add(cEntity_Base);
+        //    }
+        //}
+        //Debug.Log($"Create Deck From File: {name}");
+        //DeckData deckData = (new DeckData(DeckData.GetDeckCode(name, deckCards, digitamaDeckCards, null),id)).ModifiedDeckData();
 
-        deckData.KeyCardId = keyID;
-        deckData.DeckName = name;
-        deckData.SortValue = index;
+        //deckData.KeyCardId = keyID;
+        //deckData.DeckName = name;
+        //deckData.SortValue = index;
 
-        DeckDatas.Insert(index, deckData);
+        //DeckDatas.Insert(index, deckData);
     }
 
     #region Player Name
@@ -1028,13 +1026,13 @@ public class ContinuousController : MonoBehaviour
     #endregion
 
     #region PlaySE(AudioClip clip)
-    public SoundObject PlaySE(AudioClip clip)
+    public void PlaySE(AudioClip clip)
     {
-        SoundObject _soundObject = Instantiate(soundObject);
+        //SoundObject _soundObject = Instantiate(soundObject);
 
-        _soundObject.PlaySE(clip);
+        //_soundObject.PlaySE(clip);
 
-        return _soundObject;
+        //return _soundObject;
     }
     #endregion
 
@@ -1118,104 +1116,106 @@ public class ContinuousController : MonoBehaviour
     }
     public IEnumerator EndBattleCoroutine()
     {
-        if (Opening.instance == null)
-        {
-            yield break;
-        }
+        yield break;
 
-        Opening.instance.openingObject.SetActive(true);
+        //if (Opening.instance == null)
+        //{
+        //    yield break;
+        //}
+
+        //Opening.instance.openingObject.SetActive(true);
+
+        ////yield return StartCoroutine(Opening.instance.LoadingObject_Unload.StartLoading("Now Loading"));
+
+        ////Camera camera1 = Camera.main;
+
+        ////Destroy(camera1.gameObject);
+
+        ////yield return null;
+
+        //isAI = false;
+
+        //int random = RandomUtility.getRamdom();
+        //UnityEngine.Random.InitState(random);
+        //Debug.Log($"random number sequence initialization, InitState:{random}");
+
+        //var unload = SceneManager.UnloadSceneAsync("BattleScene");
+        //yield return unload;
+
+        //yield return Resources.UnloadUnusedAssets();
 
         //yield return StartCoroutine(Opening.instance.LoadingObject_Unload.StartLoading("Now Loading"));
 
-        //Camera camera1 = Camera.main;
+        ////Opening.instance.MainCamera.gameObject.SetActive(true);
 
-        //Destroy(camera1.gameObject);
+        //foreach (Camera camera in Opening.instance.openingCameras)
+        //{
+        //    camera.gameObject.SetActive(true);
+        //}
+
+        //Opening.instance.LoadingObject_light.gameObject.SetActive(false);
+        //yield return ContinuousController.instance.StartCoroutine(PhotonUtility.SetPlayerName());
+
+        //if (isRandomMatch)
+        //{
+        //    Debug.Log("Unload from Random Match");
+        //    yield return StartCoroutine(Opening.instance.battle.lobbyManager_RandomMatch.CloseLobbyCoroutine());
+        //    yield return StartCoroutine(Opening.instance.battle.selectBattleMode.SetUpSelectBattleModeCoroutine());
+        //}
+
+        //else
+        //{
+        //    Debug.Log("Unload from Room Match");
+        //    yield return StartCoroutine(Opening.instance.battle.roomManager.Init(true));
+        //    yield return new WaitForSeconds(0.1f);
+        //}
+
+        //yield return new WaitWhile(() => GManager.instance != null);
+
+        //Opening.instance.LoadingObject.gameObject.SetActive(false);
+        //yield return StartCoroutine(Opening.instance.LoadingObject_Unload.EndLoading());
+        //_endBattle = false;
+
+        //if (!isRandomMatch)
+        //{
+        //    Hashtable PlayerProp = PhotonNetwork.LocalPlayer.CustomProperties;
+
+        //    if (PlayerProp.TryGetValue("isBattle", out object value))
+        //    {
+        //        PlayerProp["isBattle"] = false;
+        //    }
+
+        //    else
+        //    {
+        //        PlayerProp.Add("isBattle", false);
+        //    }
+
+        //    PhotonNetwork.LocalPlayer.SetCustomProperties(PlayerProp);
+        //}
+
+        //Scene newScene = SceneManager.GetSceneByName("Opening");
+        //SceneManager.SetActiveScene(newScene);
+
+        //for (int i = 0; i < 3; i++)
+        //{
+        //    yield return new WaitForSeconds(0.1f);
+
+        //    EventSystem.current.SetSelectedGameObject(Opening.instance.battle.selectBattleMode.transform.GetChild(0).gameObject);
+        //}
+
+        ////GUI.UnfocusWindow();
 
         //yield return null;
 
-        isAI = false;
+        ////StartCoroutine(DestroyEffectCoroutine());
 
-        int random = RandomUtility.getRamdom();
-        UnityEngine.Random.InitState(random);
-        Debug.Log($"random number sequence initialization, InitState:{random}");
-
-        var unload = SceneManager.UnloadSceneAsync("BattleScene");
-        yield return unload;
-
-        yield return Resources.UnloadUnusedAssets();
-
-        yield return StartCoroutine(Opening.instance.LoadingObject_Unload.StartLoading("Now Loading"));
-
-        //Opening.instance.MainCamera.gameObject.SetActive(true);
-
-        foreach (Camera camera in Opening.instance.openingCameras)
-        {
-            camera.gameObject.SetActive(true);
-        }
-
-        Opening.instance.LoadingObject_light.gameObject.SetActive(false);
-        yield return ContinuousController.instance.StartCoroutine(PhotonUtility.SetPlayerName());
-
-        if (isRandomMatch)
-        {
-            Debug.Log("Unload from Random Match");
-            yield return StartCoroutine(Opening.instance.battle.lobbyManager_RandomMatch.CloseLobbyCoroutine());
-            yield return StartCoroutine(Opening.instance.battle.selectBattleMode.SetUpSelectBattleModeCoroutine());
-        }
-
-        else
-        {
-            Debug.Log("Unload from Room Match");
-            yield return StartCoroutine(Opening.instance.battle.roomManager.Init(true));
-            yield return new WaitForSeconds(0.1f);
-        }
-
-        yield return new WaitWhile(() => GManager.instance != null);
-
-        Opening.instance.LoadingObject.gameObject.SetActive(false);
-        yield return StartCoroutine(Opening.instance.LoadingObject_Unload.EndLoading());
-        _endBattle = false;
-
-        if (!isRandomMatch)
-        {
-            Hashtable PlayerProp = PhotonNetwork.LocalPlayer.CustomProperties;
-
-            if (PlayerProp.TryGetValue("isBattle", out object value))
-            {
-                PlayerProp["isBattle"] = false;
-            }
-
-            else
-            {
-                PlayerProp.Add("isBattle", false);
-            }
-
-            PhotonNetwork.LocalPlayer.SetCustomProperties(PlayerProp);
-        }
-
-        Scene newScene = SceneManager.GetSceneByName("Opening");
-        SceneManager.SetActiveScene(newScene);
-
-        for (int i = 0; i < 3; i++)
-        {
-            yield return new WaitForSeconds(0.1f);
-
-            EventSystem.current.SetSelectedGameObject(Opening.instance.battle.selectBattleMode.transform.GetChild(0).gameObject);
-        }
-
-        //GUI.UnfocusWindow();
-
-        yield return null;
-
-        //StartCoroutine(DestroyEffectCoroutine());
-
-        if (Opening.instance.OpeningBGM != null)
-        {
-            if (!Opening.instance.OpeningBGM.isPlaying)
-            {
-                Opening.instance.OpeningBGM.StartPlayBGM(Opening.instance.bgm);
-            }
-        }
+        //if (Opening.instance.OpeningBGM != null)
+        //{
+        //    if (!Opening.instance.OpeningBGM.isPlaying)
+        //    {
+        //        Opening.instance.OpeningBGM.StartPlayBGM(Opening.instance.bgm);
+        //    }
+        //}
     }
     private void Update()
     {
@@ -1244,37 +1244,38 @@ public class ContinuousController : MonoBehaviour
         }
         #endregion
 
-        if (PhotonNetwork.InRoom)
-        {
-            if (!isAI)
-            {
-                bool notEnterOther = false;
+        // TODO Remove?
+        //if (PhotonNetwork.InRoom)
+        //{
+        //    if (!isAI)
+        //    {
+        //        bool notEnterOther = false;
 
-                if (PhotonNetwork.PlayerList.Length == 1)
-                {
-                    if (GManager.instance != null)
-                    {
-                        notEnterOther = true;
-                    }
-                }
+        //        if (PhotonNetwork.PlayerList.Length == 1)
+        //        {
+        //            if (GManager.instance != null)
+        //            {
+        //                notEnterOther = true;
+        //            }
+        //        }
 
-                if (notEnterOther)
-                {
-                    if (PhotonNetwork.CurrentRoom.MaxPlayers != 1)
-                    {
-                        PhotonNetwork.CurrentRoom.MaxPlayers = 1;
-                    }
-                }
+        //        if (notEnterOther)
+        //        {
+        //            if (PhotonNetwork.CurrentRoom.MaxPlayers != 1)
+        //            {
+        //                PhotonNetwork.CurrentRoom.MaxPlayers = 1;
+        //            }
+        //        }
 
-                else
-                {
-                    if (PhotonNetwork.CurrentRoom.MaxPlayers != 2)
-                    {
-                        PhotonNetwork.CurrentRoom.MaxPlayers = 2;
-                    }
-                }
-            }
-        }
+        //        else
+        //        {
+        //            if (PhotonNetwork.CurrentRoom.MaxPlayers != 2)
+        //            {
+        //                PhotonNetwork.CurrentRoom.MaxPlayers = 2;
+        //            }
+        //        }
+        //    }
+        //}
     }
 
     public bool isAI { get; set; } = false;
@@ -1282,7 +1283,7 @@ public class ContinuousController : MonoBehaviour
     //Flag that the sharing of the random number sequence is over.
     public bool DoneSetRandom { get; set; } = false;
     public bool CanSetRandom { get; set; } = false;
-    [PunRPC]
+    ////[PunRPC]
     public void SetRandom(int random)
     {
         StartCoroutine(SetRandomCoroutine(random));
@@ -1411,212 +1412,221 @@ public class PhotonUtility
     #region Disconnected from Photon
     public static IEnumerator DisconnectCoroutine()
     {
-        #region Exit Room
-        if (PhotonNetwork.InRoom)
-        {
-            PhotonNetwork.LeaveRoom();
-        }
+        //TODO Remove?
+        yield break;
+        //#region Exit Room
+        //if (PhotonNetwork.InRoom)
+        //{
+        //    PhotonNetwork.LeaveRoom();
+        //}
 
-        yield return new WaitWhile(() => PhotonNetwork.InRoom);
-        #endregion
+        //yield return new WaitWhile(() => PhotonNetwork.InRoom);
+        //#endregion
 
-        #region Exit from the lobby
-        if (PhotonNetwork.InLobby)
-        {
-            PhotonNetwork.LeaveLobby();
-        }
+        //#region Exit from the lobby
+        //if (PhotonNetwork.InLobby)
+        //{
+        //    PhotonNetwork.LeaveLobby();
+        //}
 
-        yield return new WaitWhile(() => PhotonNetwork.InLobby);
-        #endregion
+        //yield return new WaitWhile(() => PhotonNetwork.InLobby);
+        //#endregion
 
-        #region Disconnected from Photon
-        if (PhotonNetwork.IsConnected)
-        {
-            PhotonNetwork.Disconnect();
-        }
+        //#region Disconnected from Photon
+        //if (PhotonNetwork.IsConnected)
+        //{
+        //    PhotonNetwork.Disconnect();
+        //}
 
-        yield return new WaitWhile(() => PhotonNetwork.IsConnected);
-        #endregion
+        //yield return new WaitWhile(() => PhotonNetwork.IsConnected);
+        //#endregion
     }
     #endregion
 
     #region Connect to Photon server
     public static IEnumerator ConnectToMasterServerCoroutine()
     {
-        if (!PhotonNetwork.IsConnected || ContinuousController.instance.LastConnectServerRegion != ContinuousController.instance.serverRegion)
-        {
-            if (PhotonNetwork.IsConnected)
-            {
-                yield return ContinuousController.instance.StartCoroutine(DisconnectCoroutine());
+        yield break;
+        //TO DO
+        //if (!PhotonNetwork.IsConnected || ContinuousController.instance.LastConnectServerRegion != ContinuousController.instance.serverRegion)
+        //{
+        //    if (PhotonNetwork.IsConnected)
+        //    {
+        //        yield return ContinuousController.instance.StartCoroutine(DisconnectCoroutine());
 
-                yield return new WaitWhile(() => PhotonNetwork.IsConnected);
-            }
+        //        yield return new WaitWhile(() => PhotonNetwork.IsConnected);
+        //    }
 
-            PhotonNetwork.NetworkingClient.AppId = PhotonNetwork.PhotonServerSettings.AppSettings.AppIdRealtime;
-            PhotonNetwork.ConnectToRegion(ContinuousController.instance.serverRegion);
-            PhotonNetwork.NickName = ContinuousController.instance.PlayerName;
-            PhotonNetwork.GameVersion = ContinuousController.instance.GameVerString;
-            ContinuousController.instance.LastConnectServerRegion = ContinuousController.instance.serverRegion;
-        }
+        //    PhotonNetwork.NetworkingClient.AppId = PhotonNetwork.PhotonServerSettings.AppSettings.AppIdRealtime;
+        //    PhotonNetwork.ConnectToRegion(ContinuousController.instance.serverRegion);
+        //    PhotonNetwork.NickName = ContinuousController.instance.PlayerName;
+        //    PhotonNetwork.GameVersion = ContinuousController.instance.GameVerString;
+        //    ContinuousController.instance.LastConnectServerRegion = ContinuousController.instance.serverRegion;
+        //}
 
-        yield return new WaitWhile(() => !PhotonNetwork.IsConnectedAndReady);
+        //yield return new WaitWhile(() => !PhotonNetwork.IsConnectedAndReady);
     }
     #endregion
     #region Connect to Photon Server and Lobby
     public static IEnumerator ConnectToLobbyCoroutine()
     {
-        #region Connect to Photon server
-        yield return ContinuousController.instance.StartCoroutine(ConnectToMasterServerCoroutine());
-        #endregion
+        yield break;
+        // TODO
+        //#region Connect to Photon server
+        //yield return ContinuousController.instance.StartCoroutine(ConnectToMasterServerCoroutine());
+        //#endregion
 
-        #region Save player name to custom properties
-        yield return ContinuousController.instance.StartCoroutine(SetPlayerName());
-        #endregion
+        //#region Save player name to custom properties
+        //yield return ContinuousController.instance.StartCoroutine(SetPlayerName());
+        //#endregion
 
-        #region Save the number of wins to a custom property
-        Hashtable hash = PhotonNetwork.LocalPlayer.CustomProperties;
+        //#region Save the number of wins to a custom property
+        //Hashtable hash = PhotonNetwork.LocalPlayer.CustomProperties;
 
-        object value;
+        //object value;
 
-        hash = PhotonNetwork.LocalPlayer.CustomProperties;
+        //hash = PhotonNetwork.LocalPlayer.CustomProperties;
 
-        if (hash.TryGetValue(ContinuousController.WinCountKey, out value))
-        {
-            hash[ContinuousController.WinCountKey] = ContinuousController.instance.WinCount;
-        }
+        //if (hash.TryGetValue(ContinuousController.WinCountKey, out value))
+        //{
+        //    hash[ContinuousController.WinCountKey] = ContinuousController.instance.WinCount;
+        //}
 
-        else
-        {
-            hash.Add(ContinuousController.WinCountKey, ContinuousController.instance.WinCount);
-        }
+        //else
+        //{
+        //    hash.Add(ContinuousController.WinCountKey, ContinuousController.instance.WinCount);
+        //}
 
-        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        //PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
-        while (true)
-        {
-            Hashtable _hash = PhotonNetwork.LocalPlayer.CustomProperties;
+        //while (true)
+        //{
+        //    Hashtable _hash = PhotonNetwork.LocalPlayer.CustomProperties;
 
-            if (_hash.TryGetValue(ContinuousController.WinCountKey, out value))
-            {
-                if ((int)value == ContinuousController.instance.WinCount)
-                {
-                    break;
-                }
+        //    if (_hash.TryGetValue(ContinuousController.WinCountKey, out value))
+        //    {
+        //        if ((int)value == ContinuousController.instance.WinCount)
+        //        {
+        //            break;
+        //        }
 
-            }
+        //    }
 
-            yield return null;
-        }
-        #endregion
+        //    yield return null;
+        //}
+        //#endregion
 
-        #region Connect to Lobby
-        if (!PhotonNetwork.InLobby)
-        {
-            PhotonNetwork.JoinLobby();
-        }
+        //#region Connect to Lobby
+        //if (!PhotonNetwork.InLobby)
+        //{
+        //    PhotonNetwork.JoinLobby();
+        //}
 
-        yield return new WaitWhile(() => !PhotonNetwork.InLobby);
+        //yield return new WaitWhile(() => !PhotonNetwork.InLobby);
 
-        yield return new WaitUntil(() => PhotonNetwork.InLobby && PhotonNetwork.IsConnectedAndReady);
-        #endregion
+        //yield return new WaitUntil(() => PhotonNetwork.InLobby && PhotonNetwork.IsConnectedAndReady);
+        //#endregion
     }
     #endregion
 
     #region Save player name to properties
     public static IEnumerator SetPlayerName()
     {
-        Hashtable hash = PhotonNetwork.LocalPlayer.CustomProperties;
+        yield break;
+        //Hashtable hash = PhotonNetwork.LocalPlayer.CustomProperties;
 
-        object value;
+        //object value;
 
-        hash = PhotonNetwork.LocalPlayer.CustomProperties;
+        //hash = PhotonNetwork.LocalPlayer.CustomProperties;
 
-        if (hash.TryGetValue(ContinuousController.PlayerNameKey, out value))
-        {
-            hash[ContinuousController.PlayerNameKey] = ContinuousController.instance.PlayerName;
-        }
+        //if (hash.TryGetValue(ContinuousController.PlayerNameKey, out value))
+        //{
+        //    hash[ContinuousController.PlayerNameKey] = ContinuousController.instance.PlayerName;
+        //}
 
-        else
-        {
-            hash.Add(ContinuousController.PlayerNameKey, ContinuousController.instance.PlayerName);
-        }
+        //else
+        //{
+        //    hash.Add(ContinuousController.PlayerNameKey, ContinuousController.instance.PlayerName);
+        //}
 
-        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        //PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
-        while (true)
-        {
-            Hashtable _hash = PhotonNetwork.LocalPlayer.CustomProperties;
+        //while (true)
+        //{
+        //    Hashtable _hash = PhotonNetwork.LocalPlayer.CustomProperties;
 
-            if (_hash.TryGetValue(ContinuousController.PlayerNameKey, out value))
-            {
-                if ((string)value == ContinuousController.instance.PlayerName)
-                {
-                    break;
-                }
-            }
+        //    if (_hash.TryGetValue(ContinuousController.PlayerNameKey, out value))
+        //    {
+        //        if ((string)value == ContinuousController.instance.PlayerName)
+        //        {
+        //            break;
+        //        }
+        //    }
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
     }
     #endregion
 
     #region Save deck data to custom properties
     public static IEnumerator SignUpBattleDeckData()
     {
-        Hashtable hash = PhotonNetwork.LocalPlayer.CustomProperties;
+        yield break;
+        //Hashtable hash = PhotonNetwork.LocalPlayer.CustomProperties;
 
-        if (hash.TryGetValue(ContinuousController.DeckDataPropertyKey, out object value))
-        {
-            hash[ContinuousController.DeckDataPropertyKey] = ContinuousController.instance.BattleDeckData.GetThisDeckCode();
-        }
+        //if (hash.TryGetValue(ContinuousController.DeckDataPropertyKey, out object value))
+        //{
+        //    hash[ContinuousController.DeckDataPropertyKey] = ContinuousController.instance.BattleDeckData.GetThisDeckCode();
+        //}
 
-        else
-        {
-            hash.Add(ContinuousController.DeckDataPropertyKey, ContinuousController.instance.BattleDeckData.GetThisDeckCode());
-        }
+        //else
+        //{
+        //    hash.Add(ContinuousController.DeckDataPropertyKey, ContinuousController.instance.BattleDeckData.GetThisDeckCode());
+        //}
 
-        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        //PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
-        while (true)
-        {
-            Hashtable _hash = PhotonNetwork.LocalPlayer.CustomProperties;
+        //while (true)
+        //{
+        //    Hashtable _hash = PhotonNetwork.LocalPlayer.CustomProperties;
 
-            if (_hash.TryGetValue(ContinuousController.DeckDataPropertyKey, out value))
-            {
-                if ((string)value == ContinuousController.instance.BattleDeckData.GetThisDeckCode())
-                {
-                    break;
-                }
-            }
+        //    if (_hash.TryGetValue(ContinuousController.DeckDataPropertyKey, out value))
+        //    {
+        //        if ((string)value == ContinuousController.instance.BattleDeckData.GetThisDeckCode())
+        //        {
+        //            break;
+        //        }
+        //    }
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
     }
     #endregion
 
     #region Remove custom properties from deck data
     public static IEnumerator DeleteBattleDeckData()
     {
-        Hashtable hash = PhotonNetwork.LocalPlayer.CustomProperties;
+        yield break;
+        //Hashtable hash = PhotonNetwork.LocalPlayer.CustomProperties;
 
-        if (hash.TryGetValue(ContinuousController.DeckDataPropertyKey, out object value))
-        {
-            hash.Remove(ContinuousController.DeckDataPropertyKey);
-        }
+        //if (hash.TryGetValue(ContinuousController.DeckDataPropertyKey, out object value))
+        //{
+        //    hash.Remove(ContinuousController.DeckDataPropertyKey);
+        //}
 
-        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        //PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
-        while (true)
-        {
-            Hashtable _hash = PhotonNetwork.LocalPlayer.CustomProperties;
+        //while (true)
+        //{
+        //    Hashtable _hash = PhotonNetwork.LocalPlayer.CustomProperties;
 
-            if (!_hash.TryGetValue(ContinuousController.DeckDataPropertyKey, out value))
-            {
-                break;
-            }
+        //    if (!_hash.TryGetValue(ContinuousController.DeckDataPropertyKey, out value))
+        //    {
+        //        break;
+        //    }
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
     }
     #endregion
 }

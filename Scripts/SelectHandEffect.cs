@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon;
-using Photon.Pun;
 using System;
 
-public class SelectHandEffect : MonoBehaviourPunCallbacks
+public class SelectHandEffect : MonoBehaviour
 {
     public void SetUp(
         Player selectPlayer,
@@ -169,7 +167,7 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
 
             if (!_isLocal)
             {
-                yield return GManager.instance.photonWaitController.StartWait("SelectHandEffect");
+                //yield return GManager.instance.photonWaitController.StartWait("SelectHandEffect");
             }
 
             foreach (Player player in GManager.instance.turnStateMachine.gameContext.Players)
@@ -180,14 +178,14 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
 
             if (_selectPlayer.isYou)
             {
-                GManager.instance.sideBar.SetUpSideBar();
+                //GManager.instance.sideBar.SetUpSideBar();
 
                 GManager.instance.turnStateMachine.IsSelecting = true;
 
                 #region Message Display
                 if (!string.IsNullOrEmpty(_customMessage))
                 {
-                    GManager.instance.commandText.OpenCommandText(_customMessage, _digiXros);
+                    //GManager.instance.commandText.OpenCommandText(_customMessage, _digiXros);
                 }
 
                 else
@@ -230,7 +228,7 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
 
                     if (!string.IsNullOrEmpty(message))
                     {
-                        GManager.instance.commandText.OpenCommandText(message, _digiXros);
+                        //GManager.instance.commandText.OpenCommandText(message, _digiXros);
                     }
                 }
                 #endregion
@@ -337,7 +335,8 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
 
                     if (!_isLocal)
                     {
-                        photonView.RPC("SetTargetHandCards", RpcTarget.All, CardIDs.ToArray());
+                        // TODO
+                        //SetTargetHandCards( CardIDs.ToArray());
                     }
 
                     else
@@ -345,7 +344,7 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
                         SetTargetHandCards(CardIDs.ToArray());
                     }
 
-                    GManager.instance.BackButton.CloseSelectCommandButton();
+                    //GManager.instance.BackButton.CloseSelectCommandButton();
                 }
 
                 #region Determines if selection can be terminated and displays UI
@@ -354,17 +353,18 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
                     #region UI display depending on whether it can be terminated
                     if (CanEndSelect(PreSelectedHandCards))
                     {
-                        GManager.instance.selectCommandPanel.SetUpCommandButton(
-                            new List<Command_SelectCommand>()
-                            {
-                                new Command_SelectCommand("End Selection", EndSelect_RPC, 0)
-                            });
+                        // TODO
+                        //GManager.instance.selectCommandPanel.SetUpCommandButton(
+                        //    new List<Command_SelectCommand>()
+                        //    {
+                        //        new Command_SelectCommand("End Selection", EndSelect_RPC, 0)
+                        //    });
                     }
 
                     else
                     {
-                        GManager.instance.selectCommandPanel.Off(false);
-                        GManager.instance.sideBar.SetUpSideBar();
+                        //GManager.instance.selectCommandPanel.Off(false);
+                       // GManager.instance.sideBar.SetUpSideBar();
                     }
                     #endregion
 
@@ -417,20 +417,21 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
 
                     if (PreSelectedHandCards.Count >= 1)
                     {
-                        GManager.instance.BackButton.CloseSelectCommandButton();
+                       // GManager.instance.BackButton.CloseSelectCommandButton();
                     }
 
                     else
                     {
                         if (_canNoSelect)
                         {
-                            GManager.instance.BackButton.OpenSelectCommandButton("No Selection", () => NoSelect_RPC(), 0);
+                            //GManager.instance.BackButton.OpenSelectCommandButton("No Selection", () => NoSelect_RPC(), 0);
 
                             void NoSelect_RPC()
                             {
                                 if (!_isLocal)
                                 {
-                                    photonView.RPC("SetNoSelectHand", RpcTarget.All);
+                                    // TODO
+                                    //SetNoSelectHand", RpcTarget.All);
                                 }
 
                                 else
@@ -451,12 +452,12 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
                 {
                     if (!string.IsNullOrEmpty(_customMessage_Enemy))
                     {
-                        GManager.instance.commandText.OpenCommandText(_customMessage_Enemy, _digiXros);
+                        //GManager.instance.commandText.OpenCommandText(_customMessage_Enemy, _digiXros);
                     }
 
                     else
                     {
-                        GManager.instance.commandText.OpenCommandText("The opponent is selecting cards.", _digiXros);
+                        //GManager.instance.commandText.OpenCommandText("The opponent is selecting cards.", _digiXros);
                     }
                 }
 
@@ -604,10 +605,10 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
                 }
             }
 
-            GManager.instance.commandText.CloseCommandText();
-            yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+            //GManager.instance.commandText.CloseCommandText();
+            //yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
 
-            GManager.instance.sideBar.OffSideBar();
+            //GManager.instance.sideBar.OffSideBar();
             #endregion
 
             if (!_noSelect)
@@ -735,7 +736,7 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
     }
 
     #region カード選択を決定
-    [PunRPC]
+    ////[PunRPC]
     public void SetTargetHandCards(int[] CardIDs)
     {
         _targetCards = new List<CardSource>();
@@ -752,10 +753,10 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
     #endregion
 
     #region 何も選択しない
-    [PunRPC]
+    ////[PunRPC]
     public void SetNoSelectHand()
     {
-        GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
+       // GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
 
         _targetCards = new List<CardSource>();
 

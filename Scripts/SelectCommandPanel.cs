@@ -50,7 +50,7 @@ public class SelectCommandPanel : MonoBehaviour
 
         if (commands != null)
         {
-            GManager.instance.sideBar.SetUpSideBar();
+           // GManager.instance.sideBar.SetUpSideBar();
 
             commands.Reverse();
 
@@ -100,7 +100,7 @@ public class SelectCommandPanel : MonoBehaviour
     {
         this.gameObject.SetActive(false);
 
-        GManager.instance.sideBar.OffSideBar(returnDefaultPos);
+       // GManager.instance.sideBar.OffSideBar(returnDefaultPos);
 
         if (first)
         {

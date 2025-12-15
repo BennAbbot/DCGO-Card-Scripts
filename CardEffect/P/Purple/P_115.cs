@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon;
+//using Photon;
 using System;
-using Photon.Pun;
+//using Photon.Pun;
 
 
 public class P_115 : CEntity_Effect
@@ -114,8 +114,8 @@ public class P_115 : CEntity_Effect
 
                             List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
                                 {
-                                    new Command_SelectCommand($"From hand", () => photonView.RPC("SetFromHand", RpcTarget.All, true), 0),
-                                    new Command_SelectCommand($"From trash", () => photonView.RPC("SetFromHand", RpcTarget.All, false), 1),
+                                    new Command_SelectCommand($"From hand", () => SetFromHand( true), 0),
+                                    new Command_SelectCommand($"From trash", () => SetFromHand( false), 1),
                                 };
 
                             GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -278,7 +278,7 @@ public class P_115 : CEntity_Effect
     bool endSelect = false;
     bool fromHand = false;
 
-    [PunRPC]
+    //[PunRPC]
     public void SetFromHand(bool fromHand)
     {
         this.fromHand = fromHand;

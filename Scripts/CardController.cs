@@ -696,14 +696,14 @@ public class PlayCardClass
                 {
                     int cost = card.GetPayingCostWithBaseCost(baseCost, Root, targetPermanents, checkAvailability: false, FixedCost: _fixedCost);
 
-                    GManager.instance.memoryObject.ShowMemoryPredictionLine(card.Owner.ExpectedMemory(cost));
+                   // GManager.instance.memoryObject.ShowMemoryPredictionLine(card.Owner.ExpectedMemory(cost));
                 }
                 else
                 {
                     if (card.jogressCondition.Count > 0)
                     {
                         int cost = card.GetPayingCostWithBaseCost(card.jogressCondition[baseDNA].cost, Root, targetPermanents, checkAvailability: false, FixedCost: _fixedCost);
-                        GManager.instance.memoryObject.ShowMemoryPredictionLine(card.Owner.ExpectedMemory(cost));
+                        //GManager.instance.memoryObject.ShowMemoryPredictionLine(card.Owner.ExpectedMemory(cost));
                     }
                 }
             }
@@ -798,7 +798,7 @@ public class PlayCardClass
                     appFusion = true;
                 }
 
-                yield return GManager.instance.photonWaitController.StartWait("AppFuse");
+                ////yield return GManager.instance.photonWaitController.StartWait("AppFuse");
             }
 
             #endregion
@@ -822,7 +822,7 @@ public class PlayCardClass
                     }
                 }
 
-                GManager.instance.memoryObject.ShowMemoryPredictionLine(card.Owner.ExpectedMemory(Cost));
+                //GManager.instance.memoryObject.ShowMemoryPredictionLine(card.Owner.ExpectedMemory(Cost));
             }
 
             #endregion
@@ -1045,7 +1045,7 @@ public class PlayCardClass
     {
         yield return new WaitForSeconds(0.5f);
 
-        GManager.instance.memoryObject.OffMemoryPredictionLine();
+        //GManager.instance.memoryObject.OffMemoryPredictionLine();
     }
 }
 
@@ -1608,7 +1608,7 @@ public class PlayPermanentClass
             GManager.instance.GetComponent<SelectAssemblyClass>().ResetSelectAssemblyClass();
             GManager.instance.GetComponent<SelectDNACondition>().ResetSelectDNAConditionClass();
 
-            yield return GManager.instance.photonWaitController.StartWait("EndPlayPermanent");
+            ////yield return GManager.instance.photonWaitController.StartWait("EndPlayPermanent");
         }
 
         // except [On Play] effect
@@ -1757,7 +1757,7 @@ public class UseOptionClass
 
             yield return ContinuousController.instance.StartCoroutine(card.Owner.brainStormObject.CloseBrainstrorm(card));
 
-            yield return GManager.instance.photonWaitController.StartWait("EndPlayOption");
+            ////yield return GManager.instance.photonWaitController.StartWait("EndPlayOption");
         }
     }
 }
@@ -1889,7 +1889,7 @@ public class IAddTrashCardsFromLibraryTop
         {
             for (int i = 0; i < discardedCards.Count; i++)
             {
-                ContinuousController.instance.PlaySE(GManager.instance.DrawSE);
+               // ContinuousController.instance.PlaySE(GManager.instance.DrawSE);
                 yield return new WaitForSeconds(0.06f);
             }
 
@@ -3532,7 +3532,7 @@ public class ISecurityCheck
 
                         #region effect
 
-                        player.securityObject.securityBreakGlass.ShowBlueMatarial();
+                        //player.securityObject.securityBreakGlass.ShowBlueMatarial();
 
                         yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().BreakSecurityEffect(player));
 
@@ -3867,7 +3867,7 @@ public class IDestroySecurity
 
                     #region effect
 
-                    _player.securityObject.securityBreakGlass.ShowBlueMatarial();
+                    //_player.securityObject.securityBreakGlass.ShowBlueMatarial();
 
                     yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().BreakSecurityEffect(_player));
 

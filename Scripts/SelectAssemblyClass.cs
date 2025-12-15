@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon;
-using Photon.Pun;
 using System;
 using UnityEngine.Events;
 
-public class SelectAssemblyClass : MonoBehaviourPunCallbacks
+public class SelectAssemblyClass : MonoBehaviour
 {
     public List<CardSource> selectedAssemblyCards { get; private set; } = new List<CardSource>();
     public List<AddDigivolutionCardsInfo> addDigivolutionCardInfos { get; private set; } = new List<AddDigivolutionCardsInfo>();
@@ -113,7 +111,7 @@ public class SelectAssemblyClass : MonoBehaviourPunCallbacks
             {
                 AssemblyCondition AssemblyCondition = card.assemblyCondition;
 
-                yield return GManager.instance.photonWaitController.StartWait("SelectAssemblys");
+                ////yield return GManager.instance.photonWaitController.StartWait("SelectAssemblys");
 
                 if (selectedAssemblyCards.Count >= AssemblyCondition.elementCount)
                 {
@@ -141,7 +139,7 @@ public class SelectAssemblyClass : MonoBehaviourPunCallbacks
 
                 /*foreach (AssemblyConditionElement element in AssemblyCondition.elements)
                 {
-                    yield return GManager.instance.photonWaitController.StartWait("SelectAssemblys");
+                    //yield return GManager.instance.photonWaitController.StartWait("SelectAssemblys");
 
                     if (selectedAssemblyCards.Count >= 1)
                     {
@@ -197,7 +195,7 @@ public class SelectAssemblyClass : MonoBehaviourPunCallbacks
                     {
                         if (card.Owner.isYou)
                         {
-                            GManager.instance.commandText.OpenCommandText($"From which area will you select {element.selectMessage}?", assembly: true);
+                            //GManager.instance.commandText.OpenCommandText($"From which area will you select {element.selectMessage}?", assembly: true);
 
                             List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>();
 
@@ -220,7 +218,7 @@ public class SelectAssemblyClass : MonoBehaviourPunCallbacks
                                         break;
                                 }
 
-                                command_SelectCommands.Add(new Command_SelectCommand(message, () => photonView.RPC("SetTargetAssemblysIndex", RpcTarget.All, k), spriteIndex));
+                                command_SelectCommands.Add(new Command_SelectCommand(message, () => SetTargetAssemblysIndex( k), spriteIndex));
                             }
 
                             GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -228,7 +226,7 @@ public class SelectAssemblyClass : MonoBehaviourPunCallbacks
 
                         else
                         {
-                            GManager.instance.commandText.OpenCommandText($"The opponent is choosing from which area to select {element.selectMessage}.", assembly: true);
+                            //GManager.instance.commandText.OpenCommandText($"The opponent is choosing from which area to select {element.selectMessage}.", assembly: true);
 
                             #region AI
                             if (GManager.instance.IsAI)
@@ -251,8 +249,8 @@ public class SelectAssemblyClass : MonoBehaviourPunCallbacks
                     yield return new WaitWhile(() => !_endSelect);
                     _endSelect = false;
 
-                    GManager.instance.commandText.CloseCommandText();
-                    yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+                    //GManager.instance.commandText.CloseCommandText();
+                    //yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
 
                     if (0 <= _targetIndex && _targetIndex <= actions.Count - 1)
                     {
@@ -428,7 +426,7 @@ public class SelectAssemblyClass : MonoBehaviourPunCallbacks
 
     bool _endSelectAssembly = false;
 
-    [PunRPC]
+    ////[PunRPC]
     public void SetTargetAssemblysIndex(int targetIndex)
     {
         this._targetIndex = targetIndex;

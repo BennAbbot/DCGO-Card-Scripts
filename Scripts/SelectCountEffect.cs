@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 using System;
 using System.Linq;
 
 
-public class SelectCountEffect : MonoBehaviourPunCallbacks
+public class SelectCountEffect : MonoBehaviour
 {
     public void SetUp
         (Player SelectPlayer,
@@ -69,7 +68,7 @@ public class SelectCountEffect : MonoBehaviourPunCallbacks
     {
         if (!_notDoSync)
         {
-            yield return GManager.instance.photonWaitController.StartWait("SelectCountEffect");
+            //yield return GManager.instance.photonWaitController.StartWait("SelectCountEffect");
         }
 
         if (_maxCount >= 1)
@@ -131,28 +130,30 @@ public class SelectCountEffect : MonoBehaviourPunCallbacks
                         || (_isDigivolutionCost && ContinuousController.instance.autoMinDigivolutionCost && _preferMin))
                         {
                             int preferedNumber = _preferMin ? candidates.Min() : candidates.Max();
-                            photonView.RPC("SetCount", RpcTarget.All, preferedNumber);
+                            //TODO
+                            //SetCount( preferedNumber);
                         }
 
                         else
                         {
-                            GManager.instance.commandText.OpenCommandText($"{_messageForOwner}");
+                            // TODO
+                            ////GManager.instance.commandText.OpenCommandText($"{_messageForOwner}");
 
-                            List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
-                            {
+                            //List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
+                            //{
 
-                            };
+                            //};
 
-                            for (int i = 0; i < candidates.Count; i++)
-                            {
-                                int k = candidates[i];
+                            //for (int i = 0; i < candidates.Count; i++)
+                            //{
+                            //    int k = candidates[i];
 
-                                string text = $"{k}";
+                            //    string text = $"{k}";
 
-                                command_SelectCommands.Add(new Command_SelectCommand(text, () => photonView.RPC("SetCount", RpcTarget.All, k), 0));
-                            }
+                            //    command_SelectCommands.Add(new Command_SelectCommand(text, () => SetCount( k), 0));
+                            //}
 
-                            GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
+                            //GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
                         }
                     }
 
@@ -168,7 +169,7 @@ public class SelectCountEffect : MonoBehaviourPunCallbacks
 
                         else
                         {
-                            GManager.instance.commandText.OpenCommandText($"{_messageForEnemy}");
+                            //GManager.instance.commandText.OpenCommandText($"{_messageForEnemy}");
                         }
                     }
                 }
@@ -176,8 +177,8 @@ public class SelectCountEffect : MonoBehaviourPunCallbacks
                 yield return new WaitWhile(() => !_endSelect);
                 _endSelect = false;
 
-                GManager.instance.commandText.CloseCommandText();
-                yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+                //GManager.instance.commandText.CloseCommandText();
+                //yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
 
                 if (_selectCountCoroutine != null)
                 {
@@ -195,7 +196,7 @@ public class SelectCountEffect : MonoBehaviourPunCallbacks
         }
     }
 
-    [PunRPC]
+    ////[PunRPC]
     public void SetCount(int selectedCount)
     {
         _selectedCount = selectedCount;

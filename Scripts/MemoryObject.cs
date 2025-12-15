@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using DG.Tweening;
 public class MemoryObject : MonoBehaviour
 {
     [SerializeField] GameObject CurrentMemoryObject;
@@ -104,20 +103,20 @@ public class MemoryObject : MonoBehaviour
 
                 #region アニメーション
                 bool end = false;
-                var sequence = DOTween.Sequence();
+                //var sequence = DOTween.Sequence();
 
-                Vector3 TargetPosition = targetMemoryTab.tabObject.transform.localPosition;
+                //Vector3 TargetPosition = targetMemoryTab.tabObject.transform.localPosition;
 
-                float GoTime = 0.2f;
+                //float GoTime = 0.2f;
 
-                sequence
-                    .Append(CurrentMemoryObject.transform.DOLocalMove(TargetPosition, GoTime).SetEase(Ease.OutCubic))
-                    .AppendCallback(() =>
-                    {
-                        end = true;
-                    });
+                //sequence
+                //    .Append(CurrentMemoryObject.transform.DOLocalMove(TargetPosition, GoTime).SetEase(Ease.OutCubic))
+                //    .AppendCallback(() =>
+                //    {
+                //        end = true;
+                //    });
 
-                sequence.Play();
+                //sequence.Play();
 
                 yield return new WaitWhile(() => !end);
                 end = false;

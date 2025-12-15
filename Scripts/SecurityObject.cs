@@ -22,11 +22,11 @@ public class SecurityObject : MonoBehaviour
     [Header("クリック判定")]
     public GameObject Collider;
 
-    [Header("セキュリティガラス")]
+    //[Header("セキュリティガラス")]
     public SecurityBreakGlass securityBreakGlass;
 
-    [Header("セキュリティアタックDropArea")]
-    public DropArea securityAttackDropArea;
+    //[Header("セキュリティアタックDropArea")]
+    //public DropArea securityAttackDropArea;
 
     [Header("セキュリティアタック表示オブジェクト")]
     [SerializeField] GameObject ShowSecurityAttackObject;
@@ -43,7 +43,7 @@ public class SecurityObject : MonoBehaviour
     {
         RemoveClickTarget();
 
-        securityBreakGlass.Init(null);
+       // securityBreakGlass.Init(null);
 
         OffShowSecurityAttackObject();
 
@@ -58,7 +58,7 @@ public class SecurityObject : MonoBehaviour
                     key = "SecurityIcon_Opponent";
                 }
 
-                Sprite securityIconSprite = await StreamingAssetsUtility.GetSprite(key);
+                Sprite securityIconSprite = null;// await StreamingAssetsUtility.GetSprite(key);
 
                 if (securityIconSprite != null)
                 {

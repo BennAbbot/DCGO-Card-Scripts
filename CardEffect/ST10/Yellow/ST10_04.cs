@@ -1,4 +1,4 @@
-using Photon.Pun;
+//using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -297,7 +297,7 @@ public class ST10_04 : CEntity_Effect
                                                 yield return null;
                                             }
 
-                                            photonView.RPC("SetJogressEvoRootsFrameIDs", RpcTarget.All, JogressEvoRootsFrameIDs);
+                                            SetJogressEvoRootsFrameIDs( JogressEvoRootsFrameIDs);
                                         }
 
                                         else
@@ -343,7 +343,7 @@ public class ST10_04 : CEntity_Effect
     bool endSelect = false;
     int[] JogressEvoRootsFrameIDs = new int[0];
 
-    [PunRPC]
+    //[PunRPC]
     public void SetJogressEvoRootsFrameIDs(int[] JogressEvoRootsFrameIDs)
     {
         this.JogressEvoRootsFrameIDs = JogressEvoRootsFrameIDs;

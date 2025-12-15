@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon;
+//using Photon;
 using System;
-using Photon.Pun;
+//using Photon.Pun;
 
 public class BT5_082 : CEntity_Effect
 {
@@ -167,7 +167,7 @@ public class BT5_082 : CEntity_Effect
                                                 break;
                                         }
 
-                                        command_SelectCommands.Add(new Command_SelectCommand(message, () => photonView.RPC("SetEffectIndex", RpcTarget.All, k), 0));
+                                        command_SelectCommands.Add(new Command_SelectCommand(message, () => SetEffectIndex( k), 0));
                                     }
                                 }
 
@@ -180,7 +180,7 @@ public class BT5_082 : CEntity_Effect
                                 {
                                     if (!activatedEffects.Contains(canSelectEffects[i]))
                                     {
-                                        photonView.RPC("SetEffectIndex", RpcTarget.All, i);
+                                        SetEffectIndex( i);
                                         break;
                                     }
                                 }
@@ -243,9 +243,9 @@ public class BT5_082 : CEntity_Effect
 
                         List<Command_SelectCommand> command_SelectCommands = new List<Command_SelectCommand>()
                                 {
-                                    new Command_SelectCommand("Memory +1", () => photonView.RPC("SetEffectIndex", RpcTarget.All, 0), 0),
-                                    new Command_SelectCommand("DP +2000", () => photonView.RPC("SetEffectIndex", RpcTarget.All, 1), 0),
-                                    new Command_SelectCommand("Delete Digimons", () => photonView.RPC("SetEffectIndex", RpcTarget.All, 2), 0),
+                                    new Command_SelectCommand("Memory +1", () => SetEffectIndex( 0), 0),
+                                    new Command_SelectCommand("DP +2000", () => SetEffectIndex( 1), 0),
+                                    new Command_SelectCommand("Delete Digimons", () => SetEffectIndex( 2), 0),
                                 };
 
                         GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -286,7 +286,7 @@ public class BT5_082 : CEntity_Effect
     int effectIndex = 0;
     bool endSelect = false;
 
-    [PunRPC]
+    //[PunRPC]
     public void SetEffectIndex(int effectIndex)
     {
         this.effectIndex = effectIndex;

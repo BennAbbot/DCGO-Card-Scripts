@@ -1,5 +1,4 @@
-﻿using DG.Tweening;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +8,10 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Threading.Tasks;
 using TMPro;
-public class Player : MonoBehaviour
+public class Player 
 {
     #region 初期化
-    private async void Start()
+    private void Start()
     {
         fieldCardFrames = new List<FieldCardFrame>();
 
@@ -57,12 +56,12 @@ public class Player : MonoBehaviour
 
         for (int i = 0; i < HandTransform.childCount; i++)
         {
-            Destroy(HandTransform.GetChild(i).gameObject);
+            //Destroy(HandTransform.GetChild(i).gameObject.DES;
         }
 
         for (int i = 0; i < PermanentTransform.childCount; i++)
         {
-            Destroy(PermanentTransform.GetChild(i).gameObject);
+           // Destroy(PermanentTransform.GetChild(i).gameObject);
         }
 
         for (int i = 0; i < fieldCardFrames.Count; i++)
@@ -79,7 +78,7 @@ public class Player : MonoBehaviour
 
         SetPlayerUI();
 
-        await SetOriginalPlayMat();
+        //await SetOriginalPlayMat();
 
         FirstObject.SetActive(false);
 
@@ -351,55 +350,56 @@ public class Player : MonoBehaviour
     #region シャッフルアニメーション
     public IEnumerator ShuffleAnimation()
     {
-        float animTime = 0.03f;
+        yield break;
+        //float animTime = 0.03f;
 
-        yield return null;
+        //yield return null;
 
-        for (int k = 0; k < 3; k++)
-        {
-            for (int j = 0; j < 2; j++)
-            {
-                for (int i = 0; i < DeckCardImages.Count; i++)
-                {
-                    float targetY = 0;
+        //for (int k = 0; k < 3; k++)
+        //{
+        //    for (int j = 0; j < 2; j++)
+        //    {
+        //        for (int i = 0; i < DeckCardImages.Count; i++)
+        //        {
+        //            float targetY = 0;
 
-                    if (j % 2 == 0)
-                    {
-                        targetY = 0;
-                    }
+        //            if (j % 2 == 0)
+        //            {
+        //                targetY = 0;
+        //            }
 
-                    else
-                    {
-                        targetY = 30;
-                    }
+        //            else
+        //            {
+        //                targetY = 30;
+        //            }
 
-                    if (k % 2 == 0)
-                    {
-                        if (i % 2 == 0)
-                        {
-                            targetY *= -1;
-                        }
-                    }
+        //            if (k % 2 == 0)
+        //            {
+        //                if (i % 2 == 0)
+        //                {
+        //                    targetY *= -1;
+        //                }
+        //            }
 
-                    else
-                    {
-                        if (i % 2 == 1)
-                        {
-                            targetY *= -1;
-                        }
-                    }
+        //            else
+        //            {
+        //                if (i % 2 == 1)
+        //                {
+        //                    targetY *= -1;
+        //                }
+        //            }
 
-                    DeckCardImages[i].transform.DOLocalMoveY(targetY, animTime);
-                }
+        //            DeckCardImages[i].transform.DOLocalMoveY(targetY, animTime);
+        //        }
 
-                yield return new WaitForSeconds(animTime);
-            }
-        }
+        //        yield return new WaitForSeconds(animTime);
+        //    }
+        //}
 
-        for (int i = 0; i < DeckCardImages.Count; i++)
-        {
-            DeckCardImages[i].transform.localPosition = new Vector2(DeckCardImages[i].transform.localPosition.x, DeckCardImages[i].transform.localPosition.x);
-        }
+        //for (int i = 0; i < DeckCardImages.Count; i++)
+        //{
+        //    DeckCardImages[i].transform.localPosition = new Vector2(DeckCardImages[i].transform.localPosition.x, DeckCardImages[i].transform.localPosition.x);
+        //}
     }
     #endregion
 
@@ -410,30 +410,30 @@ public class Player : MonoBehaviour
     #region 手札を整列
     public void AlignHand()
     {
-        if (isYou)
-        {
-            if (GManager.instance != null)
-            {
-                if (GManager.instance.turnStateMachine != null)
-                {
-                    if (GManager.instance.turnStateMachine.DoneStartGame)
-                    {
-                        if (!HandTransform.GetComponent<HandContoller>().isDragging)
-                        {
-                            foreach (CardSource cardSource in HandCards)
-                            {
-                                if (cardSource.ShowingHandCard != null)
-                                {
-                                    cardSource.ShowingHandCard.transform.SetParent(HandTransform);
-                                }
-                            }
+        //if (isYou)
+        //{
+        //    if (GManager.instance != null)
+        //    {
+        //        if (GManager.instance.turnStateMachine != null)
+        //        {
+        //            if (GManager.instance.turnStateMachine.DoneStartGame)
+        //            {
+        //                if (!HandTransform.GetComponent<HandContoller>().isDragging)
+        //                {
+        //                    foreach (CardSource cardSource in HandCards)
+        //                    {
+        //                        if (cardSource.ShowingHandCard != null)
+        //                        {
+        //                            cardSource.ShowingHandCard.transform.SetParent(HandTransform);
+        //                        }
+        //                    }
 
-                            CardObjectController.AlignHand(this);
-                        }
-                    }
-                }
-            }
-        }
+        //                    CardObjectController.AlignHand(this);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
     }
     #endregion
 
@@ -514,7 +514,7 @@ public class Player : MonoBehaviour
                 filiName = "PlayMat_Opponent";
             }
 
-            Sprite playMatSprite = await StreamingAssetsUtility.GetSprite(filiName);
+            Sprite playMatSprite = null;// await StreamingAssetsUtility.GetSprite(filiName);
 
             if (playMatSprite != null)
             {
@@ -727,8 +727,8 @@ public class Player : MonoBehaviour
     #endregion
 
     #region 手札のドロップエリア
-    [Header("手札のドロップエリア")]
-    public DropArea HandDropArea;
+    //[Header("手札のドロップエリア")]
+    //public DropArea HandDropArea;
     #endregion
 
     #region 場のパーマネントカードオブジェクト
@@ -954,7 +954,7 @@ public class Player : MonoBehaviour
             GManager.instance.turnStateMachine.gameContext.Memory = -10;
         }
 
-        yield return ContinuousController.instance.StartCoroutine(GManager.instance.memoryObject.SetMemory());
+        //yield return ContinuousController.instance.StartCoroutine(GManager.instance.memoryObject.SetMemory());
     }
     #endregion
 
@@ -1051,7 +1051,7 @@ public class Player : MonoBehaviour
             GManager.instance.turnStateMachine.gameContext.Memory = -10;
         }
 
-        yield return ContinuousController.instance.StartCoroutine(GManager.instance.memoryObject.SetMemory());
+        //yield return ContinuousController.instance.StartCoroutine(GManager.instance.memoryObject.SetMemory());
     }
     #endregion
 

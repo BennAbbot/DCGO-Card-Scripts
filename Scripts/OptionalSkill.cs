@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon;
-using Photon.Pun;
 using System.Linq;
-using System;
-public class OptionalSkill : MonoBehaviourPunCallbacks
+
+public class OptionalSkill : MonoBehaviour
 {
     public string waitingText { get; set; } = "The opponent is considering whether to use the effect.";
     bool _endSelect = false;
@@ -19,7 +17,7 @@ public class OptionalSkill : MonoBehaviourPunCallbacks
 
         string _Message = $"Will you use \"{cardEffect.EffectName}\"?";
 
-        yield return GManager.instance.photonWaitController.StartWait("SelectOptional");
+        ////yield return GManager.instance.photonWaitController.StartWait("SelectOptional");
 
         #region ƒgƒ‰ƒbƒVƒ…‚ÌƒJ[ƒh‚ð•\Ž¦
         if (cardEffect != null)
@@ -53,20 +51,21 @@ public class OptionalSkill : MonoBehaviourPunCallbacks
             {
                 if (permanent.ShowingPermanentCard != null)
                 {
-                    GManager.instance.hideCannotSelectObject.SetUpHideCannotSelectObject(new List<FieldPermanentCard>() { permanent.ShowingPermanentCard }, false);
+                   // GManager.instance.hideCannotSelectObject.SetUpHideCannotSelectObject(new List<FieldPermanentCard>() { permanent.ShowingPermanentCard }, false);
                 }
             }
 
-            GManager.instance.commandText.OpenCommandText(_Message);
+            // TODO: Update choice
+            ////GManager.instance.commandText.OpenCommandText(_Message);
 
-            List<Command_SelectCommand> commands = new List<Command_SelectCommand>()
-            {
-                new Command_SelectCommand(_YesNoTexts[0] ,() => photonView.RPC("SetUseOptional",RpcTarget.All,true),0),
-            };
+            //List<Command_SelectCommand> commands = new List<Command_SelectCommand>()
+            //{
+            //    new Command_SelectCommand(_YesNoTexts[0] ,() => SetUseOptional",RpcTarget.All,true),0),
+            //};
 
-            GManager.instance.BackButton.OpenSelectCommandButton(_YesNoTexts[1], () => { photonView.RPC("SetUseOptional", RpcTarget.All, false); }, 0);
+            //GManager.instance.BackButton.OpenSelectCommandButton(_YesNoTexts[1], () => { SetUseOptional( false); }, 0);
 
-            GManager.instance.selectCommandPanel.SetUpCommandButton(commands);
+            //GManager.instance.selectCommandPanel.SetUpCommandButton(commands);
         }
 
         else
@@ -75,7 +74,7 @@ public class OptionalSkill : MonoBehaviourPunCallbacks
 
             if (ShowOpponentMessage)
             {
-                GManager.instance.commandText.OpenCommandText(waitingText);
+               // //GManager.instance.commandText.OpenCommandText(waitingText);
             }
 
             if (GManager.instance.IsAI)
@@ -88,20 +87,20 @@ public class OptionalSkill : MonoBehaviourPunCallbacks
         yield return new WaitWhile(() => !_endSelect);
         _endSelect = false;
 
-        GManager.instance.selectCommandPanel.Off();
+       // GManager.instance.selectCommandPanel.Off();
 
-        GManager.instance.BackButton.CloseSelectCommandButton();
-        GManager.instance.hideCannotSelectObject.Close();
+        //GManager.instance.BackButton.CloseSelectCommandButton();
+        //GManager.instance.hideCannotSelectObject.Close();
 
-        GManager.instance.commandText.CloseCommandText();
-        yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+        ////GManager.instance.commandText.CloseCommandText();
+        ////yield return new WaitWhile(() => //GManager.instance.commandText.gameObject.activeSelf);
 
         cardEffect.SetUseOptional(_useOptional);
 
         cardEffect.EffectSourceCard.Owner.TrashHandCard.gameObject.SetActive(false);
     }
 
-    [PunRPC]
+    ////[PunRPC]
     public void SetUseOptional(bool useOptional)
     {
         _useOptional = useOptional;

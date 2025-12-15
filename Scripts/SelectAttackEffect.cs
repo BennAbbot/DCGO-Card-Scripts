@@ -1,11 +1,10 @@
-using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SelectAttackEffect : MonoBehaviourPunCallbacks
+public class SelectAttackEffect : MonoBehaviour
 {
     public void SetUp
         (
@@ -209,7 +208,7 @@ public class SelectAttackEffect : MonoBehaviourPunCallbacks
 
         if (active())
         {
-            yield return GManager.instance.photonWaitController.StartWait("SelectAttackEffect");
+           // yield return GManager.instance.photonWaitController.StartWait("SelectAttackEffect");
 
             foreach (Player player in GManager.instance.turnStateMachine.gameContext.Players)
             {
@@ -230,19 +229,19 @@ public class SelectAttackEffect : MonoBehaviourPunCallbacks
                             #region Select Attack Target
                             if (!string.IsNullOrEmpty(_customMessage))
                             {
-                                GManager.instance.commandText.OpenCommandText(_customMessage);
+                               // GManager.instance.commandText.OpenCommandText(_customMessage);
                             }
 
                             else
                             {
                                 if (CanAttackDigimon())
                                 {
-                                    GManager.instance.commandText.OpenCommandText("Which target will you attack?");
+                                   // GManager.instance.commandText.OpenCommandText("Which target will you attack?");
                                 }
 
                                 else
                                 {
-                                    GManager.instance.commandText.OpenCommandText("Will you attack to the opponent?");
+                                   // GManager.instance.commandText.OpenCommandText("Will you attack to the opponent?");
                                 }
                             }
 
@@ -255,7 +254,7 @@ public class SelectAttackEffect : MonoBehaviourPunCallbacks
                             {
                                 if (_attacker.TopCard.Owner.Enemy.SecurityCards.Count >= 1)
                                 {
-                                    _attacker.TopCard.Owner.Enemy.securityObject.securityBreakGlass.ShowBlueMatarial();
+                                    //_attacker.TopCard.Owner.Enemy.securityObject.securityBreakGlass.ShowBlueMatarial();
                                 }
 
                                 _attacker.TopCard.Owner.Enemy.securityObject.SetSecurityAttackObject();
@@ -286,7 +285,7 @@ public class SelectAttackEffect : MonoBehaviourPunCallbacks
 
                             if (candidates.Count >= 1)
                             {
-                                GManager.instance.hideCannotSelectObject.SetUpHideCannotSelectObject(candidates, false);
+                                //GManager.instance.hideCannotSelectObject.SetUpHideCannotSelectObject(candidates, false);
                             }
 
                             CheckEndSelect();
@@ -352,17 +351,17 @@ public class SelectAttackEffect : MonoBehaviourPunCallbacks
                                 {
                                     if (_canSelectNotAttack)
                                     {
-                                        GManager.instance.BackButton.OpenSelectCommandButton("Not Attack", () => { photonView.RPC("SetNotAttack", RpcTarget.All); }, 0);
+                                       // GManager.instance.BackButton.OpenSelectCommandButton("Not Attack", () => { SetNotAttack", RpcTarget.All); }, 0);
                                     }
 
-                                    GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
+                                    //GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
                                 }
 
                                 else
                                 {
-                                    GManager.instance.selectCommandPanel.SetUpCommandButton(new List<Command_SelectCommand>() { new Command_SelectCommand("End Selection", EndSelect_RPC, 0) });
+                                    //GManager.instance.selectCommandPanel.SetUpCommandButton(new List<Command_SelectCommand>() { new Command_SelectCommand("End Selection", EndSelect_RPC, 0) });
 
-                                    GManager.instance.BackButton.CloseSelectCommandButton();
+                                   // GManager.instance.BackButton.CloseSelectCommandButton();
                                 }
                             }
 
@@ -394,9 +393,10 @@ public class SelectAttackEffect : MonoBehaviourPunCallbacks
                                     }
                                 }
 
-                                photonView.RPC("SetAttackTarget", RpcTarget.All, isPlayer, isTurnPlayer, PermanentIndex);
+                                // TODO
+                                //SetAttackTarget( isPlayer, isTurnPlayer, PermanentIndex);
 
-                                GManager.instance.BackButton.CloseSelectCommandButton();
+                                //GManager.instance.BackButton.CloseSelectCommandButton();
                             }
                             #endregion
                         }
@@ -406,12 +406,12 @@ public class SelectAttackEffect : MonoBehaviourPunCallbacks
                             #region Showing Enemy Message
                             if (!string.IsNullOrEmpty(_customMessage_Enemy))
                             {
-                                GManager.instance.commandText.OpenCommandText(_customMessage_Enemy);
+                                //GManager.instance.commandText.OpenCommandText(_customMessage_Enemy);
                             }
 
                             else
                             {
-                                GManager.instance.commandText.OpenCommandText("The opponent is selecting the attack target.");
+                                //GManager.instance.commandText.OpenCommandText("The opponent is selecting the attack target.");
                             }
                             #endregion
 
@@ -483,17 +483,17 @@ public class SelectAttackEffect : MonoBehaviourPunCallbacks
 
                 if (_defender != null || _noSelect)
                 {
-                    player.securityObject.securityBreakGlass.gameObject.SetActive(false);
+                    //player.securityObject.securityBreakGlass.gameObject.SetActive(false);
                 }
             }
 
-            GManager.instance.hideCannotSelectObject.Close();
+            //GManager.instance.hideCannotSelectObject.Close();
 
-            GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
-            GManager.instance.BackButton.CloseSelectCommandButton();
+            //GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
+            //GManager.instance.BackButton.CloseSelectCommandButton();
 
-            GManager.instance.commandText.CloseCommandText();
-            yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
+            //GManager.instance.commandText.CloseCommandText();
+            //yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
 
             #endregion
 
@@ -511,7 +511,7 @@ public class SelectAttackEffect : MonoBehaviourPunCallbacks
     }
 
     #region ‘I‘ðŒˆ’è
-    [PunRPC]
+    ////[PunRPC]
     public void SetAttackTarget(bool isPlayer, bool isTurnPlayer, int PermanentIndex)
     {
         _defender = null;
@@ -548,10 +548,10 @@ public class SelectAttackEffect : MonoBehaviourPunCallbacks
     #endregion
 
     #region ‘I‘ð‚µ‚È‚¢
-    [PunRPC]
+    ////[PunRPC]
     public void SetNotAttack()
     {
-        GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
+        //GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
 
         _defender = null;
 

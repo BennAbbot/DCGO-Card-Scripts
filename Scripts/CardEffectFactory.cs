@@ -225,7 +225,7 @@ public partial class CardEffectFactory
         {
             yield return null;
 
-            ContinuousController.instance.PlaySE(GManager.instance.GetComponent<Effects>().BuffSE);
+            //ContinuousController.instance.PlaySE(GManager.instance.GetComponent<Effects>().BuffSE);
 
             #region Play Card
             ActivateClass activateClass1 = new ActivateClass();

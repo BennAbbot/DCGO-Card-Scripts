@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon;
+
 using System;
-using Photon.Pun;
+
 public class ImmuneFromDPMinusClass : ICardEffect, IImmuneFromDPMinusEffect
 {
     Func<Permanent, bool> _permanentCondition { get; set; }
