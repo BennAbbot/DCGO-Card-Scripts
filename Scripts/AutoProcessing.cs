@@ -114,7 +114,6 @@ public class AutoProcessing
         yield return ContinuousController.instance.StartCoroutine(ShrinkSecurityDigimonDisplay());
 
         GManager.instance.turnStateMachine.IsSelecting = true;
-        GManager.instance.turnStateMachine.isSync = true;
 
         //Rule processing
         yield return ContinuousController.instance.StartCoroutine(RuleProcess());
@@ -126,7 +125,6 @@ public class AutoProcessing
         yield return ContinuousController.instance.StartCoroutine(TriggeredSkillProcess(false, null));
 
         GManager.instance.turnStateMachine.IsSelecting = false;
-        GManager.instance.turnStateMachine.isSync = false;
     }
     #endregion
 
@@ -666,8 +664,6 @@ public class AutoProcessing
     {
         if (GManager.instance.turnStateMachine.gameContext.TurnPhase != GameContext.phase.End)
         {
-            GManager.instance.turnStateMachine.isSync = true;
-
             // //yield return GManager.instance.photonWaitController.StartWait("EndTurnProcess");
 
             if (GManager.instance.turnStateMachine.Passed && GManager.instance.turnStateMachine.gameContext.TurnPhase == GameContext.phase.Main)
@@ -682,7 +678,7 @@ public class AutoProcessing
                     GManager.instance.turnStateMachine.gameContext.Memory = -3;
                 }
 
-                //yield return ContinuousController.instance.StartCoroutine(GManager.instance.memoryObject.SetMemory());
+                yield return ContinuousController.instance.StartCoroutine(GManager.instance.memoryObject.SetMemory());
             }
 
             GManager.instance.turnStateMachine.Passed = true;
@@ -696,16 +692,6 @@ public class AutoProcessing
             if (GManager.instance.turnStateMachine.gameContext.NonTurnPlayer.MemoryForPlayer >= TurnEndMinMemory)
             {
                 GManager.instance.turnStateMachine.gameContext.TurnPhase = GameContext.phase.End;
-            }
-
-            else
-            {
-                GManager.instance.turnStateMachine.isSync = false;
-
-                if (GManager.instance.turnStateMachine.gameContext.TurnPhase == GameContext.phase.Main)
-                {
-                    GManager.instance.StartCoroutine(GManager.instance.turnStateMachine.SetMainPhase());
-                }
             }
         }
     }

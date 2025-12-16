@@ -97,6 +97,8 @@ public class Player
     public bool isYou;
     #endregion
 
+    Queue<int> choiceQueue = new Queue<int>();
+
     #region 枠
     [Header("パーマネント枠")]
     public List<FieldCardFrame> fieldCardFrames = new List<FieldCardFrame>();
@@ -924,6 +926,36 @@ public class Player
         return true;
     }
     #endregion
+
+    #region Choices
+    public void QueueChoice(ChoiceData choice)
+    {
+        foreach (int i in choice)
+        {
+            choiceQueue.Enqueue(i);
+        }
+    }
+
+    public int ConsumeChoiceInt()
+    {
+        return choiceQueue.Dequeue();
+    }
+
+    public bool ConsumeChoiceBool()
+    {
+        return choiceQueue.Dequeue() != 0;
+    }
+
+    public bool HasChoice()
+    {
+        return choiceQueue.Count > 0;
+    }
+
+    public IEnumerator WaitForChoice()
+    {
+        yield return new WaitUntil(HasChoice);
+    }
+    #endregion
 }
 
 [Serializable]
@@ -981,3 +1013,4 @@ public class FieldCardFrame
         return GetFramePermanent() == null;
     }
 }
+

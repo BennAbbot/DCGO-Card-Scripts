@@ -303,9 +303,9 @@ public class FieldPermanentCard
     {
         ThisPermanent = permanent;
 
-        SetTransformRotation();
-        SetCardIsFlipped();
-        ShowPermanentData(updateIsTapped);
+        //SetTransformRotation();
+        //SetCardIsFlipped();
+        //ShowPermanentData(updateIsTapped);
     }
     #endregion
 

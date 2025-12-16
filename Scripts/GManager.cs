@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DCGO.CardEvent;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Effects))]
@@ -44,6 +46,8 @@ public class GManager : MonoBehaviour
     public int CardIndex { get; set; } = 0;
 
     private PlayLog playLog = new PlayLog();
+
+    private List<ICardEvent> outputActions = new List<ICardEvent>();
 
     [Header("Sound Effects")]
     public AudioClip ShuffleSE;
@@ -118,4 +122,18 @@ public class GManager : MonoBehaviour
         
     }
 
+    public void BroadcastEvent(ICardEvent action)
+    {
+        outputActions.Add(action);
+    }
+
+    public ICardEvent GetOutputAction(int index)
+    {
+        if (index >= 0 && index < outputActions.Count)
+        {
+            return outputActions[index];
+        }
+
+        return null;
+    }
 }

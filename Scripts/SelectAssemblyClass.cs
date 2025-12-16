@@ -99,8 +99,6 @@ public class SelectAssemblyClass : MonoBehaviour
     #region Select
     public IEnumerator Select(CardSource card)
     {
-        GManager.instance.turnStateMachine.isSync = true;
-
         selectedAssemblyCards = new List<CardSource>();
 
         playCard = card;
@@ -271,8 +269,6 @@ public class SelectAssemblyClass : MonoBehaviour
         }
 
         GManager.instance.GetComponent<Effects>().OffShowCard2();
-
-        GManager.instance.turnStateMachine.isSync = false;
     }
     #endregion
 

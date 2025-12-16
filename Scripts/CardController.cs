@@ -1229,8 +1229,6 @@ public class PlayPermanentClass
 
             yield return ContinuousController.instance.StartCoroutine(card.Owner.brainStormObject.CloseBrainstrorm(card));
 
-            GManager.instance.turnStateMachine.isSync = true;
-
             Permanent permanent = null;
             isEvolution = false;
             List<CardSource> evoRoots = new List<CardSource>();
@@ -1339,8 +1337,6 @@ public class PlayPermanentClass
                             yield return ContinuousController.instance.StartCoroutine(CardObjectController.CreateNewPermanent(permanent, frameId));
                             permanent.EnterFieldTurnCount = GManager.instance.turnStateMachine.TurnCount;
                         }
-
-                        GManager.instance.turnStateMachine.isSync = true;
 
                         if (GManager.instance.turnStateMachine.DoneStartGame)
                         {
@@ -1682,8 +1678,6 @@ public class UseOptionClass
             PlayLog.OnAddLog?.Invoke($"\nPlay Option:\n{card.BaseENGCardNameFromEntity}({card.CardID})\n");
 
             card.Init();
-
-            GManager.instance.turnStateMachine.isSync = true;
 
             card.SetFace();
 

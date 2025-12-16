@@ -356,8 +356,6 @@ public class SelectDigiXrosClass : MonoBehaviour
     #region Select
     public IEnumerator Select(CardSource card)
     {
-        GManager.instance.turnStateMachine.isSync = true;
-
         selectedDigicrossCards = new List<CardSource>();
 
         playCard = card;
@@ -560,8 +558,6 @@ public class SelectDigiXrosClass : MonoBehaviour
         }
 
         GManager.instance.GetComponent<Effects>().OffShowCard2();
-
-        GManager.instance.turnStateMachine.isSync = false;
     }
     #endregion
 
