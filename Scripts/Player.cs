@@ -189,6 +189,31 @@ public class Player : MonoBehaviour
 
     #endregion
 
+    #region Selection Queue
+    Queue<IPlayerSelection> playerSelectionQueue = new Queue<IPlayerSelection>();
+
+    public void QueuePlayerSelection(IPlayerSelection selection)
+    {
+        playerSelectionQueue.Enqueue(selection);
+    }
+
+    public IPlayerSelection DequeuePlayerSelection()
+    {
+        if (playerSelectionQueue.Count == 0)
+        {
+            return null;
+        }
+
+        return playerSelectionQueue.Dequeue();
+    }
+
+    public bool HasPlayerSelection()
+    {
+        return playerSelectionQueue.Count > 0;
+    }
+
+    #endregion
+
     #region セキュリティアタックの座標
     public Vector3 SecurityAttackLocalCanvasPosition;
     #endregion
