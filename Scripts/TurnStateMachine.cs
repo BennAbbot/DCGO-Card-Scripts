@@ -947,8 +947,6 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
 
                 if (!GManager.instance.IsAI || gameContext.TurnPlayer.isYou)
                 {
-                    yield return new WaitUntil(() => gameContext.TurnPlayer.HasMainPhaseAction() || endGame || gameContext.TurnPhase != GameContext.phase.Main);
-
                     if (gameContext.TurnPlayer.HasMainPhaseAction())
                     {
                         gameContext.TurnPlayer.DequeueMainPhaseAction().Execute(this);
