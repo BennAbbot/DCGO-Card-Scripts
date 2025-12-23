@@ -3083,16 +3083,8 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     [PunRPC]
     void QueueMainPhaseAction_Internal(int playerID, int MainPhaseActionType, byte[] bytes)
     {
-        Player player = null;
-        if (GManager.instance.You.PlayerID == playerID)
-        {
-            player = GManager.instance.You;
-        }
-        else if (GManager.instance.Opponent.PlayerID == playerID)
-        {
-            player = GManager.instance.Opponent;
-        }
-
+        Player player = GManager.instance.GetPlayerFromID(playerID);
+        
         if (player == null)
         {
             return;

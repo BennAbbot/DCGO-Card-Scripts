@@ -7,7 +7,8 @@ public interface IMainPhaseAction
         PlayCard,
         AttackPermanent,
         ActivateCard,
-        ActivatePermanent
+        ActivatePermanent,
+        Cheat,
     }
 
     public Type type { get; }
