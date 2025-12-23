@@ -164,6 +164,31 @@ public class Player : MonoBehaviour
         SetHandCountText();
     }
 
+    #region Action Queue
+    Queue<IMainPhaseAction> mainPhaseActions = new Queue<IMainPhaseAction>();
+
+    public void QueueMainPhaseAction(IMainPhaseAction action)
+    {
+        mainPhaseActions.Enqueue(action);
+    }
+
+    public IMainPhaseAction DequeueMainPhaseAction()
+    {
+        if (mainPhaseActions.Count == 0)
+        {
+            return null;
+        }
+
+        return mainPhaseActions.Dequeue();
+    }
+
+    public bool HasMainPhaseAction()
+    {
+        return mainPhaseActions.Count > 0;
+    }
+
+    #endregion
+
     #region セキュリティアタックの座標
     public Vector3 SecurityAttackLocalCanvasPosition;
     #endregion
