@@ -29,6 +29,8 @@ public struct PlayCardAction : IMainPhaseAction
         JogressEvoRootsFrameIDs = null;
         BurstTamerFrameID = -1;
         AppFusionFrameIDs = null;
+
+        Deserialize(bytes);
     }
 
     public void Execute(TurnStateMachine stateMachine)
