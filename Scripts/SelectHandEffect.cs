@@ -124,8 +124,6 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
     //No Selection Flag
     bool _noSelect = false;
 
-    bool _endSelect = false;
-
     string _customMessage_ShowCard = null;
     string _customMessage = null;
     string _customMessage_Enemy = null;
@@ -337,12 +335,12 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
 
                     if (!_isLocal)
                     {
-                        photonView.RPC("SetTargetHandCards", RpcTarget.All, CardIDs.ToArray());
+                        photonView.RPC("SetTargetHandCards", RpcTarget.All, _selectPlayer.PlayerID, CardIDs.ToArray());
                     }
 
                     else
                     {
-                        SetTargetHandCards(CardIDs.ToArray());
+                        SetTargetHandCards(_selectPlayer.PlayerID, CardIDs.ToArray());
                     }
 
                     GManager.instance.BackButton.CloseSelectCommandButton();
@@ -430,12 +428,12 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
                             {
                                 if (!_isLocal)
                                 {
-                                    photonView.RPC("SetNoSelectHand", RpcTarget.All);
+                                    photonView.RPC("SetTargetHandCards", RpcTarget.All, _selectPlayer.PlayerID, null);
                                 }
 
                                 else
                                 {
-                                    SetNoSelectHand();
+                                    SetTargetHandCards(_selectPlayer.PlayerID, null);
                                 }
                             }
                         }
@@ -477,7 +475,7 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
 
                     if (_canEndNotMax)
                     {
-                        _noSelect = true;
+                        List<int> CardIDs = null;
 
                         for (int maxCount = 0; maxCount < _maxCount; maxCount++)
                         {
@@ -498,28 +496,27 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
 
                                     if (CanEndSelect(GetCards))
                                     {
-                                        List<int> CardIDs = new List<int>();
+                                        CardIDs = new List<int>();
 
                                         foreach (CardSource cardSource in GetCards)
                                         {
                                             CardIDs.Add(cardSource.CardIndex);
                                         }
 
-                                        SetTargetHandCards(CardIDs.ToArray());
                                         break;
                                     }
                                 }
                             }
                         }
 
-                        _endSelect = true;
+                        SetTargetHandCards(_selectPlayer.PlayerID, CardIDs != null ? CardIDs.ToArray() : null);
                     }
 
                     else
                     {
                         IList<int> indexList = Enumerable.Range(0, ValidCards.Count).ToList();
 
-                        _noSelect = true;
+                        List<int> CardIDs = null;
 
                         if (ValidCards.Count >= _maxCount)
                         {
@@ -536,20 +533,19 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
 
                                 if (CanEndSelect(GetCards))
                                 {
-                                    List<int> CardIDs = new List<int>();
+                                    CardIDs = new List<int>();
 
                                     foreach (CardSource cardSource in GetCards)
                                     {
                                         CardIDs.Add(cardSource.CardIndex);
                                     }
 
-                                    SetTargetHandCards(CardIDs.ToArray());
                                     break;
                                 }
                             }
                         }
 
-                        _endSelect = true;
+                        SetTargetHandCards(_selectPlayer.PlayerID, CardIDs != null ? CardIDs.ToArray() : null);
 
                     }
                 }
@@ -579,8 +575,29 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
             #endregion
 
             //Wait for selection to be completed
-            yield return new WaitWhile(() => !_endSelect);
-            _endSelect = false;
+            yield return new WaitUntil(() => _selectPlayer.HasPlayerSelection());
+
+            IPlayerSelection seletion = _selectPlayer.DequeuePlayerSelection();
+
+            _targetCards = new List<CardSource>();
+
+            if (seletion is CardSelection)
+            {
+                int[] CardIDs = ((CardSelection)seletion).CardIDList;
+
+                foreach (int CardID in CardIDs)
+                {
+                    _targetCards.Add(GManager.instance.turnStateMachine.gameContext.ActiveCardList[CardID]);
+                }
+
+                _noSelect = CardIDs == null;
+
+                if (_noSelect)
+                {
+                    GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
+                }
+            }
+
 
             #region Reset
             foreach (Player player in GManager.instance.turnStateMachine.gameContext.Players)
@@ -736,32 +753,9 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
 
     #region カード選択を決定
     [PunRPC]
-    public void SetTargetHandCards(int[] CardIDs)
+    public void SetTargetHandCards(int playerID, int[] CardIDs)
     {
-        _targetCards = new List<CardSource>();
-
-        foreach (int CardID in CardIDs)
-        {
-            _targetCards.Add(GManager.instance.turnStateMachine.gameContext.ActiveCardList[CardID]);
-        }
-
-        _noSelect = false;
-
-        _endSelect = true;
-    }
-    #endregion
-
-    #region 何も選択しない
-    [PunRPC]
-    public void SetNoSelectHand()
-    {
-        GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
-
-        _targetCards = new List<CardSource>();
-
-        _noSelect = true;
-
-        _endSelect = true;
+        GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new CardSelection() { CardIDList = CardIDs });
     }
     #endregion
 }
