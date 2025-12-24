@@ -520,15 +520,6 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    public void SetStartPlayer(bool doChange)
-    {
-        if (doChange)
-        {
-            gameContext.TurnPlayer = gameContext.NonTurnPlayer;
-        }
-    }
-
-    [PunRPC]
     void SetRedraw(int playerID, bool isRedraw)
     {
         GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new BoolSelection() { Value = isRedraw });
