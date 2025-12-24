@@ -585,17 +585,19 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
             {
                 int[] CardIDs = ((CardSelection)seletion).CardIDList;
 
-                foreach (int CardID in CardIDs)
+                if (CardIDs != null)
                 {
-                    _targetCards.Add(GManager.instance.turnStateMachine.gameContext.ActiveCardList[CardID]);
+                    foreach (int CardID in CardIDs)
+                    {
+                        _targetCards.Add(GManager.instance.turnStateMachine.gameContext.ActiveCardList[CardID]);
+                    }
                 }
-
-                _noSelect = CardIDs == null;
-
-                if (_noSelect)
+                else
                 {
                     GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
                 }
+
+                _noSelect = CardIDs == null;
             }
 
 
