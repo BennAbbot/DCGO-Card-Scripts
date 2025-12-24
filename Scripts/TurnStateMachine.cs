@@ -767,14 +767,24 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
                         doHatch = true;
                     }
 
-                    SetBreedingPhase(doHatch);
+                    SetBreedingPhase(gameContext.TurnPlayer.PlayerID, doHatch);
                 }
                 #endregion
             }
 
-            yield return new WaitWhile(() => !endSelect_BreedingPhase && gameContext.TurnPhase == GameContext.phase.Breeding);
+            yield return new WaitWhile(() => !gameContext.TurnPlayer.HasPlayerSelection() && gameContext.TurnPhase == GameContext.phase.Breeding);
+            
+            if (gameContext.TurnPlayer.HasPlayerSelection())
+            {
+                IPlayerSelection seletion = gameContext.TurnPlayer.DequeuePlayerSelection();
+
+                if (seletion is BoolSelection)
+                {
+                    doAction_BreedingPhase = ((BoolSelection)seletion).Value;
+                }
+            }
+
             GManager.instance.hideCannotSelectObject.Close();
-            endSelect_BreedingPhase = false;
             gameContext.TurnPlayer.OffHatchObject();
             OffFieldCardTarget(gameContext.TurnPlayer);
             IsSelecting = true;
@@ -815,16 +825,14 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     void OnClickHatchObject()
     {
         gameContext.TurnPlayer.OffHatchObject();
-        photonView.RPC("SetBreedingPhase", RpcTarget.All, true);
+        photonView.RPC("SetBreedingPhase", RpcTarget.All, gameContext.TurnPlayer.PlayerID, true);
     }
 
-    bool endSelect_BreedingPhase = false;
     bool doAction_BreedingPhase = false;
     [PunRPC]
-    public void SetBreedingPhase(bool doAction_BreedingPhase)
+    public void SetBreedingPhase(int playerID, bool doAction_BreedingPhase)
     {
-        this.doAction_BreedingPhase = doAction_BreedingPhase;
-        endSelect_BreedingPhase = true;
+        GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new BoolSelection() { Value = doAction_BreedingPhase });
     }
     #endregion
 
