@@ -60,7 +60,6 @@ public class SelectCountEffect : MonoBehaviourPunCallbacks
     Func<int, IEnumerator> _selectCountCoroutine = null;
     List<int> _candidates = new List<int>();
     int _selectedCount = 0;
-    bool _endSelect = false;
     bool _preferMin = true;
     bool _notDoSync = false;
     bool _isDigivolutionCost = false;
@@ -120,7 +119,7 @@ public class SelectCountEffect : MonoBehaviourPunCallbacks
             {
                 if (candidates.Count == 1)
                 {
-                    SetCount(candidates[0]);
+                    SetCount(_selectPlayer.PlayerID, candidates[0]);
                 }
 
                 else
@@ -131,7 +130,7 @@ public class SelectCountEffect : MonoBehaviourPunCallbacks
                         || (_isDigivolutionCost && ContinuousController.instance.autoMinDigivolutionCost && _preferMin))
                         {
                             int preferedNumber = _preferMin ? candidates.Min() : candidates.Max();
-                            photonView.RPC("SetCount", RpcTarget.All, preferedNumber);
+                            photonView.RPC("SetCount", RpcTarget.All, _selectPlayer.PlayerID, preferedNumber);
                         }
 
                         else
@@ -149,7 +148,7 @@ public class SelectCountEffect : MonoBehaviourPunCallbacks
 
                                 string text = $"{k}";
 
-                                command_SelectCommands.Add(new Command_SelectCommand(text, () => photonView.RPC("SetCount", RpcTarget.All, k), 0));
+                                command_SelectCommands.Add(new Command_SelectCommand(text, () => photonView.RPC("SetCount", RpcTarget.All, _selectPlayer.PlayerID, k), 0));
                             }
 
                             GManager.instance.selectCommandPanel.SetUpCommandButton(command_SelectCommands);
@@ -162,7 +161,7 @@ public class SelectCountEffect : MonoBehaviourPunCallbacks
                         if (GManager.instance.IsAI)
                         {
                             int preferedNumber = _preferMin ? candidates.Min() : candidates.Max();
-                            SetCount(preferedNumber);
+                            SetCount(_selectPlayer.PlayerID, preferedNumber);
                         }
                         #endregion
 
@@ -173,8 +172,14 @@ public class SelectCountEffect : MonoBehaviourPunCallbacks
                     }
                 }
 
-                yield return new WaitWhile(() => !_endSelect);
-                _endSelect = false;
+                yield return new WaitUntil(() => _selectPlayer.HasPlayerSelection());
+
+                IPlayerSelection seletion = _selectPlayer.DequeuePlayerSelection();
+
+                if (seletion is IntSelection)
+                {
+                    _selectedCount = ((IntSelection)seletion).Value;
+                }
 
                 GManager.instance.commandText.CloseCommandText();
                 yield return new WaitWhile(() => GManager.instance.commandText.gameObject.activeSelf);
@@ -196,9 +201,8 @@ public class SelectCountEffect : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    public void SetCount(int selectedCount)
+    public void SetCount(int playerID, int selectedCount)
     {
-        _selectedCount = selectedCount;
-        _endSelect = true;
+        GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new IntSelection() { Value =  selectedCount });
     }
 }
