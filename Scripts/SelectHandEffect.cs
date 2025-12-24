@@ -585,7 +585,9 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
             {
                 int[] CardIDs = ((CardSelection)seletion).CardIDList;
 
-                if (CardIDs != null)
+                _noSelect = CardIDs == null;
+
+                if (!_noSelect)
                 {
                     foreach (int CardID in CardIDs)
                     {
@@ -597,7 +599,7 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
                     GManager.instance.selectCommandPanel.CloseSelectCommandPanel();
                 }
 
-                _noSelect = CardIDs == null;
+                
             }
 
 
