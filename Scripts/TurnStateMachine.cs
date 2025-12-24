@@ -342,7 +342,6 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     public bool DoneStartGame { get; set; } = false;
 
     bool _isRedraw = false;
-    bool _endSelect = false;
     IEnumerator StartGame()
     {
 #if UNITY_EDITOR
@@ -385,7 +384,6 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
         foreach (Player player in gameContext.Players_ForNonTurnPlayer)
         {
             _isRedraw = false;
-            _endSelect = false;
 
             yield return GManager.instance.photonWaitController.StartWait($"Mulligan");
 
@@ -398,7 +396,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
             {
                 if (GManager.instance.isAuto && GManager.instance.IsAI)
                 {
-                    SetRedraw(RandomUtility.IsSucceedProbability(0.5f));
+                    SetRedraw(player.PlayerID, RandomUtility.IsSucceedProbability(0.5f));
                 }
 
                 else
@@ -434,7 +432,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
 
                     void SetRedraw_RPC(bool _isDraw)
                     {
-                        photonView.RPC("SetRedraw", RpcTarget.All, _isDraw);
+                        photonView.RPC("SetRedraw", RpcTarget.All, player.PlayerID, _isDraw);
                     }
                 }
             }
@@ -451,13 +449,19 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
                         doRedraw = true;
                     }
 
-                    SetRedraw(doRedraw);
+                    SetRedraw(player.PlayerID, doRedraw);
                 }
                 #endregion
             }
 
-            yield return new WaitWhile(() => !_endSelect);
-            _endSelect = false;
+            yield return new WaitUntil(() => player.HasPlayerSelection());
+
+            IPlayerSelection seletion = player.DequeuePlayerSelection();
+
+            if (seletion is BoolSelection)
+            {
+                _isRedraw = ((BoolSelection)seletion).Value;
+            }
 
             GManager.instance.selectCardPanel.CloseSelectCardPanel();
 
@@ -525,10 +529,9 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void SetRedraw(bool isRedraw)
+    void SetRedraw(int playerID, bool isRedraw)
     {
-        _isRedraw = isRedraw;
-        _endSelect = true;
+        GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new BoolSelection() { Value = isRedraw });
     }
     #endregion
 
