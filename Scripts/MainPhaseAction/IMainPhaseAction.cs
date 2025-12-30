@@ -9,6 +9,7 @@ public interface IMainPhaseAction
         ActivateCard,
         ActivatePermanent,
         Cheat,
+        Pass,
     }
 
     public Type type { get; }
@@ -31,6 +32,8 @@ public static class MainPhaseActionUtils
                 return new ActivateCardAction(bytes);
             case IMainPhaseAction.Type.ActivatePermanent:
                 return new ActivatePermanentAction(bytes);
+            case IMainPhaseAction.Type.Pass:
+                return new PassAction(bytes);
         }
 
         return null;

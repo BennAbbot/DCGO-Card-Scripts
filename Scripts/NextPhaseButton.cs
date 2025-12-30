@@ -40,14 +40,26 @@ public class NextPhaseButton : MonoBehaviourPunCallbacks
 
     public void OnClick()
     {
-        if (!GManager.instance.turnStateMachine.isSync && !GManager.instance.turnStateMachine.IsSelecting && !GManager.instance.turnStateMachine.isExecuting && !GManager.instance.turnStateMachine.isSecurityCehck)
+        TurnStateMachine turnStateMachine = GManager.instance.turnStateMachine;
+
+        if (!turnStateMachine.isSync && !turnStateMachine.IsSelecting && !turnStateMachine.isExecuting && !turnStateMachine.isSecurityCehck)
         {
-            if (GManager.instance.turnStateMachine.gameContext.TurnPlayer.isYou)
+            if (turnStateMachine.gameContext.TurnPlayer.isYou)
             {
-                if (GManager.instance.turnStateMachine.gameContext.TurnPhase == GameContext.phase.Breeding || GManager.instance.turnStateMachine.gameContext.TurnPhase == GameContext.phase.Main)
+                if (turnStateMachine.gameContext.TurnPhase == GameContext.phase.Breeding || turnStateMachine.gameContext.TurnPhase == GameContext.phase.Main)
                 {
                     GManager.instance.turnStateMachine.isSync = true;
-                    photonView.RPC("NextPhase", RpcTarget.All);
+
+                    switch (turnStateMachine.gameContext.TurnPhase)
+                    {
+                        case GameContext.phase.Breeding:
+                            turnStateMachine.SendShouldHatch(false);
+                            break;
+                        case GameContext.phase.Main:
+                            turnStateMachine.QueueMainPhaseAction(turnStateMachine.gameContext.TurnPlayer, new PassAction());
+                            break;
+                    }
+
                     StartCoroutine(CoverCoroutine(1.5f));
 
                     Button.interactable = false;
@@ -161,12 +173,6 @@ public class NextPhaseButton : MonoBehaviourPunCallbacks
                 Cover.SetActive(true);
             }
         }
-    }
-
-    [PunRPC]
-    public void NextPhase()
-    {
-        GManager.instance.turnStateMachine.NextPhase();
     }
 
     public void SwitchTurnSprite()

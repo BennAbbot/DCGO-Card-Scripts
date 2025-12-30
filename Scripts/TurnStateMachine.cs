@@ -718,12 +718,12 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
 
                     if (ContinuousController.instance.autoHatch)
                     {
-                        OnClickHatchObject();
+                        SendShouldHatch(true);
                     }
 
                     else
                     {
-                        gameContext.TurnPlayer.SetUpHatchObject(OnClickHatchObject);
+                        gameContext.TurnPlayer.SetUpHatchObject(() => SendShouldHatch(true));
                     }
                 }
                 #endregion
@@ -738,7 +738,7 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
                     {
                         GManager.instance.hideCannotSelectObject.SetUpHideCannotSelectObject(new List<FieldPermanentCard>() { fieldPermanentCard }, false);
 
-                        fieldPermanentCard.AddClickTarget((fieldPermanentCard1) => OnClickHatchObject());
+                        fieldPermanentCard.AddClickTarget((fieldPermanentCard1) => SendShouldHatch(true));
                         fieldPermanentCard.Outline_Select.gameObject.SetActive(true);
                         fieldPermanentCard.SetOrangeOutline();
                     }
@@ -820,10 +820,10 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
         }
     }
 
-    void OnClickHatchObject()
+    public void SendShouldHatch(bool shouldHatch)
     {
         gameContext.TurnPlayer.OffHatchObject();
-        photonView.RPC("SetBreedingPhase", RpcTarget.All, gameContext.TurnPlayer.PlayerID, true);
+        photonView.RPC("SetBreedingPhase", RpcTarget.All, gameContext.TurnPlayer.PlayerID, shouldHatch);
     }
 
     bool doAction_BreedingPhase = false;
@@ -3423,27 +3423,9 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     #endregion
 
     #region Go to the next phase
-    [PunRPC]
-    public void NextPhase()
+    public void PassTurn()
     {
-        if (gameContext.TurnPhase != GameContext.phase.Main)
-        {
-            int CurrentPhaseID = (int)gameContext.TurnPhase;
-
-            int NextPhaseID = ++CurrentPhaseID;
-
-            int MaxPhaseCount = Enum.GetNames(typeof(GameContext.phase)).Length;
-
-            if (NextPhaseID >= MaxPhaseCount)
-            {
-                NextPhaseID = 0;
-            }
-
-            isSync = true;
-            gameContext.TurnPhase = (GameContext.phase)Enum.ToObject(typeof(GameContext.phase), NextPhaseID);
-        }
-
-        else
+        if (gameContext.TurnPhase == GameContext.phase.Main)
         {
             ResetUI();
             ContinuousController.instance.StartCoroutine(GManager.instance.autoProcessing.EndTurnProcess());
