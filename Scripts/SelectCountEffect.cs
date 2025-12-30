@@ -203,6 +203,13 @@ public class SelectCountEffect : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SetCount(int playerID, int selectedCount)
     {
-        GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new IntSelection() { Value =  selectedCount });
+        Player selectionPlayer = GManager.instance.GetPlayerFromID(playerID);
+
+        if (selectionPlayer == null)
+        {
+            return;
+        }
+
+        selectionPlayer.QueuePlayerSelection(new IntSelection() { Value =  selectedCount });
     }
 }

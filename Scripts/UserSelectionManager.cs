@@ -18,7 +18,14 @@ public class UserSelectionManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SetIntForPlayer(int playerID, int value)
     {
-        GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new IntSelection() { Value = value });
+        Player selectionPlayer = GManager.instance.GetPlayerFromID(playerID);
+
+        if (selectionPlayer == null)
+        {
+            return;
+        }
+
+        selectionPlayer.QueuePlayerSelection(new IntSelection() { Value = value });
     }
 
     public void SetInt(int value)
@@ -35,7 +42,14 @@ public class UserSelectionManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SetBoolForPlayer(int playerID, bool value)
     {
-        GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new IntSelection() { Value = getIntFromBool(value) });
+        Player selectionPlayer = GManager.instance.GetPlayerFromID(playerID);
+
+        if (selectionPlayer == null)
+        {
+            return;
+        }
+
+        selectionPlayer.QueuePlayerSelection(new IntSelection() { Value = getIntFromBool(value) });
     }
 
     public void SetBool(bool value)

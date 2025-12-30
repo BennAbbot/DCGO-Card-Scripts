@@ -104,6 +104,13 @@ public class OptionalSkill : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SetUseOptional(int playerID, bool useOptional)
     {
-        GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new BoolSelection() { Value = useOptional });
+        Player selectionPlayer = GManager.instance.GetPlayerFromID(playerID);
+
+        if (selectionPlayer == null)
+        {
+            return;
+        }
+
+        selectionPlayer.QueuePlayerSelection(new BoolSelection() { Value = useOptional });
     }
 }

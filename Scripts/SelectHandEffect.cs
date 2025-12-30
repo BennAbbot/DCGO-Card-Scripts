@@ -759,7 +759,14 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SetTargetHandCards(int playerID, int[] CardIDs)
     {
-        GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new CardSelection() { CardIDList = CardIDs });
+        Player selectionPlayer = GManager.instance.GetPlayerFromID(playerID);
+
+        if (selectionPlayer == null)
+        {
+            return;
+        }
+
+        selectionPlayer.QueuePlayerSelection(new CardSelection() { CardIDList = CardIDs });
     }
     #endregion
 }

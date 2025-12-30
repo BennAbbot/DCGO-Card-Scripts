@@ -1017,7 +1017,14 @@ public class SelectDigiXrosClass : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SetTargetDigiXrossIndex(int playerID, int targetIndex)
     {
-        GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new IntSelection() { Value = targetIndex });
+        Player selectionPlayer = GManager.instance.GetPlayerFromID(playerID);
+
+        if (selectionPlayer == null)
+        {
+            return;
+        }
+
+        selectionPlayer.QueuePlayerSelection(new IntSelection() { Value = targetIndex });
     }
 }
 

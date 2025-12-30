@@ -920,7 +920,14 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SetTargetFrames(int playerID, bool[] isTurnPlayer, int[] UnitIndex)
     {
-        GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new PermanentSelection() { IsTurnPlayerList = isTurnPlayer, PermanentIDList = UnitIndex });
+        Player selectionPlayer = GManager.instance.GetPlayerFromID(playerID);
+
+        if (selectionPlayer == null)
+        {
+            return;
+        }
+
+        selectionPlayer.QueuePlayerSelection(new PermanentSelection() { IsTurnPlayerList = isTurnPlayer, PermanentIDList = UnitIndex });
     }
     #endregion
 }

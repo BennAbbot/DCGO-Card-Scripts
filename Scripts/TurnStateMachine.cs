@@ -522,7 +522,14 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     [PunRPC]
     void SetRedraw(int playerID, bool isRedraw)
     {
-        GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new BoolSelection() { Value = isRedraw });
+        Player selectionPlayer = GManager.instance.GetPlayerFromID(playerID);
+
+        if (selectionPlayer == null)
+        {
+            return;
+        }
+
+        selectionPlayer.QueuePlayerSelection(new BoolSelection() { Value = isRedraw });
     }
     #endregion
 
@@ -823,7 +830,14 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SetBreedingPhase(int playerID, bool doAction_BreedingPhase)
     {
-        GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new BoolSelection() { Value = doAction_BreedingPhase });
+        Player selectionPlayer = GManager.instance.GetPlayerFromID(playerID);
+
+        if (selectionPlayer == null)
+        {
+            return;
+        }
+
+        selectionPlayer.QueuePlayerSelection(new BoolSelection() { Value = doAction_BreedingPhase });
     }
     #endregion
 
