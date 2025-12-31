@@ -565,7 +565,13 @@ public class GManager : MonoBehaviourPun
         {
             turnStateMachine.QueueMainPhaseAction(You, new CheatAction(You.PlayerID, CheatAction.Type.LoseMemory));
         }
-            
+
+        //Disable PhotonWaitContoller
+        if (Input.GetKeyDown(KeyCode.PageDown))
+        {
+            turnStateMachine.QueueMainPhaseAction(You, new CheatAction(You.PlayerID, CheatAction.Type.DisablePhotonWaitController));
+        }
+
     }
 
     public IEnumerator DrawCard(Player _player)

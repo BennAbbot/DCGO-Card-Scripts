@@ -14,6 +14,7 @@ public struct CheatAction : IMainPhaseAction
         PlaceCardInSecurityFaceup,
         GainMemory,
         LoseMemory,
+        DisablePhotonWaitController
     }
 
     public IMainPhaseAction.Type type => IMainPhaseAction.Type.Cheat;
@@ -69,6 +70,9 @@ public struct CheatAction : IMainPhaseAction
                     break;
                 case Type.LoseMemory:
                     gameManager.StartCoroutine(gameManager.AlterMemory(player, -1));
+                    break;
+                case Type.DisablePhotonWaitController:
+                    gameManager.photonWaitController.WaitEnabled = false;
                     break;
                 default:
                     break;

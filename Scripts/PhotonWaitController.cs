@@ -7,11 +7,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.UI;
+using UnityEngine.InputSystem.LowLevel;
+using Unity.VisualScripting;
 
 public class PhotonWaitController : MonoBehaviour
 {
     int waitCount = 0;
     public Text SyncText;
+    public bool WaitEnabled { get; set; } = true;
 
     private void Start()
     {
@@ -218,6 +221,11 @@ public class PhotonWaitController : MonoBehaviour
 
     public Coroutine StartWait(string key)
     {
+        if (!WaitEnabled)
+        {
+            return null;
+        }
+
         waitCount++;
         key += "_" + waitCount.ToString();
 
