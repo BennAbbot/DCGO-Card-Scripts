@@ -255,15 +255,12 @@ public class CardSource : MonoBehaviour
 
                 #region the effects of itself
 
-                if (PermanentOfThisCard() == null)
+                if (EffectList(EffectTiming.None)
+                        .Some(cardEffect => cardEffect is IIgnoreColorConditionEffect
+                            && cardEffect.CanUse(null)
+                            && ((IIgnoreColorConditionEffect)cardEffect).IgnoreColorCondition(this)))
                 {
-                    if (EffectList(EffectTiming.None)
-                            .Some(cardEffect => cardEffect is IIgnoreColorConditionEffect
-                                && cardEffect.CanUse(null)
-                                && ((IIgnoreColorConditionEffect)cardEffect).IgnoreColorCondition(this)))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
 
                 #endregion
@@ -1485,9 +1482,9 @@ public class CardSource : MonoBehaviour
         if (string.IsNullOrEmpty(trait))
             return false;
 
-        string replaced = trait.Replace(" ", "");
+        string replaced = trait.Replace(" ", "").ToLower();
 
-        return CardTraits.Some(cardTrait => cardTrait.Equals(trait) || cardTrait.Equals(replaced));
+        return CardTraits.Some(cardTrait => cardTrait.Equals(trait) || cardTrait.ToLower().Equals(replaced));
     }
 
     #endregion
@@ -1504,9 +1501,9 @@ public class CardSource : MonoBehaviour
         if (string.IsNullOrEmpty(trait))
             return false;
 
-        string replaced = trait.Replace(" ", "");
+        string replaced = trait.Replace(" ", "").ToLower();
 
-        return CardTraits.Some(cardTrait => cardTrait.Contains(trait) || cardTrait.Contains(replaced));
+        return CardTraits.Some(cardTrait => cardTrait.Contains(trait) || cardTrait.ToLower().Contains(replaced));
     }
 
     #endregion
@@ -1885,6 +1882,27 @@ public class CardSource : MonoBehaviour
             }
 
             if (ContainsTraits("Night Claw"))
+            {
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+    #endregion
+
+    #region [Onmyōjutsu] or [Plug-In] trait
+
+    public bool HasOnmyoOrPluginTraits
+    {
+        get
+        {
+            if (EqualsTraits("Plug-In"))
+            {
+                return true;
+            }
+            if (EqualsTraits("Onmyōjutsu"))
             {
                 return true;
             }
@@ -3011,7 +3029,7 @@ public class CardSource : MonoBehaviour
     {
         if (targetPermanent != null)
         {
-            if (targetPermanent.TopCard != null)
+            if (targetPermanent.TopCard != null && !targetPermanent.TopCard.IsToken)
             {
                 if (this.CanLink(PayCost))
                 {
@@ -3045,7 +3063,7 @@ public class CardSource : MonoBehaviour
 
     #region whether target permanent can App Fusion into this card
 
-    public bool CanAppFusionFromTargetPermanent(Permanent targetPermanent, bool PayCost)
+    public bool CanAppFusionFromTargetPermanent(Permanent targetPermanent, bool PayCost, SelectCardEffect.Root root = SelectCardEffect.Root.Hand)
     {
         if (targetPermanent != null)
         {
@@ -3065,7 +3083,7 @@ public class CardSource : MonoBehaviour
                                     {
                                         int cost = appFusionCondition.cost;
 
-                                        cost = GetChangedCostItselef(cost, SelectCardEffect.Root.Hand, new List<Permanent>() { targetPermanent }, checkAvailability: true);
+                                        cost = GetChangedCostItselef(cost, root, new List<Permanent>() { targetPermanent }, checkAvailability: true);
 
                                         if (Owner.MaxMemoryCost < cost)
                                         {
@@ -3407,6 +3425,18 @@ public class CardSource : MonoBehaviour
         get
         {
             return EqualsTraits("TS");
+        }
+    }
+
+    #endregion
+
+    #region whether this card has "Iliad" trait
+
+    public bool HasIliadTraits
+    {
+        get
+        {
+            return EqualsTraits("Iliad");
         }
     }
 
@@ -3930,32 +3960,47 @@ public class AppFusionCondition
 
 public class AssemblyCondition
 {
+    //Method to work with older form of Assembly, 1 single condition X times
     public AssemblyCondition(AssemblyConditionElement element, Func<List<CardSource>, CardSource, bool> CanTargetCondition_ByPreSelecetedList, string selectMessage, int elementCount, int reduceCost)
     {
-        this.element = element;
-        this.selectMessage = selectMessage;
-        this.CanTargetCondition_ByPreSelecetedList = CanTargetCondition_ByPreSelecetedList;
+        element.ElementCount = elementCount;
+        element.selectMessage = selectMessage;
+        element.CanTargetCondition_ByPreSelecetedList = CanTargetCondition_ByPreSelecetedList;
+        this.elements = new List<AssemblyConditionElement>(){ element };
         this.elementCount = elementCount;
         this.reduceCost = reduceCost;
     }
 
-    public AssemblyConditionElement element { get; private set; } = new AssemblyConditionElement(null);
-    public Func<List<CardSource>, CardSource, bool> CanTargetCondition_ByPreSelecetedList { get; private set; } = null;
+    //Method to work with A x B x C... DigiXros like conditions
+    public AssemblyCondition(List<AssemblyConditionElement> elements, int reduceCost)
+    {
+        this.elements = elements;
+        this.elementCount = elements.Select(element => element.ElementCount).Sum();
+        this.reduceCost = reduceCost;
+    }
 
-    public string selectMessage { get; private set; } = "";
+    public List<AssemblyConditionElement> elements { get; private set; } = new List<AssemblyConditionElement>();
     public int elementCount { get; private set; } = 0;
     public int reduceCost { get; private set; } = 0;
 }
 
 public class AssemblyConditionElement
 {
-    public AssemblyConditionElement(Func<CardSource, bool> cardCondition, bool skipAllIfNoSelect = false)
+    public AssemblyConditionElement(Func<CardSource, bool> cardCondition, bool skipAllIfNoSelect = true, string selectMessage = null, int elementCount = 0, Func<List<CardSource>, CardSource, bool> CanTargetCondition_ByPreSelecetedList = null)
     {
         this.CardCondition = cardCondition;
-
         this.skipAllIfNoSelect = skipAllIfNoSelect;
+        this.selectMessage = selectMessage;
+        this.ElementCount = elementCount;
+        this.CanTargetCondition_ByPreSelecetedList = CanTargetCondition_ByPreSelecetedList;
     }
 
-    public Func<CardSource, bool> CardCondition { get; private set; } = null;
-    public bool skipAllIfNoSelect { get; private set; } = false;
+    public Func<CardSource, bool> CardCondition { get; set; } = null;
+    public bool skipAllIfNoSelect { get; set; } = true;
+
+    public int ElementCount { get; set; } = 0;
+
+    public Func<List<CardSource>, CardSource, bool> CanTargetCondition_ByPreSelecetedList { get; set; } = null;
+
+    public string selectMessage { get; set; } = "";
 }

@@ -208,7 +208,7 @@ namespace DCGO.CardEffects.EX10
 
                 string EffectDiscription()
                 {
-                    return "[When Digivolving] You may choose 1 of your Digimon. Delete the chosen Digimon and 1 of your opponent�s Digimon with as high or lower a level as it.";
+                    return "[When Digivolving] You may choose 1 of your Digimon. Delete the chosen Digimon and 1 of your opponent's Digimon with as high or lower a level as it.";
                 }
 
                 bool CanUseCondition(Hashtable hashtable)
@@ -353,7 +353,8 @@ namespace DCGO.CardEffects.EX10
 
                 bool IsBagraArmyDigimon(Permanent permanent)
                 {
-                    return permanent.IsDigimon && permanent.TopCard.HasBagraArmyTraits;
+                    return CardEffectCommons.IsPermanentExistsOnOwnerBattleAreaDigimon(permanent, card)
+                        && permanent.TopCard.HasBagraArmyTraits;
                 }
 
                 IEnumerator ActivateCoroutine(Hashtable hashtable)
