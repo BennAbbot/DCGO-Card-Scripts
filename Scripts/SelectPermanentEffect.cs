@@ -105,6 +105,7 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
         Destroy,
         Bounce,
         PutLibraryBottom,
+        PutLibraryTop,
         Custom
     }
 
@@ -219,6 +220,7 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
         List<Permanent> tapPermanents = new List<Permanent>();
         List<Permanent> untapPermanents = new List<Permanent>();
         List<Permanent> libraryBottomPermanents = new List<Permanent>();
+        List<Permanent> libraryTopPermanents = new List<Permanent>();
         List<Permanent> handBouncePermanents = new List<Permanent>();
 
         _noSelect = false;
@@ -294,6 +296,10 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
 
                         case Mode.PutLibraryBottom:
                             message = "Select cards to put on bottom of the deck.";
+                            break;
+
+                        case Mode.PutLibraryTop:
+                            message = "Select cards to put on top of the deck.";
                             break;
 
                         case Mode.Custom:
@@ -856,6 +862,10 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
 
                                 libraryBottomPermanents.Add(targetPermanent);
                                 break;
+
+                            case Mode.PutLibraryTop:
+                                libraryTopPermanents.Add(targetPermanent);
+                                break;
                         }
                         #endregion
 
@@ -898,6 +908,11 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
                     if (libraryBottomPermanents.Count > 0)
                     {
                         yield return ContinuousController.instance.StartCoroutine(new DeckBottomBounceClass(libraryBottomPermanents, hashtable).DeckBounce());
+                    }
+
+                    if (libraryTopPermanents.Count > 0)
+                    {
+                        yield return ContinuousController.instance.StartCoroutine(new DeckTopBounceClass(libraryTopPermanents, hashtable).DeckBounce());
                     }
 
                     if (handBouncePermanents.Count > 0)

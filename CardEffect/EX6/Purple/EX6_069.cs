@@ -204,7 +204,7 @@ namespace DCGO.CardEffects.EX6
 
                 string EffectDiscription()
                 {
-                    return "[All Turns] When one of your Digimon with the [Seven Great Demon Lords] trait is deleted, <Delay>.\r\n• You may play 1 Digimon card with the [Seven Great Demon Lords] trait from the digivolution cards of your [Gate of Deadly Sins] in the breeding area without paying the cost.";
+                    return "[All Turns] When one of your [Seven Great Demon Lords] trait Digimon is deleted, <Delay>. \r\n â€¢ You may play 1 [Seven Great Demon Lords] trait Digimon from the digivolution cards of your [Gate of Deadly Sins] in the breeding area without paying the cost.";
                 }
 
                 bool CanSelectPermanentCondition(Permanent permanent)
@@ -228,17 +228,20 @@ namespace DCGO.CardEffects.EX6
 
                 bool PermanentCondition(Permanent permanent)
                 {
-                    if(CardEffectCommons.IsOwnerPermanent(permanent, card))
+                    if(CardEffectCommons.IsPermanentExistsOnOwnerBattleAreaDigimon(permanent, card))
                     {
                         return HasSevenGreatDemonLordTrait(permanent.TopCard);
                     }
-
+                    
                     return false;
                 }
 
                 bool HasSevenGreatDemonLordTrait(CardSource cardSource)
                 {
-                    return cardSource.ContainsTraits("Seven Great Demon Lords");
+                    if (cardSource.IsDigimon)
+                        return cardSource.ContainsTraits("Seven Great Demon Lords");
+
+                    return false;
                 }
 
                 bool CanSelectCardCondition(CardSource cardSource)
