@@ -249,7 +249,8 @@ namespace DCGO.CardEffects.BT23
             {
                 bool CanSelectPermanentCondition(Permanent permanent)
                 {
-                    return CardEffectCommons.IsPermanentExistsOnOwnerBattleAreaDigimon(permanent, card);
+                    return CardEffectCommons.IsPermanentExistsOnOwnerBattleAreaDigimon(permanent, card)
+                           && permanent != card.PermanentOfThisCard();;
                 }
 
                 if (CardEffectCommons.HasMatchConditionPermanent(CanSelectPermanentCondition))
@@ -285,7 +286,7 @@ namespace DCGO.CardEffects.BT23
                     {
                         return cardSource.IsDigimon
                             && cardSource.HasLevel && cardSource.Level <= 6
-                            && cardSource.ContainsCardName("Leomon") || cardSource.HasCSTraits
+                            && (cardSource.ContainsCardName("Leomon") || cardSource.HasCSTraits)
                             && cardSource.CanPlayCardTargetFrame(selectedPermament.PermanentFrame, false, activateClass);
                     }
 
@@ -322,12 +323,19 @@ namespace DCGO.CardEffects.BT23
                 bool CanUseCondition(Hashtable hashtable)
                 {
                     return CardEffectCommons.IsExistOnBattleAreaDigimon(card)
-                        && CardEffectCommons.CanTriggerOnPlay(hashtable, card);
+                           && CardEffectCommons.CanTriggerOnPlay(hashtable, card);
                 }
 
                 bool CanActivateCondition(Hashtable hashtable)
                 {
-                    return CardEffectCommons.IsExistOnBattleAreaDigimon(card);
+                    return CardEffectCommons.IsExistOnBattleAreaDigimon(card)
+                           && CardEffectCommons.HasMatchConditionOwnersPermanent(card, OtherDigimon);
+                }
+
+                bool OtherDigimon(Permanent permanent)
+                {
+                    return CardEffectCommons.IsPermanentExistsOnOwnerBattleAreaDigimon(permanent, card) &&
+                           permanent != card.PermanentOfThisCard();
                 }
             }
 
@@ -355,7 +363,14 @@ namespace DCGO.CardEffects.BT23
 
                 bool CanActivateCondition(Hashtable hashtable)
                 {
-                    return CardEffectCommons.IsExistOnBattleAreaDigimon(card);
+                    return CardEffectCommons.IsExistOnBattleAreaDigimon(card)
+                    && CardEffectCommons.HasMatchConditionOwnersPermanent(card, OtherDigimon);
+                }
+
+                bool OtherDigimon(Permanent permanent)
+                {
+                    return CardEffectCommons.IsPermanentExistsOnOwnerBattleAreaDigimon(permanent, card) &&
+                           permanent != card.PermanentOfThisCard();
                 }
             }
 

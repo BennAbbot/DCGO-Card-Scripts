@@ -413,6 +413,13 @@ public class MultipleSkills : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SetTargetSkill(int playerID, int skillIndex)
     {
-        GManager.instance.GetPlayerFromID(playerID)?.QueuePlayerSelection(new IntSelection() { Value = skillIndex });
+        Player selectionPlayer = GManager.instance.GetPlayerFromID(playerID);
+
+        if (selectionPlayer == null)
+        {
+            return;
+        }
+
+        selectionPlayer.QueuePlayerSelection(new IntSelection() { Value = skillIndex });
     }
 }

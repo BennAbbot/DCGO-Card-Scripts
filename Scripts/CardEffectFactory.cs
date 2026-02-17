@@ -213,12 +213,7 @@ public partial class CardEffectFactory
 
         bool CanActivateCondition(Hashtable hashtable)
         {
-            if (CardEffectCommons.IsExistOnExecutingArea(card))
-            {
-                return true;
-            }
-
-            return false;
+            return CardEffectCommons.IsExistOnExecutingArea(card);
         }
 
         IEnumerator ActivateCoroutine(Hashtable _hashtable)
@@ -295,6 +290,10 @@ public partial class CardEffectFactory
                                     return "[End of Opponents Turn] Delete this Digimon.";
                                 }
 
+                                if (deleteDigimon == EffectDuration.UntilEachTurnEnd)
+                                {
+                                    return "[End of Turn] Delete this Digimon.";
+                                }
                                 return "";
                             }
 
@@ -302,7 +301,7 @@ public partial class CardEffectFactory
                             {
                                 if (CardEffectCommons.IsPermanentExistsOnOwnerBattleArea(playedDigimon, playedDigimon.TopCard))
                                 {
-                                    if(deleteDigimon == EffectDuration.UntilOwnerTurnEnd)
+                                    if (deleteDigimon == EffectDuration.UntilOwnerTurnEnd)
                                     {
                                         return CardEffectCommons.IsOwnerTurn(card);
                                     }
@@ -310,6 +309,12 @@ public partial class CardEffectFactory
                                     if (deleteDigimon == EffectDuration.UntilOpponentTurnEnd)
                                     {
                                         return CardEffectCommons.IsOpponentTurn(card);
+                                    }
+
+                                    if (deleteDigimon == EffectDuration.UntilEachTurnEnd)
+                                    {
+                                        return CardEffectCommons.IsOwnerTurn(card)
+                                            || CardEffectCommons.IsOpponentTurn(card);
                                     }
                                 }
 
@@ -501,13 +506,13 @@ public partial class CardEffectFactory
 
     #endregion
 
-    #region Option's Effect to replace bottom security card with this card face up
+    #region Option's Main Effect to replace bottom security card with this card face up
 
-    public static ICardEffect ReplaceBottomSecurityWithFaceUpOption(CardSource card)
+    public static ICardEffect ReplaceBottomSecurityWithFaceUpOptionMainEffect(CardSource card)
     {
         ActivateClass activateClass = new ActivateClass();
         activateClass.SetUpICardEffect("Replace your bottom security card with this face-up card", CanUseCondition, card);
-        activateClass.SetUpActivateClass(null, ActivateCoroutine, -1, false, EffectDescription());
+        activateClass.SetUpActivateClass(null, _ => ReplaceBottomSecurityWithFaceUpOptionEffect(card, activateClass), -1, false, EffectDescription());
 
         string EffectDescription()
         {
@@ -525,7 +530,7 @@ public partial class CardEffectFactory
             {
                 #region Add Bottom Security Card to Hand
 
-                CardSource bottomCard = card.Owner.SecurityCards[^1];
+                CardSource bottomCard = card.Owner.SecurityCards.Last();
 
                 yield return ContinuousController.instance.StartCoroutine(
                     CardObjectController.AddHandCards(new List<CardSource>() { bottomCard }, false, activateClass));
@@ -539,18 +544,156 @@ public partial class CardEffectFactory
 
             #region Place Face up as Bottom Security Card
 
-            yield return ContinuousController.instance.StartCoroutine(CardObjectController.AddSecurityCard(
-                card, toTop: false, faceUp: true));
+            if (card.Owner.CanAddSecurity(activateClass))
+            {
+                yield return ContinuousController.instance.StartCoroutine(CardObjectController.AddSecurityCard(
+                    card, toTop: false, faceUp: true));
 
-            yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>()
-                .CreateRecoveryEffect(card.Owner));
+                yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>()
+                    .CreateRecoveryEffect(card.Owner));
 
-            yield return ContinuousController.instance.StartCoroutine(new IAddSecurity(card).AddSecurity());
+                yield return ContinuousController.instance.StartCoroutine(new IAddSecurity(card).AddSecurity());
+            }
 
             #endregion
         }
 
         return activateClass;
+    }
+
+    #endregion
+
+    #region Option's Effect to replace top security card with this card face up
+
+    public static ICardEffect ReplaceTopSecurityWithFaceUpOptionMainEffect(CardSource card)
+    {
+        ActivateClass activateClass = new ActivateClass();
+        activateClass.SetUpICardEffect("Replace your top security card with this face-up card", CanUseCondition, card);
+        activateClass.SetUpActivateClass(null, _ => ReplaceTopSecurityWithFaceUpOptionEffect(card, activateClass), -1, false, EffectDescription());
+
+        string EffectDescription()
+        {
+            return "[Main] Add your top security card to the hand. Then, place this card face up as the top security card.";
+        }
+
+        bool CanUseCondition(Hashtable hashtable)
+        {
+            return CardEffectCommons.CanTriggerOptionMainEffect(hashtable, card);
+        }
+
+        IEnumerator ActivateCoroutine(Hashtable hashtable)
+        {
+            if (card.Owner.SecurityCards.Count >= 1)
+            {
+                #region Add Bottom Security Card to Hand
+
+                CardSource topCard = card.Owner.SecurityCards.First();
+
+                yield return ContinuousController.instance.StartCoroutine(
+                    CardObjectController.AddHandCards(new List<CardSource>() { topCard }, false, activateClass));
+
+                yield return ContinuousController.instance.StartCoroutine(new IReduceSecurity(
+                    player: card.Owner,
+                    refSkillInfos: ref ContinuousController.instance.nullSkillInfos).ReduceSecurity());
+
+                #endregion
+            }
+
+            #region Place Face up as Top Security Card
+
+            if (card.Owner.CanAddSecurity(activateClass))
+            {
+                yield return ContinuousController.instance.StartCoroutine(CardObjectController.AddSecurityCard(
+                    card, toTop: true, faceUp: true));
+
+                yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>()
+                    .CreateRecoveryEffect(card.Owner));
+
+                yield return ContinuousController.instance.StartCoroutine(new IAddSecurity(card).AddSecurity());
+            }
+
+            #endregion
+        }
+
+        return activateClass;
+    }
+
+    #endregion
+
+    #region Option's Effect to replace bottom security card with this card face up
+
+    public static IEnumerator ReplaceBottomSecurityWithFaceUpOptionEffect(CardSource card, ActivateClass activateClass)
+    {
+        if (card.Owner.SecurityCards.Count >= 1)
+        {
+            #region Add Bottom Security Card to Hand
+
+            CardSource bottomCard = card.Owner.SecurityCards.Last();
+
+            yield return ContinuousController.instance.StartCoroutine(
+                CardObjectController.AddHandCards(new List<CardSource>() { bottomCard }, false, activateClass));
+
+            yield return ContinuousController.instance.StartCoroutine(new IReduceSecurity(
+                player: card.Owner,
+                refSkillInfos: ref ContinuousController.instance.nullSkillInfos).ReduceSecurity());
+
+            #endregion
+
+            #region Place Face up as Bottom Security Card
+
+            if (card.Owner.CanAddSecurity(activateClass))
+            {
+                yield return ContinuousController.instance.StartCoroutine(CardObjectController.AddSecurityCard(
+                    card, toTop: false, faceUp: true));
+
+                yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>()
+                    .CreateRecoveryEffect(card.Owner));
+
+                yield return ContinuousController.instance.StartCoroutine(new IAddSecurity(card).AddSecurity());
+            }
+
+            #endregion
+        }
+    }
+
+    #endregion
+
+    #region Option's Effect to replace top security card with this card face up
+
+    public static IEnumerator ReplaceTopSecurityWithFaceUpOptionEffect(CardSource card, ActivateClass activateClass)
+    {
+
+        if (card.Owner.SecurityCards.Count >= 1)
+        {
+            #region Add Bottom Security Card to Hand
+
+            CardSource topCard = card.Owner.SecurityCards.First();
+
+            yield return ContinuousController.instance.StartCoroutine(
+                CardObjectController.AddHandCards(new List<CardSource>() { topCard }, false, activateClass));
+
+            yield return ContinuousController.instance.StartCoroutine(new IReduceSecurity(
+                player: card.Owner,
+                refSkillInfos: ref ContinuousController.instance.nullSkillInfos).ReduceSecurity());
+
+            #endregion
+
+
+            #region Place Face up as Top Security Card
+
+            if (card.Owner.CanAddSecurity(activateClass))
+            {
+                yield return ContinuousController.instance.StartCoroutine(CardObjectController.AddSecurityCard(
+                    card, toTop: true, faceUp: true));
+
+                yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>()
+                    .CreateRecoveryEffect(card.Owner));
+
+                yield return ContinuousController.instance.StartCoroutine(new IAddSecurity(card).AddSecurity());
+            }
+
+            #endregion
+        }
     }
 
     #endregion

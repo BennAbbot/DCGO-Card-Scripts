@@ -261,34 +261,27 @@ namespace DCGO.CardEffects.BT20
 
                 bool CanUseCondition(Hashtable hashtable)
                 {
-                    if (CardEffectCommons.IsExistOnBattleAreaDigimon(card))
-                    {
-                        if (CardEffectCommons.IsOwnerTurn(card))
-                        {
-                            if (CardEffectCommons.IsPermanentExistsOnOwnerBattleAreaDigimon(CardEffectCommons.GetAttackerFromHashtable(hashtable), card))
-                            {
-                                if (!CardEffectCommons.GetCardFromHashtable(hashtable).IsFlipped)
-                                {
-                                    return card.PermanentOfThisCard().DigivolutionCards.Count > 0;
-                                }
-                            }
-                        }
-                    }                    
-
-                    return false;
+                    return CardEffectCommons.IsExistOnBattleAreaDigimon(card)
+                        && CardEffectCommons.IsOwnerTurn(card)
+                        && CardEffectCommons.IsPermanentExistsOnOwnerBattleAreaDigimon(CardEffectCommons.GetAttackerFromHashtable(hashtable), card)
+                        && !CardEffectCommons.GetCardFromHashtable(hashtable).IsFlipped;
                 }
 
 
                 bool CanActivateCondition(Hashtable hashtable)
                 {
-                    return CardEffectCommons.IsExistOnBattleAreaDigimon(card);
+                    return CardEffectCommons.IsExistOnBattleAreaDigimon(card)
+                        && card.PermanentOfThisCard().DigivolutionCards.Count > 0;
                 }
 
                 IEnumerator ActivateCoroutine(Hashtable hashtable)
                 {
                     // Place this card face up as the bottom security card
-                    yield return ContinuousController.instance.StartCoroutine(CardObjectController.AddSecurityCard(
-                        card, toTop: false, faceUp: true));
+                    if (card.Owner.CanAddSecurity(activateClass))
+                    {
+                        yield return ContinuousController.instance.StartCoroutine(CardObjectController.AddSecurityCard(
+                            card, toTop: false, faceUp: true));
+                    }
                 }
             }
             #endregion

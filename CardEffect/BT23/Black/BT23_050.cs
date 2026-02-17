@@ -59,7 +59,7 @@ namespace DCGO.CardEffects.BT23
                 {
                     if (cardSource.CanPlayJogress(true))
                     {
-                        if (cardSource.CardNames.Contains("Shakkoumon"))
+                        if (cardSource.EqualsCardName("Shakkoumon"))
                         {
                             return true;
                         }
@@ -152,7 +152,7 @@ namespace DCGO.CardEffects.BT23
                             {
                                 int[] jogressEvoRootsFrameIDs = new int[0];
 
-                                yield return GManager.instance.photonWaitController.StartWait("Angemon_BT23_027");
+                                yield return GManager.instance.photonWaitController.StartWait("Ankylomon_BT23_050");
 
                                 GManager.instance.selectJogressEffect.SetUp_SelectDigivolutionRoots
                                                             (card: selectedCard,
