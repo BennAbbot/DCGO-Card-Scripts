@@ -1488,6 +1488,8 @@ public class Permanent
                         {
                             if (cardEffect != null)
                             {
+                                #region Entity, Inherited and Link effects
+
                                 if (cardEffect.IsInheritedEffect && !isTopCard)
                                 {
                                     _EffectList.Add(cardEffect);
@@ -1504,6 +1506,8 @@ public class Permanent
                                 {
                                     _EffectList.Add(cardEffect);
                                 }
+                                
+                                #endregion
                             }
                         }
                     }

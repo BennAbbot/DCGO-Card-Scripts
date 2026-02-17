@@ -1430,7 +1430,11 @@ public class PlayPermanentClass
                     }
 
                     List<CardSource> newDigivolutionCards = evoRootPermanents
-                        .Map(evoRootPermanent => evoRootPermanent.cardSources)
+                        .Map(evoRootPermanent => evoRootPermanent.StackCards)
+                        .Flat();
+
+                    List<CardSource> linkCards = evoRootPermanents
+                        .Map(evoRootPermanent => evoRootPermanent.LinkedCards)
                         .Flat();
 
                     foreach (Permanent evoRootPermanent in evoRootPermanents)
@@ -1445,6 +1449,11 @@ public class PlayPermanentClass
                         yield return ContinuousController.instance.StartCoroutine(evoRootPermanent.DiscardEvoRoots(ignoreOverflow: true, putToTrash: false));
 
                         yield return ContinuousController.instance.StartCoroutine(CardObjectController.RemoveField(evoRootPermanent, ignoreOverflow: true));
+                    }
+
+                    foreach(CardSource linkCard in linkCards)
+                    {
+                        yield return ContinuousController.instance.StartCoroutine(CardObjectController.AddTrashCard(linkCard));
                     }
 
                     PlayLog.OnAddLog?.Invoke($"\nJogress:\n{card.BaseENGCardNameFromEntity}({card.CardID})\n");
@@ -2262,6 +2271,158 @@ public class DeckBottomBounceClass
         }
 
         yield return ContinuousController.instance.StartCoroutine(CardObjectController.AddLibraryBottomCards(deckBottomCards));
+
+        #endregion
+
+        #region off icon
+
+        foreach (Permanent permanent in _deckBounceTargetPermanents)
+        {
+            if (permanent != null)
+            {
+                if (permanent.TopCard != null)
+                {
+                    permanent.willBeRemoveField = false;
+                }
+            }
+        }
+
+        #endregion
+    }
+}
+
+#endregion
+
+#region Place permanents to deck top
+
+public class DeckTopBounceClass
+{
+    public DeckTopBounceClass(List<Permanent> deckBounceTargetPermanents, Hashtable hashtable)
+    {
+        _deckBounceTargetPermanents = deckBounceTargetPermanents.Clone();
+
+        _hashtable = hashtable;
+    }
+
+    public void SetNotShowCards()
+    {
+        _notShowCards = true;
+    }
+
+    public bool IsDeckBounced(Permanent permanent)
+    {
+        return DeckBouncedPermanents.Contains(permanent);
+    }
+
+    List<Permanent> _deckBounceTargetPermanents = new List<Permanent>();
+    public List<Permanent> DeckBouncedPermanents { get; private set; } = new List<Permanent>();
+    Hashtable _hashtable = new Hashtable();
+    bool _notShowCards = false;
+
+    public IEnumerator DeckBounce()
+    {
+        if (_deckBounceTargetPermanents == null) yield break;
+
+        ICardEffect cardEffect = CardEffectCommons.GetCardEffectFromHashtable(_hashtable);
+
+        _deckBounceTargetPermanents = _deckBounceTargetPermanents.Filter(permanent =>
+        permanent != null
+        && permanent.TopCard != null
+        && (cardEffect == null ||
+        (!permanent.TopCard.CanNotBeAffected(cardEffect)
+        && !permanent.CannotReturnToLibrary(cardEffect)
+        && permanent.CanBeRemoved())));
+
+        if (_deckBounceTargetPermanents.Count == 0) yield break;
+
+        _deckBounceTargetPermanents.ForEach(permanent => permanent.willBeRemoveField = true);
+
+        #region cut in effect
+
+        // "When permanents would return to deck" effect
+
+        yield return ContinuousController.instance.StartCoroutine(GManager.instance.autoProcessing_CutIn.StackSkillInfos(
+            CardEffectCommons.WhenPermanentWouldRemoveFieldCheckHashtable(
+                _deckBounceTargetPermanents,
+                cardEffect,
+                null
+            ),
+            EffectTiming.WhenReturntoLibraryAnyone));
+
+        // "When permanents would remove field" effect
+
+        yield return ContinuousController.instance.StartCoroutine(GManager.instance.autoProcessing_CutIn.StackSkillInfos(
+            CardEffectCommons.WhenPermanentWouldRemoveFieldCheckHashtable(
+                _deckBounceTargetPermanents,
+                cardEffect,
+                null
+            ),
+            EffectTiming.WhenRemoveField));
+
+        if (GManager.instance.autoProcessing_CutIn.HasAwaitingActivateEffects())
+        {
+            foreach (Permanent permanent in _deckBounceTargetPermanents)
+            {
+                permanent.ShowDeckBounceEffect();
+            }
+
+            // cut in effect process
+            yield return ContinuousController.instance.StartCoroutine(GManager.instance.autoProcessing_CutIn.TriggeredSkillProcess(false, null));
+
+            foreach (Permanent permanent in _deckBounceTargetPermanents)
+            {
+                permanent.HideDeckBounceEffect();
+            }
+        }
+
+        #endregion
+
+        // fix deck bounce target permanents
+        List<Permanent> deckBounceTargetPermanents_Fixed = _deckBounceTargetPermanents.Filter(permanent =>
+        permanent != null
+        && permanent.TopCard != null
+        && permanent.willBeRemoveField);
+
+        #region show cards
+
+        List<CardSource> returnedCards = deckBounceTargetPermanents_Fixed.Map(permanent => permanent.TopCard);
+
+        if (!_notShowCards)
+        {
+            yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().ShowCardEffect(returnedCards, "Deck bottom cards", true, true));
+        }
+
+        #endregion
+
+        #region
+
+        List<CardSource> deckTopCards = new List<CardSource>();
+
+        foreach (Permanent permanent in deckBounceTargetPermanents_Fixed)
+        {
+            #region recoed used effect
+
+            if (permanent.TopCard != null)
+            {
+                permanent.LibraryBounceEffect = cardEffect;
+            }
+
+            #endregion
+
+            yield return ContinuousController.instance.StartCoroutine(GManager.instance.GetComponent<Effects>().DeckBounceEffect(permanent));
+
+            yield return ContinuousController.instance.StartCoroutine(permanent.DiscardEvoRoots());
+
+            CardSource topCard = permanent.TopCard;
+
+            yield return ContinuousController.instance.StartCoroutine(CardObjectController.RemoveField(permanent));
+
+            deckTopCards.Add(topCard);
+
+            DeckBouncedPermanents.Add(permanent);
+        }
+
+        yield return ContinuousController.instance.StartCoroutine(CardObjectController.AddLibraryTopCards(deckTopCards));
 
         #endregion
 
@@ -3798,19 +3959,36 @@ public class ISecurityCheck
 
 public class IDestroySecurity
 {
+    private enum TrashMode
+    {
+        TopSecurity,
+        BottomSecurity,
+        SelectedCard,
+    }
+
     public IDestroySecurity(Player player, int destroySecurityCount, ICardEffect cardEffect, bool fromTop)
     {
         _player = player;
         _destroySecurityCount = destroySecurityCount;
         _cardEffect = cardEffect;
-        _fromTop = fromTop;
+        _trashMode = fromTop ? TrashMode.TopSecurity : TrashMode.BottomSecurity;
+    }
+
+    public IDestroySecurity(Player player, CardSource card, ICardEffect cardEffect)
+    {
+        _player = player;
+        _destroySecurityCount = 1;
+        _cardEffect = cardEffect;
+        _trashMode = TrashMode.SelectedCard;
+        _selectedCard = card;
     }
 
     Player _player = null;
     int _destroySecurityCount = 0;
     public List<CardSource> DestroyedSecurity = new List<CardSource>();
     ICardEffect _cardEffect = null;
-    bool _fromTop = false;
+    TrashMode _trashMode = TrashMode.TopSecurity;
+    CardSource _selectedCard = null;
 
     public bool IsDestroyed(CardSource cardSource)
     {
@@ -3856,11 +4034,24 @@ public class IDestroySecurity
                 {
                     count++;
 
-                    CardSource destroyedSecurityCard = _player.SecurityCards[0];
+                    CardSource destroyedSecurityCard = null;
 
-                    if (!_fromTop)
+                    switch (_trashMode)
                     {
-                        destroyedSecurityCard = _player.SecurityCards[_player.SecurityCards.Count - 1];
+                        case TrashMode.TopSecurity:
+                            destroyedSecurityCard = _player.SecurityCards[0];
+                            break;
+                        case TrashMode.BottomSecurity:
+                            destroyedSecurityCard = _player.SecurityCards[_player.SecurityCards.Count - 1];
+                            break;
+                        case TrashMode.SelectedCard:
+                            destroyedSecurityCard = _player.SecurityCards.Contains(_selectedCard) ? _selectedCard : null;
+                            break;
+                    }
+
+                    if (destroyedSecurityCard == null)
+                    {
+                        break;
                     }
 
                     discardedCards.Add(destroyedSecurityCard);
@@ -3919,9 +4110,22 @@ public class IDestroySecurity
             {
                 string log = "";
 
-                string fromString = _fromTop ? "Top" : "Bottom";
+                string modeString = "";
 
-                log += $"\nDiscarded From {fromString} Security Cards:";
+                switch (_trashMode)
+                {
+                    case TrashMode.TopSecurity:
+                        modeString = "Top";
+                        break;
+                    case TrashMode.BottomSecurity:
+                        modeString = "Bottom";
+                        break;
+                    case TrashMode.SelectedCard:
+                        modeString = "Selected";
+                        break;
+                }
+
+                log += $"\nDiscarded From {modeString} Security Cards:";
 
                 foreach (CardSource cardSource in discardedCards)
                 {
